@@ -2,7 +2,7 @@
 
 Requirements:
 
-- django
+- Django
 - React
 - MySQL
 
@@ -17,4 +17,5 @@ Notes:
 
 - (MAC) If path not found: <b>alias mysql=/usr/local/mysql/bin/mysql</b>
 - MySQL name: DB
+- MySQL password: MacEwan-315
 - To open MySQL: <b>mysql -u -root -p </b>
