@@ -37,3 +37,13 @@ Steps:
   - use database DB;<br/>
   - show tables;<br/><br/>
   the tables should now be non-empty and populated with ~10 rows
+  
+  
+  
+ <h1>Installing Material UI</h1>
+ - Material should be installed in the package.json and should be working out the box, if it isn't,run these two commands.
+ - npm install @mui/material @emotion/react @emotion/styled --legacy-peer-deps
+ - npm install @mui/icons-material --legacy-peer-deps
+  
+  
+  
