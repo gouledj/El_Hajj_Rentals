@@ -6,14 +6,13 @@ import { Typography } from "@mui/material";
 import "../../css/rent.css";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const Payment = () => {
-
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -42,7 +41,7 @@ const Payment = () => {
             autoComplete="off"
           >
             <div>
-            <TextField
+              <TextField
                 label="Name on card"
                 id="outlined-size-normal"
                 defaultValue="Jane Doe"
@@ -57,17 +56,17 @@ const Payment = () => {
               />
             </div>
             <div>
-            <TextField
+              <TextField
                 label="Expiry date"
                 id="outlined-size-normal"
-                sx={{ m: 1, width: '25ch' }}
+                sx={{ m: 1, width: "25ch" }}
                 defaultValue="MM / YY"
               />
               <TextField
                 label="Security code"
                 id="filled-size-normal"
                 defaultValue="CVC"
-                sx={{ m: 1, width: '25ch' }}
+                sx={{ m: 1, width: "25ch" }}
                 variant="filled"
               />
             </div>
@@ -89,26 +88,31 @@ const Payment = () => {
               Finish
             </Button>
             <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Confirming Payment"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you're ready to pay?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose} autoFocus component={Link} to={"/OrderDetails"}>
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Confirming Payment"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Are you sure you're ready to pay?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose}>Cancel</Button>
+                <Button
+                  onClick={handleClose}
+                  autoFocus
+                  component={Link}
+                  to={"/OrderDetails"}
+                >
+                  Confirm
+                </Button>
+              </DialogActions>
+            </Dialog>
           </div>
         </div>
       </div>
