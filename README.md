@@ -44,6 +44,16 @@ Steps:
  - Material should be installed in the package.json and should be working out the box, if it isn't,run these two commands.
  - npm install @mui/material @emotion/react @emotion/styled --legacy-peer-deps
  - npm install @mui/icons-material --legacy-peer-deps
+
+
+<h1>Other things used that should already be installed, but if not, you should or else stuff wont run</h1>
+- For React Router:
+  -- npm install react-router-dom
+- For Datagrid:
+  -- npm install npm install @mui/x-data-grid
+- For Date/Time picker:
+  -- npm install @mui/x-date-pickers
+  -- npm install dayjs
   
   
   
