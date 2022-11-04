@@ -8,7 +8,7 @@ const Home = () => {
         <div>
             <Stack spacing={2} direction="row">
                 <Button variant="text">Create Account</Button>
-                <Button variant="contained" component={Link} to={'/Rent'}>
+                <Button variant="contained" component={Link} to={'/Login'}>
                     Login
                 </Button>
                 <Button variant="outlined">Employee</Button>

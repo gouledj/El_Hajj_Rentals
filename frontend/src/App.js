@@ -7,6 +7,7 @@ import AvailVehicles from './components/Rent/AvailVehicles.js'
 import Payments from './components/Rent/Payment.js'
 import OrderDetails from './components/Rent/OrderDetails.js'
 import Home from './components/Home.js'
+import Login from './components/login/Login.js'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route exact path="/Rent" element={<Rent />} />
         <Route exact path="/AvailableVehicles" element={<AvailVehicles />} />
         <Route exact path="/Payments" element={<Payments />} />
+        <Route exact path="/Login" element={<Login />} />
         <Route exact path="/OrderDetails" element={<OrderDetails />} />
       </Routes>
     </div>

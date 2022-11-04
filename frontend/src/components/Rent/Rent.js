@@ -68,7 +68,7 @@ const Rent = () => {
   return (
     <div>
       <div className="steps">
-        <RentStepper currentStep={{step:0}} id="steps"/>
+        <RentStepper currentStep={{ step: 0 }} id="steps" />
       </div>
       <div className="wrapper">
         <section className="container-class">
