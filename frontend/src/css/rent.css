@@ -1,0 +1,40 @@
+.wrapper {
+    padding: 10px;
+}
+
+.container-class {
+    padding: 20px;
+}
+
+.container-branch {
+    padding: 20px;
+}
+
+.container-date{
+    padding: 20px;
+}
+
+.container-avail {
+    padding: 20px;
+}
+
+.container-payment {
+    padding: 20px;
+}
+
+.container-buttons {
+    padding: 20px;
+}
+
+.nextb {
+    float:right;
+}
+
+.backb {
+    float:left;
+}
+
+.steps {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
