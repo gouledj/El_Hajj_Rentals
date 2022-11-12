@@ -8,8 +8,6 @@ import Payments from './components/Rent/Payment.js'
 import OrderDetails from './components/Rent/OrderDetails.js'
 import Home from './components/Home.js'
 import Login from './components/login/Login.js'
-import BranchSelect from './components/EmployeeDashboard/BranchSelect.js'
-import BranchInfo from './components/EmployeeDashboard/BranchInfo.js'
 
 function App() {
   return (
@@ -23,8 +21,6 @@ function App() {
         <Route exact path="/Payments" element={<Payments />} />
         <Route exact path="/Login" element={<Login />} />
         <Route exact path="/OrderDetails" element={<OrderDetails />} />
-        <Route exact path="/BranchSelect" element={<BranchSelect />} />
-        <Route exact path="/BranchInfo" element={<BranchInfo />} />
       </Routes>
     </div>
   );
