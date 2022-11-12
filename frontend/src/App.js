@@ -10,6 +10,7 @@ import Home from './components/Home.js'
 import Login from './components/login/Login.js'
 import BranchSelect from './components/EmployeeDashboard/BranchSelect.js'
 import BranchInfo from './components/EmployeeDashboard/BranchInfo.js'
+import SignUp from "./components/signUp/signUp.js"
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
         <Route exact path="/OrderDetails" element={<OrderDetails />} />
         <Route exact path="/BranchSelect" element={<BranchSelect />} />
         <Route exact path="/BranchInfo" element={<BranchInfo />} />
+        <Route exact path="/SignUp" element={<SignUp />} />
+
       </Routes>
     </div>
   );
