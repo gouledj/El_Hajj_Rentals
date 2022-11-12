@@ -11,7 +11,7 @@ const Home = () => {
                 <Button variant="contained" component={Link} to={'/Login'}>
                     Login
                 </Button>
-                <Button variant="outlined">Employee</Button>
+                <Button variant="outlined" component={Link} to={'/BranchSelect'}>Employee</Button>
             </Stack>
         </div>
     );
