@@ -7,9 +7,6 @@ from .models import Rental, Customer, Employee, Car, CarType, Branch
 
 
 # Create your views here.
-def main(request):
-    return HttpResponse("Hello")
-
 
 class RentalView(viewsets.ModelViewSet):
     serializer_class = RentalSerializer

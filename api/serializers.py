@@ -12,14 +12,14 @@ class RentalSerializer(serializers.ModelSerializer):
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ('customerID', 'firstName', 'lastName', 'driversLicense', 'email', 'customerPhone', 'dob',
+        fields = ('customerID', 'firstName', 'lastName', 'driversLicense', 'email', 'salt', 'customerPhone', 'dob',
                   'goldMember', 'province', 'city', 'postalCode', 'streetNumber', 'streetName', 'unitNumber')
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ('employeeID', 'firstName', 'lastName', 'email', 'employeePhone', 'password', 'salt', 'salary', 'dob',
+        fields = ('employeeID', 'firstName', 'lastName', 'email', 'employeePhone', 'salt', 'salary', 'dob',
                   'goldMember', 'province', 'city', 'postalCode', 'streetNumber', 'streetName', 'unitNumber')
 
 

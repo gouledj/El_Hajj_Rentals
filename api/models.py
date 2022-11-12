@@ -2,7 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-
 class Rental(models.Model):
     rentalID = models.AutoField(primary_key=True)
     dateFrom = models.DateField()
@@ -19,6 +18,8 @@ class Customer(models.Model):
     lastName = models.CharField(max_length=100)
     driversLicense = models.CharField(max_length=100)
     email = models.EmailField()
+    password = models.CharField(max_length=15)
+    salt = models.CharField(max_length=15)
     customerPhone = models.IntegerField()
     dob = models.DateField()
     goldMember = models.BooleanField()
