@@ -22,6 +22,10 @@ from api import views
 router = routers.DefaultRouter()
 router.register(r'rentals', views.RentalView, 'Rental')
 router.register(r'customers', views.CustomerView, 'Customer')
+router.register(r'employees', views.EmployeeView, 'Employee')
+router.register(r'branches', views.BranchView, 'Branch')
+router.register(r'cars', views.CarView, 'Car')
+router.register(r'carType', views.CarTypeView, 'CarType')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
