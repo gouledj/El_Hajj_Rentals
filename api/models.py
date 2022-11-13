@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class Rental(models.Model):
     rentalID = models.AutoField(primary_key=True)
     dateFrom = models.DateField()
@@ -20,7 +21,7 @@ class Customer(models.Model):
     email = models.EmailField()
     password = models.CharField(max_length=15, default='')
     salt = models.CharField(max_length=15, default='')
-    customerPhone = models.IntegerField()
+    customerPhone = models.CharField(max_length=100)
     dob = models.DateField()
     goldMember = models.BooleanField()
     province = models.CharField(max_length=100)
@@ -36,7 +37,7 @@ class Employee(models.Model):
     firstName = models.CharField(max_length=100)
     lastName = models.CharField(max_length=100)
     email = models.EmailField()
-    employeePhone = models.IntegerField()
+    employeePhone = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
     salt = models.CharField(max_length=100)
     salary = models.FloatField()
@@ -73,7 +74,7 @@ class CarType(models.Model):
 
 class Branch(models.Model):
     branchID = models.AutoField(primary_key=True)
-    branchPhone = models.IntegerField()
+    branchPhone = models.CharField(max_length=100)
     province = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     postalCode = models.CharField(max_length=100)

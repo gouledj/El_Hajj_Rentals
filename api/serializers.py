@@ -26,14 +26,14 @@ class EmployeeSerializer(serializers.ModelSerializer):
 class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
-        fields = ('carID', 'manufacturer', 'model', 'fueldType',
+        fields = ('carID', 'manufacturer', 'model', 'fuelType',
                   'color', 'licensePlate', 'status', 'mileage')
 
 
 class CarTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarType
-        fields = ('typeId', 'description', 'dailyCost', 'weeklyCost',
+        fields = ('typeID', 'description', 'dailyCost', 'weeklyCost',
                   'monthlyCost', 'lateFee', 'changeBranchFee')
 
 
