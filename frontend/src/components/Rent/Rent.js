@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { Typography } from "@mui/material";
@@ -16,13 +16,38 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import "../../css/rent.css";
 import RentStepper from '../layouts/RentStepper.js'
+import axios from "axios";
+
+import { BRANCH_API_URL } from "../../constants";
 
 const Rent = () => {
   const [vehicle, setVehicle] = React.useState("");
   const [from, setFrom] = React.useState(dayjs("2022-04-07"));
   const [to, setTo] = React.useState(dayjs("2022-04-07"));
+  const [branches, setBranches] = useState([]);
 
-  const rows = [
+  useEffect(() => {
+    axios.get(BRANCH_API_URL).then((response) => {
+      setBranches(response.data);
+      console.log(response.data);
+    });
+  }, []);
+
+  const newRows = [];
+  for(let i = 0; i < branches.length; i++){
+    const entry = {
+      id: i + 1,
+      branchName: branches[i].branchID,
+      branchPhone: branches[i].branchPhone,
+      city: branches[i].city,
+      street: branches[i].streetName,
+      province: branches[i].province,
+      postalCode: branches[i].postalCode
+    }
+    newRows.push(entry);
+  }
+
+  /* const rows = [
     {
       id: 1,
       col1: "Hello",
@@ -50,15 +75,15 @@ const Rent = () => {
       col5: "World",
       col6: "World",
     },
-  ];
+  ]; */
 
   const columns = [
-    { field: "col1", headerName: "Name", width: 150 },
-    { field: "col2", headerName: "Phone Number", width: 150 },
-    { field: "col3", headerName: "Street", width: 150 },
-    { field: "col4", headerName: "City", width: 150 },
-    { field: "col5", headerName: "Province", width: 150 },
-    { field: "col6", headerName: "Postal Code", width: 150 },
+    { field: "branchName", headerName: "Branch Number", width: 150 },
+    { field: "branchPhone", headerName: "Phone Number", width: 150 },
+    { field: "city", headerName: "Street", width: 150 },
+    { field: "street", headerName: "City", width: 150 },
+    { field: "province", headerName: "Province", width: 150 },
+    { field: "postalCode", headerName: "Postal Code", width: 150 },
   ];
 
   const handleChange = (event) => {
@@ -97,7 +122,7 @@ const Rent = () => {
         <section className="container-branch">
           <Typography>Select a branch:</Typography>
           <div style={{ height: 400, width: "100%" }}>
-            <DataGrid rows={rows} columns={columns} />
+            <DataGrid rows={newRows} columns={columns} />
           </div>
         </section>
 

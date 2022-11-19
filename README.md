@@ -45,7 +45,6 @@ Steps:
  - npm install @mui/material @emotion/react @emotion/styled --legacy-peer-deps
  - npm install @mui/icons-material --legacy-peer-deps
 
-
 <h1>Other things used that should already be installed, but if not, you should or else stuff wont run</h1>
 - For React Router:
   -- npm install react-router-dom
@@ -55,5 +54,9 @@ Steps:
   -- npm install @mui/x-date-pickers
   -- npm install dayjs
   
-  
-  
+<h1>Setting up CORS headers</h1>
+Some API calls will get blocked by CORS policy, to fix this CORS headers is required. 
+In your virtual environment or on your local machine, install django cors headers by
+entering the following line:
+
+pip install django-cors-headers
