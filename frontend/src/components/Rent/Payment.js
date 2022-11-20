@@ -1,6 +1,6 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import RentStepper from "../layouts/RentStepper.js";
 import { Typography } from "@mui/material";
 import "../../css/rent.css";
@@ -13,7 +13,14 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 const Payment = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [card, setCard] = useState("");
+  const [expiry, setExpiry] = useState("");
+  const [security, setSecurity] = useState("");
+
+  const location = useLocation();
+  const { type, branch, from, to, car } = location.state;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -21,6 +28,22 @@ const Payment = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const nameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const cardChange = (event) => {
+    setCard(event.target.value);
+  };
+
+  const expiryChange = (event) => {
+    setExpiry(event.target.value);
+  };
+
+  const securityChange = (event) => {
+    setSecurity(event.target.value);
   };
 
   return (
@@ -44,15 +67,15 @@ const Payment = () => {
               <TextField
                 label="Name on card"
                 id="outlined-size-normal"
-                defaultValue="Jane Doe"
+                onChange={nameChange}
               />
             </div>
             <div>
               <TextField
                 label="Card number"
                 id="filled-size-normal"
-                defaultValue="1234 1234 1234 1234"
                 variant="filled"
+                onChange={cardChange}
               />
             </div>
             <div>
@@ -60,14 +83,14 @@ const Payment = () => {
                 label="Expiry date"
                 id="outlined-size-normal"
                 sx={{ m: 1, width: "25ch" }}
-                defaultValue="MM / YY"
+                onChange={expiryChange}
               />
               <TextField
                 label="Security code"
                 id="filled-size-normal"
-                defaultValue="CVC"
                 sx={{ m: 1, width: "25ch" }}
                 variant="filled"
+                onChange={securityChange}
               />
             </div>
           </Box>
@@ -75,18 +98,23 @@ const Payment = () => {
 
         <div className="container-buttons">
           <div className="backb">
-            <Button
-              variant="contained"
-              component={Link}
+            <Link
               to={"/AvailableVehicles"}
+              state={{ type: type, branch: branch, from: from, to: to }}
+              style={{ textDecoration: "none" }}
             >
-              Back
-            </Button>
+              <Button variant="contained">Back</Button>
+            </Link>
           </div>
           <div className="nextb">
-            <Button variant="contained" onClick={handleClickOpen}>
+            {name && card && expiry && security
+              ? <Button variant="contained" onClick={handleClickOpen}>
               Finish
-            </Button>
+              </Button>
+              :  <Button variant="contained" disabled={true}>
+              Finish
+              </Button>
+            }
             <Dialog
               open={open}
               onClose={handleClose}
@@ -103,14 +131,13 @@ const Payment = () => {
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
-                <Button
-                  onClick={handleClose}
-                  autoFocus
-                  component={Link}
-                  to={"/OrderDetails"}
-                >
-                  Confirm
-                </Button>
+                <Link
+              to={"/OrderDetails"}
+              state={{ type: type, branch: branch, from: from, to: to, car:car, card:card }}
+              style={{ textDecoration: "none" }}
+            >
+              <Button variant="contained" autoFocus>Confirm</Button>
+            </Link>
               </DialogActions>
             </Dialog>
           </div>
