@@ -60,6 +60,7 @@ class Car(models.Model):
     licensePlate = models.CharField(max_length=100)
     status = models.CharField(max_length=100)
     mileage = models.IntegerField()
+    branchID = models.IntegerField()
 
 
 class CarType(models.Model):
