@@ -1,25 +1,36 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, createSearchParams } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { FormControl } from "@mui/material";
 import { InputLabel } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import { Select } from "@mui/material";
+import axios from 'axios';
 
+import { BRANCH_API_URL } from "../../constants";
 
 import "../../css/rent.css";
 
 const BranchSelect = () => {
-    const [branch, setBranch] = React.useState("");
+    const [branches, setBranches] = React.useState([]);
+    const [branchID, setBranchID] = React.useState('');
+
+    useEffect(() => {
+        axios.get(BRANCH_API_URL).then((response) => {
+            setBranches(response.data);
+        });
+    }, [])
 
     const handleChange = (event) => {
-        setBranch(event.target.value);
+        setBranchID(event.target.value);
     };
+
+
 
     return (
         <div>
-            <div className = "container-avail">
+            <div className="container-avail">
                 <h1>Employee Dashboard</h1>
             </div>
             <div className="wrapper">
@@ -27,37 +38,45 @@ const BranchSelect = () => {
                     <Typography>Select your branch:</Typography>
                     <Box sx={{ width: "25%" }}>
                         <FormControl fullWidth>
-                            <InputLabel id = "demo-simple-select-label">
+                            <InputLabel id="branch-select-label">
                                 Branch
                             </InputLabel>
-                            <Select 
-                                labelID = "demo-simple-select-label"
-                                id = "demo-simple-select"
-                                value = {branch}
-                                label = "Branch"
-                                onChange = {handleChange}
+                            <Select
+                                labelId="branch-select-label"
+                                id="branch-select"
+                                value={branchID}
+                                label="Branch"
+                                onChange={handleChange}
                             >
-                                <MenuItem value = "1">Branch 1</MenuItem>
-                                <MenuItem value = "2">Branch 2</MenuItem>
-                                <MenuItem value = "3">Branch 3</MenuItem>
+                                {branches.map((branch) => (
+                                    <MenuItem key={branch.branchID} value={branch.branchID}>
+                                        {branch.unitNumber}-{branch.streetNumber} {branch.streetName}, {branch.city} {branch.province}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </Box>
                 </section>
-                
-                <div className = "container-buttons">
-                    <div className = "nextb">
+
+                <div className="container-buttons">
+                    <div className="nextb">
                         <Button
-                            variant = "contained"
-                            component = {Link}
-                            to = {'/BranchInfo'}
+                            variant="contained"
+                            component={Link}
+                            to={{
+                                pathname: '/BranchInfo',
+                            }}
+                            state={{
+                                branchID: branchID,
+                                branches: branches
+                            }}
                         >
                             Next
                         </Button>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
