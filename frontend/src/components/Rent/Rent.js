@@ -17,20 +17,30 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import "../../css/rent.css";
 import RentStepper from '../layouts/RentStepper.js'
 import axios from "axios";
+import moment from "moment";
 
-import { BRANCH_API_URL } from "../../constants";
+import { BRANCH_API_URL, CARTYPE_API_URL } from "../../constants";
 
 const Rent = () => {
-  const [vehicle, setVehicle] = React.useState("");
-  const [from, setFrom] = React.useState(dayjs("2022-04-07"));
-  const [to, setTo] = React.useState(dayjs("2022-04-07"));
+  const [vehicle, setVehicle] = useState('');
+  const [branchSelect, setBranchSelect] = useState(null);
+  const [from, setFrom] = useState(null);
+  const [to, setTo] = useState(null);
   const [branches, setBranches] = useState([]);
+  const [carType, setCarType] = useState([]);
 
   useEffect(() => {
-    axios.get(BRANCH_API_URL).then((response) => {
-      setBranches(response.data);
-      console.log(response.data);
-    });
+    axios.get(BRANCH_API_URL)
+      .then((response) => {
+        setBranches(response.data);
+      })
+      .catch(console.log("error or loading"))
+
+      axios.get(CARTYPE_API_URL)
+      .then((response) => {
+        setCarType(response.data);
+      })
+      .catch(console.log("error or loading"))
   }, []);
 
   const newRows = [];
@@ -47,36 +57,6 @@ const Rent = () => {
     newRows.push(entry);
   }
 
-  /* const rows = [
-    {
-      id: 1,
-      col1: "Hello",
-      col2: "World",
-      col3: "World",
-      col4: "World",
-      col5: "World",
-      col6: "World",
-    },
-    {
-      id: 2,
-      col1: "Hello",
-      col2: "World",
-      col3: "World",
-      col4: "World",
-      col5: "World",
-      col6: "World",
-    },
-    {
-      id: 3,
-      col1: "Hello",
-      col2: "World",
-      col3: "World",
-      col4: "World",
-      col5: "World",
-      col6: "World",
-    },
-  ]; */
-
   const columns = [
     { field: "branchName", headerName: "Branch Number", width: 150 },
     { field: "branchPhone", headerName: "Phone Number", width: 150 },
@@ -90,6 +70,20 @@ const Rent = () => {
     setVehicle(event.target.value);
   };
 
+  const cellClick = (event) => {
+    setBranchSelect(event.row);
+  }
+
+  const handleFrom = (event) => {
+    setFrom(moment(event).format("MM/DD/YYYY"));
+  }
+ 
+  const handleTo = (event) => {
+    setTo(moment(event).format("MM/DD/YYYY"));
+  }
+
+  console.log("from " + moment(from).format("MM/DD/YYYY"))
+  console.log("to " + moment(to).format("MM/DD/YYYY"))
   return (
     <div>
       <div className="steps">
@@ -109,11 +103,13 @@ const Rent = () => {
                 value={vehicle}
                 label="Vehicle"
                 onChange={handleChange}
-              >
-                <MenuItem value={"Car"}>Car</MenuItem>
-                <MenuItem value={"SUV"}>SUV</MenuItem>
-                <MenuItem value={"Van"}>Van</MenuItem>
-                <MenuItem value={"Truck"}>Truck</MenuItem>
+              >{
+                  carType.map(item =>
+                    <MenuItem key={item.key} value={item}>
+                      {item.description}
+                    </MenuItem>
+                  )
+                }
               </Select>
             </FormControl>
           </Box>
@@ -122,7 +118,7 @@ const Rent = () => {
         <section className="container-branch">
           <Typography>Select a branch:</Typography>
           <div style={{ height: 400, width: "100%" }}>
-            <DataGrid rows={newRows} columns={columns} />
+            <DataGrid rows={newRows} columns={columns} onCellClick={cellClick}/>
           </div>
         </section>
 
@@ -133,19 +129,15 @@ const Rent = () => {
               <DesktopDatePicker
                 label="From"
                 value={from}
-                minDate={dayjs("2017-01-01")}
-                onChange={(newValue) => {
-                  setFrom(newValue);
-                }}
+                minDate={new Date()}
+                onChange={handleFrom}
                 renderInput={(params) => <TextField {...params} />}
               />
               <DesktopDatePicker
-                label="TO"
+                label="To"
                 value={to}
                 minDate={from}
-                onChange={(newValue) => {
-                  setTo(newValue);
-                }}
+                onChange={handleTo}
                 renderInput={(params) => <TextField {...params} />}
               />
             </Stack>
@@ -154,13 +146,17 @@ const Rent = () => {
 
         <div className="container-buttons">
           <div className="nextb">
-            <Button
-              variant="contained"
-              component={Link}
-              to={"/AvailableVehicles"}
-            >
+            {vehicle && branchSelect && from && to 
+            ? <Link to={"/AvailableVehicles"}
+                    state={{ type:vehicle.typeID, branch:branchSelect, from:from , to:to }}
+                    style={{'textDecoration':'none'}}>
+                <Button variant="contained" >
+                  Next
+                </Button>
+            </Link>
+            : <Button variant="contained" disabled={true}>
               Next
-            </Button>
+              </Button>}
           </div>
         </div>
       </div>

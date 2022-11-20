@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import "../../css/rent.css";
 
-import { CAR_API_URL } from "../../constants";
+import { CARS_API_URL } from "../../constants";
 
 const BranchInfo = () => {
 
@@ -29,7 +29,7 @@ const BranchInfo = () => {
 
     const getCars = () => {
         let allCars = [];
-        axios.get(CAR_API_URL).then((response) => {
+        axios.get(CARS_API_URL).then((response) => {
             response.data.forEach((item) => {
                 if (item.branchID == branch.branchID) {
                     allCars.push(item);

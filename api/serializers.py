@@ -6,7 +6,8 @@ class RentalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rental
         fields = ('rentalID', 'dateFrom', 'dateTo', 'dateReturned',
-                  'totalCost', 'licensePlate', 'goldMember')
+                  'totalCost', 'licensePlate', 'goldMember',
+                  'customerID', 'branchID', 'carID', 'typeID')
 
 
 class CustomerSerializer(serializers.ModelSerializer):
@@ -20,14 +21,16 @@ class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = ('employeeID', 'firstName', 'lastName', 'email', 'employeePhone', 'salt', 'salary', 'dob',
-                  'goldMember', 'province', 'city', 'postalCode', 'streetNumber', 'streetName', 'unitNumber')
+                  'goldMember', 'province', 'city', 'postalCode', 'streetNumber', 'streetName', 'unitNumber', 'branchID')
 
 
 class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = ('carID', 'manufacturer', 'model', 'fuelType',
-                  'color', 'licensePlate', 'status', 'mileage', 'branchID')
+                  'color', 'licensePlate', 'status', 'mileage',
+                  'typeID', 'branchID')
+
 
 
 class CarTypeSerializer(serializers.ModelSerializer):
