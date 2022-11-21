@@ -32,6 +32,7 @@ class CarSerializer(serializers.ModelSerializer):
                   'typeID', 'branchID')
 
 
+
 class CarTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarType

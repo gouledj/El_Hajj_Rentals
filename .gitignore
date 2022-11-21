@@ -157,6 +157,8 @@ myenv/Scripts/Activate.ps1
 myenv/Scripts/deactivate.bat
 package-lock.json
 package.json
+frontend/package.json
+frontend/package-lock.json
 myenv/Scripts/django-admin.exe
 myenv/Scripts/pip.exe
 myenv/Scripts/pip3.10.exe
