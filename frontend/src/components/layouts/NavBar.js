@@ -112,7 +112,7 @@ function NavBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            El-Hajj
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (

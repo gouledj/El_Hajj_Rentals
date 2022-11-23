@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class Rental(models.Model):
     rentalID = models.AutoField(primary_key=True)
     dateFrom = models.DateField()
@@ -10,6 +11,10 @@ class Rental(models.Model):
     totalCost = models.FloatField()
     licensePlate = models.CharField(max_length=100)
     goldMember = models.BooleanField()
+    customerID = models.IntegerField
+    branchID = models.IntegerField()
+    carID = models.IntegerField()
+    typeID = models.IntegerField()
 
 
 class Customer(models.Model):
@@ -18,9 +23,9 @@ class Customer(models.Model):
     lastName = models.CharField(max_length=100)
     driversLicense = models.CharField(max_length=100)
     email = models.EmailField()
-    password = models.CharField(max_length=15)
-    salt = models.CharField(max_length=15)
-    customerPhone = models.IntegerField()
+    password = models.CharField(max_length=15, default='')
+    salt = models.CharField(max_length=15, default='')
+    customerPhone = models.CharField(max_length=100)
     dob = models.DateField()
     goldMember = models.BooleanField()
     province = models.CharField(max_length=100)
@@ -36,7 +41,7 @@ class Employee(models.Model):
     firstName = models.CharField(max_length=100)
     lastName = models.CharField(max_length=100)
     email = models.EmailField()
-    employeePhone = models.IntegerField()
+    employeePhone = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
     salt = models.CharField(max_length=100)
     salary = models.FloatField()
@@ -48,6 +53,7 @@ class Employee(models.Model):
     streetNumber = models.IntegerField()
     streetName = models.CharField(max_length=100)
     unitNumber = models.IntegerField()
+    branchID = models.IntegerField()
 
 
 class Car(models.Model):
@@ -59,6 +65,9 @@ class Car(models.Model):
     licensePlate = models.CharField(max_length=100)
     status = models.CharField(max_length=100)
     mileage = models.IntegerField()
+    typeID = models.IntegerField()
+    branchID = models.IntegerField()
+
 
 
 class CarType(models.Model):
@@ -73,7 +82,7 @@ class CarType(models.Model):
 
 class Branch(models.Model):
     branchID = models.AutoField(primary_key=True)
-    branchPhone = models.IntegerField()
+    branchPhone = models.CharField(max_length=100)
     province = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     postalCode = models.CharField(max_length=100)
