@@ -12,11 +12,8 @@ import { CARS_API_URL, CARTYPE_API_URL } from "../../constants";
 
 function calculateDays(from, to){
   
-  const difference = Math.abs(to - from);
-  console.log("from " + moment(from).format("MM/DD/YYYY"))
-  console.log("to " + moment(to).format("MM/DD/YYYY"))
+  const difference = Math.abs(new Date(to.replace('-','/')) - new Date(from.replace('-','/')));
   const totalDays = Math.ceil(difference / (1000 * 60 * 60 * 24));
-  //console.log(totalDays)
   return totalDays;
 };
 
@@ -79,17 +76,19 @@ const AvailVehicles = () => {
   }
   
   const rows = [];
-  for(let i = 0; i < available.length; i++){
-    const entry = {
-      id: i+1,
-      image: "insert picture here",
-      manufacturer: available[i].manufacturer,
-      model: available[i].model,
-      fueltype: available[i].fuelType,
-      colour: available[i].color,
-      cost: calculateCost(calculateDays(from, to), carType)
+  if (carType){
+    for(let i = 0; i < available.length; i++){
+      const entry = {
+        id: i+1,
+        image: "insert picture here",
+        manufacturer: available[i].manufacturer,
+        model: available[i].model,
+        fueltype: available[i].fuelType,
+        colour: available[i].color,
+        cost: calculateCost(calculateDays(from, to), carType)
+      }
+      rows.push(entry);
     }
-    rows.push(entry);
   }
 
   const columns = [
