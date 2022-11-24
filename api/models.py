@@ -69,7 +69,6 @@ class Car(models.Model):
     branchID = models.IntegerField()
 
 
-
 class CarType(models.Model):
     typeID = models.AutoField(primary_key=True)
     description = models.CharField(max_length=100)
