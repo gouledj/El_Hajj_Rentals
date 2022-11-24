@@ -17,6 +17,7 @@ const BranchInfo = () => {
     useEffect(() => {
         getBranch();
         getCars();
+
     }, [branch]);
 
     const getBranch = () => {
@@ -31,10 +32,9 @@ const BranchInfo = () => {
         let allCars = [];
         axios.get(CARS_API_URL).then((response) => {
             response.data.forEach((item) => {
-                if (item.branchID == branch.branchID) {
+                if (item.branchID === branch.branchID) {
                     allCars.push(item);
                 }
-
             })
             setCars(allCars);
         });
@@ -73,7 +73,14 @@ const BranchInfo = () => {
 
     const transRows = [];
 
-    return (
+    const loaded = () => {
+        if (branch !== undefined && cars.length !== 0) {
+            return true;
+        }
+        return false;
+    }
+
+    return loaded() ? (
         <div>
             <div className="container-avail">
                 <h1>Employee Dashboard</h1>
@@ -94,6 +101,11 @@ const BranchInfo = () => {
                     <div style={{ height: 400, width: "auto" }}>
                         <DataGrid rows={carRows} columns={carColumns} />
                     </div>
+                    <div className="addb">
+                        <Button variant="contained" component={Link} to={'/AddCar'}>
+                            Add Car
+                        </Button>
+                    </div>
                 </div>
                 <div className="container-avail">
                     <Typography>Recent transactions:</Typography>
@@ -103,7 +115,7 @@ const BranchInfo = () => {
                 </div>
             </div>
         </div>
-    )
+    ) : (<div>loading...</div>)
 }
 
 export default BranchInfo;

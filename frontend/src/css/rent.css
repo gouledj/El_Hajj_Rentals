@@ -10,7 +10,7 @@
     padding: 20px;
 }
 
-.container-date{
+.container-date {
     padding: 20px;
 }
 
@@ -28,11 +28,16 @@
 }
 
 .nextb {
-    float:right;
+    float: right;
 }
 
 .backb {
-    float:left;
+    float: left;
+}
+
+.addb {
+    margin-top: 7px;
+    float: right;
 }
 
 .steps {

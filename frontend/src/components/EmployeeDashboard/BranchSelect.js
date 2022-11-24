@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, createSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { FormControl } from "@mui/material";
@@ -25,8 +25,6 @@ const BranchSelect = () => {
     const handleChange = (event) => {
         setBranchID(event.target.value);
     };
-
-
 
     return (
         <div>
