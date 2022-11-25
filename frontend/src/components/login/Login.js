@@ -79,23 +79,7 @@ export default function SignIn() {
         navigate('/Rent')
         console.log("SUCCESS")
       }
-      else {
-
-      }
-
-
     })
-
-
-
-
-
-
-
-
-
-
-
 
   };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import { Link, useLocation } from "react-router-dom";
 import RentStepper from "../layouts/RentStepper.js";
@@ -11,6 +11,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import axios from 'axios';
+
+import { RENTALS_API_URL, CARS_API_URL } from "../../constants";
 
 const Payment = () => {
   const [open, setOpen] = useState(false);
@@ -18,9 +21,44 @@ const Payment = () => {
   const [card, setCard] = useState("");
   const [expiry, setExpiry] = useState("");
   const [security, setSecurity] = useState("");
+  const [errorName, setErrorName] = useState("");
+  const [errorCard, setErrorCard] = useState("");
+  const [errorExpiry, setErrorExpiry] = useState("");
+  const [errorSecurity, setErrorSecurity] = useState("");
+  const [carInfo, setCarInfo] = useState(null)
 
   const location = useLocation();
   const { type, branch, from, to, car } = location.state;
+
+  useEffect(() => {
+    axios.get(CARS_API_URL + "" + car.id + "/").then((response) => {
+        setCarInfo(response.data);
+        console.log(response.data)
+    });
+}, [])
+
+console.log(from)
+
+  const newRental = () => {
+    axios.post(RENTALS_API_URL, {
+      dateFrom: from,
+      dateTo: to,
+      dateReturned: to,
+      totalCost: car.cost,
+      licensePlate: carInfo.licensePlate,
+      goldMember: false,
+      customerID: 123,
+      branchID: branch.id,
+      carID: car.id,
+      typeID: type
+  })
+      .then(function (response) {
+          console.log(response);
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -31,20 +69,44 @@ const Payment = () => {
   };
 
   const nameChange = (event) => {
-    setName(event.target.value);
+    if(event.target.value.length > 0){
+      setName(event.target.value);
+      setErrorName("");
+    } else {
+      setErrorName("No name has been entered");
+    }
   };
 
   const cardChange = (event) => {
-    setCard(event.target.value);
+    if(event.target.value.replaceAll(' ','').length === 16 && isNumeric(event.target.value.replaceAll(' ',''))){
+      setCard(event.target.value);
+      setErrorCard("");
+    } else {
+      setErrorCard("Credit card number is incorrect or empty");
+    }
   };
 
   const expiryChange = (event) => {
-    setExpiry(event.target.value);
+    if(event.target.value.replaceAll(' ','').length === 4 && isNumeric(event.target.value.replaceAll(' ',''))){
+      setExpiry(event.target.value);
+      setErrorExpiry("");
+    } else {
+      setErrorExpiry("Expiry date number is incorrect or empty");
+    }
   };
 
   const securityChange = (event) => {
-    setSecurity(event.target.value);
+    if(event.target.value.replaceAll(' ','').length === 3 && isNumeric(event.target.value.replaceAll(' ',''))){
+      setSecurity(event.target.value);
+      setErrorSecurity("");
+    } else {
+      setErrorSecurity("CVC is incorrect or empty");
+    }
   };
+
+  function isNumeric(value) {
+    return /^\d+$/.test(value);
+}
 
   return (
     <div>
@@ -67,6 +129,9 @@ const Payment = () => {
               <TextField
                 label="Name on card"
                 id="outlined-size-normal"
+                helperText={errorName}
+                error={!!errorName}
+                placeholder="Jane Doe"
                 onChange={nameChange}
               />
             </div>
@@ -75,6 +140,9 @@ const Payment = () => {
                 label="Card number"
                 id="filled-size-normal"
                 variant="filled"
+                helperText={errorCard}
+                error={!!errorCard}
+                placeholder="1234 1234 1234 1234"
                 onChange={cardChange}
               />
             </div>
@@ -82,7 +150,10 @@ const Payment = () => {
               <TextField
                 label="Expiry date"
                 id="outlined-size-normal"
-                sx={{ m: 1, width: "25ch" }}
+                sx={{ m: 1, width: "20%" }}
+                helperText={errorExpiry}
+                error={!!errorExpiry}
+                placeholder="MMYY"
                 onChange={expiryChange}
               />
               <TextField
@@ -90,6 +161,9 @@ const Payment = () => {
                 id="filled-size-normal"
                 sx={{ m: 1, width: "25ch" }}
                 variant="filled"
+                helperText={errorSecurity}
+                error={!!errorSecurity}
+                placeholder="001"
                 onChange={securityChange}
               />
             </div>
@@ -133,10 +207,10 @@ const Payment = () => {
                 <Button onClick={handleClose}>Cancel</Button>
                 <Link
               to={"/OrderDetails"}
-              state={{ type: type, branch: branch, from: from, to: to, car:car, card:card }}
+              state={{ name:name, type: type, branch: branch, from: from, to: to, car:car, card:card }}
               style={{ textDecoration: "none" }}
             >
-              <Button variant="contained" autoFocus>Confirm</Button>
+              <Button variant="contained" autoFocus onClick={newRental}>Confirm</Button>
             </Link>
               </DialogActions>
             </Dialog>
