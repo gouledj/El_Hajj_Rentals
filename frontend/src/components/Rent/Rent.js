@@ -79,6 +79,7 @@ const Rent = () => {
     moment(date).format('MM-DD-YYYY')
     var fdate = new Date(date)
     var finaldate = fdate.getMonth() + 1 + '-' +  (fdate.getDate())  + '-' +  fdate.getFullYear()
+    console.log(finaldate);
     return finaldate
   }
 
@@ -148,7 +149,7 @@ const Rent = () => {
           <div className="nextb">
             {vehicle && branchSelect && from && to 
             ? <Link to={"/AvailableVehicles"}
-                    state={{ type:vehicle.typeID, branch:branchSelect, from:from , to:to }}
+                    state={{ type:vehicle.typeID, branch:branchSelect, from:getDate(from) , to:getDate(to) }}
                     style={{'textDecoration':'none'}}>
                 <Button variant="contained" >
                   Next
