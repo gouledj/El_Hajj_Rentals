@@ -8,7 +8,7 @@ import RentStepper from '../layouts/RentStepper.js'
 import axios from "axios";
 import moment from "moment";
 
-import { CARS_API_URL, CARTYPE_API_URL } from "../../constants";
+import { CARS_API_URL, CARTYPE_API_URL, RENTALS_API_URL } from "../../constants";
 
 function calculateDays(from, to){
   
@@ -41,6 +41,7 @@ const AvailVehicles = () => {
   const [cars, setCars] = useState([]);
   const [carType, setCarType] = useState(null);
   const [carSelect, setCarSelect] = useState(null);
+  const [rentals, setRentals] = useState([]);
 
   const location = useLocation()
   const { type, branch, from, to } = location.state;
@@ -62,16 +63,51 @@ const AvailVehicles = () => {
         }
       })
       .catch(console.log("error or loading"))
+
+    axios.get(RENTALS_API_URL)
+    .then((response) => {
+      setRentals(response.data);
+    })
+    .catch(console.log("error or loading"))
+
   }, []);
 
   const cellClick = (event) => {
     setCarSelect(event.row);
   }
 
+  function flipDate(string){
+    //Function used to convert Django dates (YYYY-MM-DD) to MM-DD-YYYY
+    const [year, month, day] = string.split('-');
+    const flipped = [month, day, year].join('-');
+
+    return flipped
+  }
+
   const available = []
+  var notAvailable = false;
   for(let item of cars){
-    if(item.typeID == type && item.branchID == branch.id){
-      available.push(item);
+    //From all the cars, filter out only the ones that match the carType and branchID
+    if(item.typeID === type && item.branchID === branch.id){
+      //Check existing rentals for conflicts
+      for(let i=0; i < rentals.length; i++){
+        //If a rental exists with the same car
+        if(item.carID === rentals[i].carID){
+          //Compare the days you want to rent with the current rental to check for conflicts
+          if(from <= flipDate(rentals[i].dateTo) || to <= flipDate(rentals[i].dateFrom)){
+            //Car is already rented out during this period, not available
+            console.log("Not available");
+            notAvailable = true;
+          }
+        }
+      }
+      //If we have looped through all rentals and determined its not available, break out and dont add. Otherwise,
+      //the car is available and has no active rentals involving it, in this case show as available.
+      if(notAvailable === true){
+        break;
+      } else if(!available.includes(item)){
+        available.push(item);
+      }
     }
   }
   
