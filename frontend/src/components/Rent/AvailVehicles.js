@@ -78,8 +78,8 @@ const AvailVehicles = () => {
 
   function flipDate(string){
     //Function used to convert Django dates (YYYY-MM-DD) to MM-DD-YYYY
-    const [year, month, day] = string.split('-');
-    const flipped = [month, day, year].join('-');
+    const [month, day, year] = string.split('-');
+    const flipped = [year, month, day].join('-');
 
     return flipped
   }
@@ -136,6 +136,8 @@ const AvailVehicles = () => {
     { field: "cost", headerName: "Estimated Cost", width: 150 },
   ];
 
+  console.log(carSelect)
+
   return (
     <div>
       <div className="wrapper">
@@ -160,9 +162,9 @@ const AvailVehicles = () => {
             ? <Link to={"/Payments"}
                     state={{ type:type,
                               branch:branch,
-                              from:from ,
-                              to:to,
-                              car:carSelect }}
+                              from: flipDate(from) ,
+                              to:flipDate(to),
+                              car:carSelect}}
                     style={{'textDecoration':'none'}}>
                 <Button variant="contained" >
                   Next
