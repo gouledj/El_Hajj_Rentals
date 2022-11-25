@@ -46,6 +46,10 @@ const Payment = () => {
     setSecurity(event.target.value);
   };
 
+  function isNumeric(value) {
+    return /^\d+$/.test(value);
+}
+
   return (
     <div>
       <div className="wrapper">
@@ -69,6 +73,7 @@ const Payment = () => {
                 id="outlined-size-normal"
                 onChange={nameChange}
               />
+              {!name && <span>Name is required</span>}
             </div>
             <div>
               <TextField
@@ -77,6 +82,7 @@ const Payment = () => {
                 variant="filled"
                 onChange={cardChange}
               />
+              {!card && !isNumeric(card) && card.replaceAll(' ','').length !== 16 && <span>Card is required</span>}
             </div>
             <div>
               <TextField
@@ -85,6 +91,7 @@ const Payment = () => {
                 sx={{ m: 1, width: "25ch" }}
                 onChange={expiryChange}
               />
+              {!expiry && !Number.isInteger(expiry) && <span>Expiry is required</span>}
               <TextField
                 label="Security code"
                 id="filled-size-normal"
@@ -92,6 +99,7 @@ const Payment = () => {
                 variant="filled"
                 onChange={securityChange}
               />
+              {!security && !Number.isInteger(security) && (security.replaceAll(' ','').length !== 3) && <span>CVC is required</span>}
             </div>
           </Box>
         </div>

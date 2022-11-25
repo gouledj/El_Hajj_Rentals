@@ -22,7 +22,7 @@ const OrderDetails = () => {
         <p>Rental Car: {car.manufacturer + " " + car.model}</p>
         <p>Branch: {branch.street + ", " + branch.city + ", " + branch.province + " " + branch.postalCode}</p>
         <p>Credit Card: {card}</p>
-        <p>Total Cost: Still need to figure this out, cant get datepicker to work</p>
+        <p>Total Cost: {car.cost}</p>
       </div>
       <Button variant="contained" component={Link} to={"/Rent"}>
         Return

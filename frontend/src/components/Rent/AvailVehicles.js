@@ -126,7 +126,7 @@ const AvailVehicles = () => {
                               branch:branch,
                               from:from ,
                               to:to,
-                              car:carSelect }}
+                              car:carSelect}}
                     style={{'textDecoration':'none'}}>
                 <Button variant="contained" >
                   Next
