@@ -12,21 +12,93 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CUSTOMER_API_URL } from "../../constants";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { BrowserRouter, useNavigate } from 'react-router-dom';
 
 
 
 //Make an actual themem later once team decided on color scheme etc.
 const theme = createTheme();
 
+
+
+
 export default function SignIn() {
+
+  const [emails, setEmails] = useState([]);
+  const [passwords, setPasswords] = useState([]);
+  const [customers, setCustomers] = useState([]);
+
+  const [loginEmail, setLoginEmail] = useState("")
+
+  const [loginPassword, setLoginPassword] = useState("")
+
+  const navigate = useNavigate()
+
+
+  useEffect(() => {
+
+    axios.get(CUSTOMER_API_URL) //need to create an api where i can grab by typeID and branchID
+      .then((response) => {
+        setCustomers(response.data)
+
+        response.data.map((item, id) => {
+          setEmails(item.email)
+          setPasswords(item.password)
+        })
+
+      })
+
+  }, []);
+
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    // console.log(emails);
+    // console.log(passwords);
+    // console.log(customers)
+    var emailString = data.get('email');
+    var passwordString = data.get('password')
+
+    // setLoginEmail(emailString)
+    // setLoginPassword(passwordString)
+
+    // console.log(emailString)
+    // console.log(passwordString)
+
+    customers.map((customer) => {
+      console.log(customer.email)
+      console.log(customer.password)
+
+      if (customer.email == emailString && customer.password == passwordString) {
+        navigate('/Rent')
+        console.log("SUCCESS")
+      }
+      else {
+
+      }
+
+
+    })
+
+
+
+
+
+
+
+
+
+
+
+
   };
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -52,6 +124,7 @@ export default function SignIn() {
               name="email"
               autoComplete="email"
               autoFocus
+
             />
             <TextField
               margin="normal"

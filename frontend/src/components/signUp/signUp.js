@@ -11,40 +11,68 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { useState } from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Stack from "@mui/material/Stack";
-import dayjs from "dayjs";
+import { Dayjs } from 'dayjs'
+import moment from "moment";
+import { CUSTOMER_API_URL } from "../../constants";
+import axios from "axios";
+import { BrowserRouter, useNavigate } from 'react-router-dom';
+
 
 
 const theme = createTheme();
 
 export default function SignUp() {
+  const [from, setFrom] = useState(Date);
 
-  const [from, setFrom] = React.useState(dayjs("2022-04-07"));
-  const [to, setTo] = React.useState(dayjs("2022-04-07"));
+  const [to, setTo] = useState(Date);
+
+  const [birth, setBirth] = useState("")
+
+  const navigate = useNavigate()
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const date = data.get('dateOfBirth')
+    console.log(birth)
+
+    const APIENTER = axios.post(CUSTOMER_API_URL, {
       firstName: data.get('firstName'),
       lastName: data.get('lastName'),
+      driversLicense: data.get('driverslicense'),
       email: data.get('email'),
+      salt: "N/A",
+      customerPhone: data.get('phonenumber'),
+      dob: birth,
+      goldMember: true,
+      province: data.get('province'),
+      city: data.get('city'),
+      postalCode: data.get('postalcode'),
+      streetNumber: 0,
+      streetName: data.get('streetName'),
+      unitNumber: 1,
       password: data.get('password'),
-      phoneNumber: data.get('phoneNumber'),
-      dateOfBirth: data.get('dateOfBirth')
 
+    })
 
+    navigate('/Login');
 
-    });
   };
+  function getDate(date) {
+    moment(date).format('MM-DD-YYYY')
+    var fdate = new Date(date)
+    var finaldate = fdate.getFullYear() + '-' + (fdate.getMonth() + 1) + '-' + fdate.getDate()
+    setBirth(finaldate)
 
-  // const handleChange = (newValue) => {
-  //   setValue(newValue);
-  // };
+    return finaldate
+  }
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -124,16 +152,17 @@ export default function SignUp() {
                   <Stack spacing={3} >
 
                     <Box display="flex">
-                      <DesktopDatePicker style={{ width: "50%" }}
+                      <DesktopDatePicker dateAdapter={AdapterDayjs} style={{ width: "50%" }}
                         label="Date of birth"
-                        name="dateOfBirth"
                         id="dateOfBirth"
-                        value={from}
+                        value={to}
                         type="dateOfBirth"
-                        minDate={dayjs("2017-01-01")}
-                        onChange={(newValue) => {
-                          setFrom(newValue);
-                        }}
+
+                        onChange={(newValue) => setTo(getDate(newValue))}
+
+
+
+                        inputFormat="MM-DD-YYYY"
                         renderInput={(params) => <TextField {...params} />}
 
                       />
@@ -166,20 +195,20 @@ export default function SignUp() {
                   <TextField style={{ width: "50%", marginLeft: "1rem" }}
                     required
                     fullWidth
-                    name="province"
+                    name="city"
                     label="City"
-                    type="province"
-                    id="province"
-                    autoComplete="Province"
+                    type="city"
+                    id="city"
+                    autoComplete="city"
                   />
                   <TextField style={{ width: "50%", marginLeft: "1rem" }}
                     required
                     fullWidth
-                    name="province"
+                    name="postalcode"
                     label="Postal Code"
-                    type="province"
-                    id="province"
-                    autoComplete="Province"
+                    type="postalcode"
+                    id="postalcode"
+                    autoComplete="postalcode"
                   />
                 </Box>
 
@@ -189,11 +218,11 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  name="streetNumber"
-                  label="Street Number"
+                  name="streetName"
+                  label="Street Name"
                   type="streetNumber"
-                  id="streetNumber"
-                  autoComplete="streetNumber"
+                  id="streetName"
+                  autoComplete="Street Name"
                 />
               </Grid>
             </Grid>
