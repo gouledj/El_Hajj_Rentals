@@ -18,6 +18,10 @@ const Payment = () => {
   const [card, setCard] = useState("");
   const [expiry, setExpiry] = useState("");
   const [security, setSecurity] = useState("");
+  const [errorName, setErrorName] = useState("");
+  const [errorCard, setErrorCard] = useState("");
+  const [errorExpiry, setErrorExpiry] = useState("");
+  const [errorSecurity, setErrorSecurity] = useState("");
 
   const location = useLocation();
   const { type, branch, from, to, car } = location.state;
@@ -31,19 +35,39 @@ const Payment = () => {
   };
 
   const nameChange = (event) => {
-    setName(event.target.value);
+    if(event.target.value.length > 0){
+      setName(event.target.value);
+      setErrorName("");
+    } else {
+      setErrorName("No name has been entered");
+    }
   };
 
   const cardChange = (event) => {
-    setCard(event.target.value);
+    if(event.target.value.replaceAll(' ','').length === 16 && isNumeric(event.target.value.replaceAll(' ',''))){
+      setCard(event.target.value);
+      setErrorCard("");
+    } else {
+      setErrorCard("Credit card number is incorrect or empty");
+    }
   };
 
   const expiryChange = (event) => {
-    setExpiry(event.target.value);
+    if(event.target.value.replaceAll(' ','').length === 4 && isNumeric(event.target.value.replaceAll(' ',''))){
+      setExpiry(event.target.value);
+      setErrorExpiry("");
+    } else {
+      setErrorExpiry("Expiry date number is incorrect or empty");
+    }
   };
 
   const securityChange = (event) => {
-    setSecurity(event.target.value);
+    if(event.target.value.replaceAll(' ','').length === 3 && isNumeric(event.target.value.replaceAll(' ',''))){
+      setSecurity(event.target.value);
+      setErrorSecurity("");
+    } else {
+      setErrorSecurity("CVC is incorrect or empty");
+    }
   };
 
   function isNumeric(value) {
@@ -71,35 +95,43 @@ const Payment = () => {
               <TextField
                 label="Name on card"
                 id="outlined-size-normal"
+                helperText={errorName}
+                error={!!errorName}
+                placeholder="Jane Doe"
                 onChange={nameChange}
               />
-              {!name && <span>Name is required</span>}
             </div>
             <div>
               <TextField
                 label="Card number"
                 id="filled-size-normal"
                 variant="filled"
+                helperText={errorCard}
+                error={!!errorCard}
+                placeholder="1234 1234 1234 1234"
                 onChange={cardChange}
               />
-              {!card && !isNumeric(card) && card.replaceAll(' ','').length !== 16 && <span>Card is required</span>}
             </div>
             <div>
               <TextField
                 label="Expiry date"
                 id="outlined-size-normal"
-                sx={{ m: 1, width: "25ch" }}
+                sx={{ m: 1, width: "20%" }}
+                helperText={errorExpiry}
+                error={!!errorExpiry}
+                placeholder="MMYY"
                 onChange={expiryChange}
               />
-              {!expiry && !Number.isInteger(expiry) && <span>Expiry is required</span>}
               <TextField
                 label="Security code"
                 id="filled-size-normal"
                 sx={{ m: 1, width: "25ch" }}
                 variant="filled"
+                helperText={errorSecurity}
+                error={!!errorSecurity}
+                placeholder="001"
                 onChange={securityChange}
               />
-              {!security && !Number.isInteger(security) && (security.replaceAll(' ','').length !== 3) && <span>CVC is required</span>}
             </div>
           </Box>
         </div>
@@ -141,7 +173,7 @@ const Payment = () => {
                 <Button onClick={handleClose}>Cancel</Button>
                 <Link
               to={"/OrderDetails"}
-              state={{ type: type, branch: branch, from: from, to: to, car:car, card:card }}
+              state={{ name:name, type: type, branch: branch, from: from, to: to, car:car, card:card }}
               style={{ textDecoration: "none" }}
             >
               <Button variant="contained" autoFocus>Confirm</Button>
