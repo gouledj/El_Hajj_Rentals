@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import { Link, useLocation } from "react-router-dom";
 import RentStepper from "../layouts/RentStepper.js";
@@ -11,6 +11,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import axios from 'axios';
+
+import { RENTALS_API_URL, CARS_API_URL } from "../../constants";
 
 const Payment = () => {
   const [open, setOpen] = useState(false);
@@ -22,9 +25,40 @@ const Payment = () => {
   const [errorCard, setErrorCard] = useState("");
   const [errorExpiry, setErrorExpiry] = useState("");
   const [errorSecurity, setErrorSecurity] = useState("");
+  const [carInfo, setCarInfo] = useState(null)
 
   const location = useLocation();
   const { type, branch, from, to, car } = location.state;
+
+  useEffect(() => {
+    axios.get(CARS_API_URL + "" + car.id + "/").then((response) => {
+        setCarInfo(response.data);
+        console.log(response.data)
+    });
+}, [])
+
+console.log(from)
+
+  const newRental = () => {
+    axios.post(RENTALS_API_URL, {
+      dateFrom: from,
+      dateTo: to,
+      dateReturned: to,
+      totalCost: car.cost,
+      licensePlate: carInfo.licensePlate,
+      goldMember: false,
+      customerID: 123,
+      branchID: branch.id,
+      carID: car.id,
+      typeID: type
+  })
+      .then(function (response) {
+          console.log(response);
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -176,7 +210,7 @@ const Payment = () => {
               state={{ name:name, type: type, branch: branch, from: from, to: to, car:car, card:card }}
               style={{ textDecoration: "none" }}
             >
-              <Button variant="contained" autoFocus>Confirm</Button>
+              <Button variant="contained" autoFocus onClick={newRental}>Confirm</Button>
             </Link>
               </DialogActions>
             </Dialog>
