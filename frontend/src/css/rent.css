@@ -35,12 +35,23 @@
     float: left;
 }
 
-.addb {
+.emp-dash-button {
     margin-top: 7px;
+    margin-left: 4px;
     float: right;
 }
+
 
 .steps {
     padding-top: 20px;
     padding-bottom: 20px;
+}
+
+.add-car-box {
+    display: flex;
+    justify-content: center;
+}
+
+.add-car-text-input {
+    width: 40%;
 }

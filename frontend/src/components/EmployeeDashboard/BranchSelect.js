@@ -14,7 +14,7 @@ import "../../css/rent.css";
 
 const BranchSelect = () => {
     const [branches, setBranches] = React.useState([]);
-    const [branchID, setBranchID] = React.useState('');
+    const [branch, setBranch] = React.useState([]);
 
     useEffect(() => {
         axios.get(BRANCH_API_URL).then((response) => {
@@ -23,8 +23,17 @@ const BranchSelect = () => {
     }, [])
 
     const handleChange = (event) => {
-        setBranchID(event.target.value);
+        getBranch(event.target.value);
     };
+
+    const getBranch = (branchID) => {
+        branches.forEach((item) => {
+            if (item.branchID === branchID) {
+                setBranch(item);
+            }
+        })
+
+    }
 
     return (
         <div>
@@ -42,7 +51,7 @@ const BranchSelect = () => {
                             <Select
                                 labelId="branch-select-label"
                                 id="branch-select"
-                                value={branchID}
+                                value={branch.branchID}
                                 label="Branch"
                                 onChange={handleChange}
                             >
@@ -61,14 +70,10 @@ const BranchSelect = () => {
                         <Button
                             variant="contained"
                             component={Link}
-                            to={{
-                                pathname: '/BranchInfo',
-                            }}
+                            to={{ pathname: '/BranchInfo', }}
                             state={{
-                                branchID: branchID,
-                                branches: branches
-                            }}
-                        >
+                                branch: branch
+                            }}>
                             Next
                         </Button>
                     </div>

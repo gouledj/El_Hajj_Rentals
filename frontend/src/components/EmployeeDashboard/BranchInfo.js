@@ -1,6 +1,11 @@
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import { DataGrid } from "@mui/x-data-grid";
 import axios from 'axios';
 
@@ -11,22 +16,31 @@ import { CARS_API_URL } from "../../constants";
 const BranchInfo = () => {
 
     let location = useLocation();
-    const [branch, setBranch] = React.useState([]);
+    const branch = location.state.branch;
+
+    const [open, setOpen] = React.useState(false);
+
     const [cars, setCars] = React.useState([]);
+    const [selectedCar, setSelectedCar] = React.useState([]);
+    const [manufacturer, setManufacturer] = React.useState('');
+    const [model, setModel] = React.useState('');
+
+    const handleClickOpen = () => {
+        if (selectedCar.length !== 0) {
+            setManufacturer(selectedCar.manufacturer);
+            setModel(selectedCar.model);
+            setOpen(true);
+        }
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     useEffect(() => {
-        getBranch();
         getCars();
+    }, [branch.branchID])
 
-    }, [branch]);
-
-    const getBranch = () => {
-        location.state.branches.forEach((item) => {
-            if (item.branchID === location.state.branchID) {
-                setBranch(item);
-            }
-        })
-    }
 
     const getCars = () => {
         let allCars = [];
@@ -40,13 +54,33 @@ const BranchInfo = () => {
         });
     }
 
+    const getSelectedCar = (id) => {
+        let car = cars.find((car) => car.carID === id);
+        setSelectedCar(car);
+    }
+
+    const deleteSelectedCar = () => {
+        if (selectedCar.length !== 0) {
+            axios.delete(CARS_API_URL + selectedCar.carID)
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            cars.splice(cars.indexOf(selectedCar), 1);
+        }
+        setSelectedCar([]);
+        handleClose();
+    }
+
+
     const carColumns = [
         { field: "image", headerName: "Image", width: 150 },
         { field: "manufacturer", headerName: "Manufacturer", width: 150 },
         { field: "model", headerName: "Model", width: 150 },
         { field: "fuelType", headerName: "FuelType", width: 150 },
         { field: "colour", headerName: "Colour", width: 150 },
-        { field: "cost", headerName: "Estimated Cost", width: 150 },
         { field: "available", headerName: "Available", width: 150 },
     ];
 
@@ -58,6 +92,7 @@ const BranchInfo = () => {
             model: cars[i].model,
             fuelType: cars[i].fuelType,
             colour: cars[i].color,
+            available: cars[i].status
         }
         carRows.push(entry);
     }
@@ -73,20 +108,18 @@ const BranchInfo = () => {
 
     const transRows = [];
 
-    const loaded = () => {
-        if (branch !== undefined && cars.length !== 0) {
-            return true;
-        }
-        return false;
+    const handleEvent = (event) => {
+        getSelectedCar(event.row.id);
+
     }
 
-    return loaded() ? (
+    return (
         <div>
+            {console.log(selectedCar.length === 0)}
             <div className="container-avail">
                 <h1>Employee Dashboard</h1>
                 <h3>Branch Information for {branch.unitNumber}-{branch.streetNumber} {branch.streetName}</h3>
                 <h3>{branch.city}, {branch.province}</h3>
-                {console.log(cars)}
             </div>
             <div className="container-avail">
                 <div className="backb">
@@ -99,11 +132,30 @@ const BranchInfo = () => {
                 <div className="container-avail">
                     <Typography>Current cars assigned to branch:</Typography>
                     <div style={{ height: 400, width: "auto" }}>
-                        <DataGrid rows={carRows} columns={carColumns} />
+                        <DataGrid
+                            rows={carRows}
+                            columns={carColumns}
+                            onRowClick={handleEvent}
+                        />
                     </div>
-                    <div className="addb">
-                        <Button variant="contained" component={Link} to={'/AddCar'}>
+                    <div className="emp-dash-button">
+                        <Button
+                            variant="contained"
+                            component={Link}
+                            to={{ pathname: '/AddCar' }}
+                            state={{
+                                branchID: location.state.branchID,
+                                branch: location.state.branch
+                            }}>
                             Add Car
+                        </Button>
+                    </div>
+                    <div className="emp-dash-button">
+                        <Button
+                            variant="contained"
+                            onClick={handleClickOpen}
+                        >
+                            Delete Car
                         </Button>
                     </div>
                 </div>
@@ -114,8 +166,32 @@ const BranchInfo = () => {
                     </div>
                 </div>
             </div>
+
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-delete-car"
+                aria-describedby="alert-delete-car-description"
+            >
+                <DialogTitle id="alert-delete-car">
+                    {"Delete this car?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="lert-delete-car-description">
+                        Are you sure you want to delete this {manufacturer} {model} from
+                        the branch database?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} autoFocus>No</Button>
+                    <Button onClick={deleteSelectedCar} variant="contained">
+                        Delete Car
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
-    ) : (<div>loading...</div>)
+    )
 }
 
 export default BranchInfo;
