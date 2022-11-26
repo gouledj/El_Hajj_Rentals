@@ -10,7 +10,7 @@
     padding: 20px;
 }
 
-.container-date{
+.container-date {
     padding: 20px;
 }
 
@@ -28,14 +28,30 @@
 }
 
 .nextb {
-    float:right;
+    float: right;
 }
 
 .backb {
-    float:left;
+    float: left;
 }
+
+.emp-dash-button {
+    margin-top: 7px;
+    margin-left: 4px;
+    float: right;
+}
+
 
 .steps {
     padding-top: 20px;
     padding-bottom: 20px;
+}
+
+.add-car-box {
+    display: flex;
+    justify-content: center;
+}
+
+.add-car-text-input {
+    width: 40%;
 }

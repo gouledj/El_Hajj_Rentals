@@ -1962,3 +1962,14 @@ node_modules/warning/LICENSE.md
 node_modules/warning/README.md
 node_modules/warning/warning.js
 node_modules
+api/migrations/0003_rental_customerid_alter_car_branchid_and_more.py
+api/migrations/0001_initial.py
+api/migrations/0002_rental_customerid.py
+api/migrations/__init__.py
+api/migrations/0001_initial.py
+api/migrations/0002_rental_customerid.py
+api/migrations/__init__.py
+api/migrations/0001_initial.py
+api/migrations/0002_rental_customerid.py
+api/migrations/0002_rental_customerid.py
+api/migrations/__init__.py

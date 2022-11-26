@@ -11,13 +11,32 @@ import Login from './components/login/Login.js'
 import BranchSelect from './components/EmployeeDashboard/BranchSelect.js'
 import BranchInfo from './components/EmployeeDashboard/BranchInfo.js'
 import SignUp from "./components/signUp/signUp.js"
+import AddCar from "./components/EmployeeDashboard/AddCar.js"
+import Account from "./components/Account/Account.js"
+import { useEffect, useState } from "react";
+
 
 function App() {
+
+
+  //This part here is to force login so that other routes are not usable.  This will be done after milestone2
+
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    () => localStorage.getItem('logged_user') !== null
+  );
+
+  useEffect(() => {
+    localStorage.setItem('logged_user', JSON.stringify(isLoggedIn));
+  }, [isLoggedIn]);
+
+  const logIn = () => setIsLoggedIn(true);
+  const logOut = () => setIsLoggedIn(false);
+
   return (
     <div className="App">
       <NavBar />
       <Routes>
-        <Route exact path="/" element={<Home />} />
+        <Route exact path="/" element={<Login />} />
         <Route exact path="/Home" element={<Home />} />
         <Route exact path="/Rent" element={<Rent />} />
         <Route exact path="/AvailableVehicles" element={<AvailVehicles />} />
@@ -27,7 +46,8 @@ function App() {
         <Route exact path="/BranchSelect" element={<BranchSelect />} />
         <Route exact path="/BranchInfo" element={<BranchInfo />} />
         <Route exact path="/SignUp" element={<SignUp />} />
-
+        <Route exact path="/AddCar" element={<AddCar />} />
+        <Route exact path="/Account" element={<Account />} />
       </Routes>
     </div>
   );

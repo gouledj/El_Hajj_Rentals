@@ -18,14 +18,15 @@ import "../../css/rent.css";
 import RentStepper from '../layouts/RentStepper.js'
 import axios from "axios";
 import moment from "moment";
+import { Dayjs } from 'dayjs'
 
 import { BRANCH_API_URL, CARTYPE_API_URL } from "../../constants";
 
 const Rent = () => {
   const [vehicle, setVehicle] = useState('');
   const [branchSelect, setBranchSelect] = useState(null);
-  const [from, setFrom] = useState(null);
-  const [to, setTo] = useState(null);
+  const [from, setFrom] = useState(Date);
+  const [to, setTo] = useState(Date);
   const [branches, setBranches] = useState([]);
   const [carType, setCarType] = useState([]);
 
@@ -74,16 +75,14 @@ const Rent = () => {
     setBranchSelect(event.row);
   }
 
-  const handleFrom = (event) => {
-    setFrom(moment(event).format("MM/DD/YYYY"));
-  }
- 
-  const handleTo = (event) => {
-    setTo(moment(event).format("MM/DD/YYYY"));
+  function getDate(date){
+    moment(date).format('MM-DD-YYYY')
+    var fdate = new Date(date)
+    var finaldate = fdate.getMonth() + 1 + '-' +  (fdate.getDate())  + '-' +  fdate.getFullYear()
+    console.log(finaldate);
+    return finaldate
   }
 
-  console.log("from " + moment(from).format("MM/DD/YYYY"))
-  console.log("to " + moment(to).format("MM/DD/YYYY"))
   return (
     <div>
       <div className="steps">
@@ -129,15 +128,17 @@ const Rent = () => {
               <DesktopDatePicker
                 label="From"
                 value={from}
-                minDate={new Date()}
-                onChange={handleFrom}
+                minDate={Date()}
+                onChange={(newValue) => setFrom(getDate(newValue))}
+                inputFormat="MM-DD-YYYY"
                 renderInput={(params) => <TextField {...params} />}
               />
               <DesktopDatePicker
                 label="To"
                 value={to}
                 minDate={from}
-                onChange={handleTo}
+                onChange={(newValue) => setTo(getDate(newValue))}
+                inputFormat="MM-DD-YYYY"
                 renderInput={(params) => <TextField {...params} />}
               />
             </Stack>
@@ -148,7 +149,7 @@ const Rent = () => {
           <div className="nextb">
             {vehicle && branchSelect && from && to 
             ? <Link to={"/AvailableVehicles"}
-                    state={{ type:vehicle.typeID, branch:branchSelect, from:from , to:to }}
+                    state={{ type:vehicle.typeID, branch:branchSelect, from:getDate(from) , to:getDate(to) }}
                     style={{'textDecoration':'none'}}>
                 <Button variant="contained" >
                   Next

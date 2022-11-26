@@ -14,7 +14,7 @@ class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = ('customerID', 'firstName', 'lastName', 'driversLicense', 'email', 'salt', 'customerPhone', 'dob',
-                  'goldMember', 'province', 'city', 'postalCode', 'streetNumber', 'streetName', 'unitNumber')
+                  'goldMember', 'province', 'city', 'postalCode', 'streetNumber', 'streetName', 'unitNumber', 'password')
 
 
 class EmployeeSerializer(serializers.ModelSerializer):

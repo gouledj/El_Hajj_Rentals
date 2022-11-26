@@ -8,15 +8,12 @@ import RentStepper from '../layouts/RentStepper.js'
 import axios from "axios";
 import moment from "moment";
 
-import { CARS_API_URL, CARTYPE_API_URL } from "../../constants";
+import { CARS_API_URL, CARTYPE_API_URL, RENTALS_API_URL } from "../../constants";
 
 function calculateDays(from, to){
   
-  const difference = Math.abs(to - from);
-  console.log("from " + moment(from).format("MM/DD/YYYY"))
-  console.log("to " + moment(to).format("MM/DD/YYYY"))
+  const difference = Math.abs(new Date(to.replace('-','/')) - new Date(from.replace('-','/')));
   const totalDays = Math.ceil(difference / (1000 * 60 * 60 * 24));
-  //console.log(totalDays)
   return totalDays;
 };
 
@@ -44,6 +41,7 @@ const AvailVehicles = () => {
   const [cars, setCars] = useState([]);
   const [carType, setCarType] = useState(null);
   const [carSelect, setCarSelect] = useState(null);
+  const [rentals, setRentals] = useState([]);
 
   const location = useLocation()
   const { type, branch, from, to } = location.state;
@@ -65,31 +63,68 @@ const AvailVehicles = () => {
         }
       })
       .catch(console.log("error or loading"))
+
+    axios.get(RENTALS_API_URL)
+    .then((response) => {
+      setRentals(response.data);
+    })
+    .catch(console.log("error or loading"))
+
   }, []);
 
   const cellClick = (event) => {
     setCarSelect(event.row);
   }
 
+  function flipDate(string){
+    //Function used to convert Django dates (YYYY-MM-DD) to MM-DD-YYYY
+    const [month, day, year] = string.split('-');
+    const flipped = [year, month, day].join('-');
+
+    return flipped
+  }
+
   const available = []
+  var notAvailable = false;
   for(let item of cars){
-    if(item.typeID == type && item.branchID == branch.id){
-      available.push(item);
+    //From all the cars, filter out only the ones that match the carType and branchID
+    if(item.typeID === type && item.branchID === branch.id){
+      //Check existing rentals for conflicts
+      for(let i=0; i < rentals.length; i++){
+        //If a rental exists with the same car
+        if(item.carID === rentals[i].carID){
+          //Compare the days you want to rent with the current rental to check for conflicts
+          if(from <= flipDate(rentals[i].dateTo) || to <= flipDate(rentals[i].dateFrom)){
+            //Car is already rented out during this period, not available
+            console.log("Not available");
+            notAvailable = true;
+          }
+        }
+      }
+      //If we have looped through all rentals and determined its not available, break out and dont add. Otherwise,
+      //the car is available and has no active rentals involving it, in this case show as available.
+      if(notAvailable === true){
+        break;
+      } else if(!available.includes(item)){
+        available.push(item);
+      }
     }
   }
   
   const rows = [];
-  for(let i = 0; i < available.length; i++){
-    const entry = {
-      id: i+1,
-      image: "insert picture here",
-      manufacturer: available[i].manufacturer,
-      model: available[i].model,
-      fueltype: available[i].fuelType,
-      colour: available[i].color,
-      cost: calculateCost(calculateDays(from, to), carType)
+  if (carType){
+    for(let i = 0; i < available.length; i++){
+      const entry = {
+        id: i+1,
+        image: "insert picture here",
+        manufacturer: available[i].manufacturer,
+        model: available[i].model,
+        fueltype: available[i].fuelType,
+        colour: available[i].color,
+        cost: calculateCost(calculateDays(from, to), carType)
+      }
+      rows.push(entry);
     }
-    rows.push(entry);
   }
 
   const columns = [
@@ -100,6 +135,8 @@ const AvailVehicles = () => {
     { field: "colour", headerName: "Colour", width: 150 },
     { field: "cost", headerName: "Estimated Cost", width: 150 },
   ];
+
+  console.log(carSelect)
 
   return (
     <div>
@@ -125,9 +162,9 @@ const AvailVehicles = () => {
             ? <Link to={"/Payments"}
                     state={{ type:type,
                               branch:branch,
-                              from:from ,
-                              to:to,
-                              car:carSelect }}
+                              from: flipDate(from) ,
+                              to:flipDate(to),
+                              car:carSelect}}
                     style={{'textDecoration':'none'}}>
                 <Button variant="contained" >
                   Next

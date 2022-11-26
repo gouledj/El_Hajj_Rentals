@@ -11,7 +11,7 @@ class Rental(models.Model):
     totalCost = models.FloatField()
     licensePlate = models.CharField(max_length=100)
     goldMember = models.BooleanField()
-    customerID = models.IntegerField
+    customerID = models.IntegerField()
     branchID = models.IntegerField()
     carID = models.IntegerField()
     typeID = models.IntegerField()
@@ -67,7 +67,6 @@ class Car(models.Model):
     mileage = models.IntegerField()
     typeID = models.IntegerField()
     branchID = models.IntegerField()
-
 
 
 class CarType(models.Model):
