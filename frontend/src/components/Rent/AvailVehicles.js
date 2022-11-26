@@ -7,6 +7,7 @@ import "../../css/rent.css";
 import RentStepper from '../layouts/RentStepper.js'
 import axios from "axios";
 import moment from "moment";
+import { VehicleImages } from "./VehicleImages.js"
 
 import { CARS_API_URL, CARTYPE_API_URL, RENTALS_API_URL } from "../../constants";
 
@@ -84,12 +85,6 @@ const AvailVehicles = () => {
     return flipped
   }
 
-  function flipDate2(string) {
-    const [year, month, day] = string.split('-');
-    const flipped = [month, day, year].join('-');
-    return flipped;
-  }
-
   const available = []
   for(let item of cars){
     //From all the cars, filter out only the ones that match the carType and branchID
@@ -120,7 +115,7 @@ const AvailVehicles = () => {
     for(let i = 0; i < available.length; i++){
       const entry = {
         id: i+1,
-        image: "insert picture here",
+        image: VehicleImages(carType.typeID),
         manufacturer: available[i].manufacturer,
         model: available[i].model,
         fueltype: available[i].fuelType,
@@ -132,7 +127,12 @@ const AvailVehicles = () => {
   }
 
   const columns = [
-    { field: "image", headerName: "Image", width: 150 },
+    { field: "image",
+      headerName: "Image",
+      width: 300,
+      renderCell: (params) =>
+        <img src={params.value}
+        style={{"width":"200px", "marginLeft":"30px"}}/> },
     { field: "manufacturer", headerName: "Manufacturer", width: 150 },
     { field: "model", headerName: "Model", width: 150 },
     { field: "fueltype", headerName: "FuelType", width: 150 },
@@ -149,7 +149,11 @@ const AvailVehicles = () => {
         <div className="container-avail">
           <Typography>These are our current available vehicles:</Typography>
           <div style={{ height: 400, width: "auto" }}>
-          <DataGrid rows={rows} columns={columns} onCellClick={cellClick}/>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            getRowHeight={() => 'auto'}
+            onCellClick={cellClick}/>
           </div>
         </div>
 

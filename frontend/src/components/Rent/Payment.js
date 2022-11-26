@@ -37,8 +37,6 @@ const Payment = () => {
     });
 }, [])
 
-console.log(from)
-
   const newRental = () => {
     axios.post(RENTALS_API_URL, {
       dateFrom: from,
