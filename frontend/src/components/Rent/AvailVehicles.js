@@ -84,17 +84,23 @@ const AvailVehicles = () => {
     return flipped
   }
 
+  function flipDate2(string) {
+    const [year, month, day] = string.split('-');
+    const flipped = [month, day, year].join('-');
+    return flipped;
+  }
+
   const available = []
-  var notAvailable = false;
   for(let item of cars){
     //From all the cars, filter out only the ones that match the carType and branchID
     if(item.typeID === type && item.branchID === branch.id){
       //Check existing rentals for conflicts
+      var notAvailable = false;
       for(let i=0; i < rentals.length; i++){
         //If a rental exists with the same car
         if(item.carID === rentals[i].carID){
           //Compare the days you want to rent with the current rental to check for conflicts
-          if(from <= flipDate(rentals[i].dateTo) || to <= flipDate(rentals[i].dateFrom)){
+          if(((flipDate(from) <= rentals[i].dateTo) && (flipDate(to) >= rentals[i].dateFrom))){
             //Car is already rented out during this period, not available
             console.log("Not available");
             notAvailable = true;
@@ -103,9 +109,7 @@ const AvailVehicles = () => {
       }
       //If we have looped through all rentals and determined its not available, break out and dont add. Otherwise,
       //the car is available and has no active rentals involving it, in this case show as available.
-      if(notAvailable === true){
-        break;
-      } else if(!available.includes(item)){
+      if(notAvailable === false && !available.includes(item)){
         available.push(item);
       }
     }
@@ -135,8 +139,6 @@ const AvailVehicles = () => {
     { field: "colour", headerName: "Colour", width: 150 },
     { field: "cost", headerName: "Estimated Cost", width: 150 },
   ];
-
-  console.log(carSelect)
 
   return (
     <div>
