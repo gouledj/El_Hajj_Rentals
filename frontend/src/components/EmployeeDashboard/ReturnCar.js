@@ -5,7 +5,6 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
 import { RENTALS_API_URL } from "../../constants";
-import DataServices from "../DataServices";
 
 const ReturnCar = () => {
   const [licensePlate, setLicensePlate] = React.useState("");
