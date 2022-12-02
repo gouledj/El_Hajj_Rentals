@@ -15,18 +15,7 @@ import Account from "./components/Account/Account.js";
 import AddBranch from "./components/EmployeeDashboard/AddBranch.js";
 import EmployeeDashboard from "./components/EmployeeDashboard/EmployeeDashboard.js";
 import ReturnCar from "./components/EmployeeDashboard/ReturnCar.js";
-import Rent from './components/Rent/Rent.js'
-import AvailVehicles from './components/Rent/AvailVehicles.js'
-import Payments from './components/Rent/Payment.js'
-import OrderDetails from './components/Rent/OrderDetails.js'
-import Home from './components/Home.js'
-import Login from './components/login/Login.js'
-import BranchSelect from './components/EmployeeDashboard/BranchSelect.js'
-import BranchInfo from './components/EmployeeDashboard/BranchInfo.js'
-import SignUp from "./components/signUp/signUp.js"
 import CarView from "./components/EmployeeDashboard/CarView.js"
-import Account from "./components/Account/Account.js"
-import AddBranch from "./components/EmployeeDashboard/AddBranch.js"
 import { useEffect, useState } from "react";
 
 
