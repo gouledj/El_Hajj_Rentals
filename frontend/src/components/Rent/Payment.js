@@ -11,11 +11,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import axios from 'axios';
+import axios from "axios";
 
 import { RENTALS_API_URL, CARS_API_URL } from "../../constants";
 
 const Payment = () => {
+  // note need to get customer ID into this page
+  // card name could put down the cuustomer name
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [card, setCard] = useState("");
@@ -25,38 +27,39 @@ const Payment = () => {
   const [errorCard, setErrorCard] = useState("");
   const [errorExpiry, setErrorExpiry] = useState("");
   const [errorSecurity, setErrorSecurity] = useState("");
-  const [carInfo, setCarInfo] = useState(null)
+  const [carInfo, setCarInfo] = useState(null);
 
   const location = useLocation();
   const { type, branch, from, to, car } = location.state;
 
   useEffect(() => {
     axios.get(CARS_API_URL + "" + car.id + "/").then((response) => {
-        setCarInfo(response.data);
-        console.log(response.data)
+      setCarInfo(response.data);
+      console.log(response.data);
     });
-}, [])
+  }, []);
 
   const newRental = () => {
-    axios.post(RENTALS_API_URL, {
-      dateFrom: from,
-      dateTo: to,
-      dateReturned: to,
-      totalCost: car.cost,
-      licensePlate: carInfo.licensePlate,
-      goldMember: false,
-      customerID: 123,
-      branchID: branch.id,
-      carID: car.id,
-      typeID: type
-  })
+    axios
+      .post(RENTALS_API_URL, {
+        dateFrom: from,
+        dateTo: to,
+        dateReturned: to,
+        totalCost: car.cost,
+        licensePlate: carInfo.licensePlate,
+        goldMember: false,
+        customerID: 123,
+        branchID: branch.id,
+        carID: car.id,
+        typeID: type,
+      })
       .then(function (response) {
-          console.log(response);
+        console.log(response);
       })
       .catch(function (error) {
-          console.log(error);
+        console.log(error);
       });
-  }
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -67,7 +70,7 @@ const Payment = () => {
   };
 
   const nameChange = (event) => {
-    if(event.target.value.length > 0){
+    if (event.target.value.length > 0) {
       setName(event.target.value);
       setErrorName("");
     } else {
@@ -76,7 +79,10 @@ const Payment = () => {
   };
 
   const cardChange = (event) => {
-    if(event.target.value.replaceAll(' ','').length === 16 && isNumeric(event.target.value.replaceAll(' ',''))){
+    if (
+      event.target.value.replaceAll(" ", "").length === 16 &&
+      isNumeric(event.target.value.replaceAll(" ", ""))
+    ) {
       setCard(event.target.value);
       setErrorCard("");
     } else {
@@ -85,7 +91,10 @@ const Payment = () => {
   };
 
   const expiryChange = (event) => {
-    if(event.target.value.replaceAll(' ','').length === 4 && isNumeric(event.target.value.replaceAll(' ',''))){
+    if (
+      event.target.value.replaceAll(" ", "").length === 4 &&
+      isNumeric(event.target.value.replaceAll(" ", ""))
+    ) {
       setExpiry(event.target.value);
       setErrorExpiry("");
     } else {
@@ -94,7 +103,10 @@ const Payment = () => {
   };
 
   const securityChange = (event) => {
-    if(event.target.value.replaceAll(' ','').length === 3 && isNumeric(event.target.value.replaceAll(' ',''))){
+    if (
+      event.target.value.replaceAll(" ", "").length === 3 &&
+      isNumeric(event.target.value.replaceAll(" ", ""))
+    ) {
       setSecurity(event.target.value);
       setErrorSecurity("");
     } else {
@@ -104,7 +116,7 @@ const Payment = () => {
 
   function isNumeric(value) {
     return /^\d+$/.test(value);
-}
+  }
 
   return (
     <div>
@@ -179,14 +191,15 @@ const Payment = () => {
             </Link>
           </div>
           <div className="nextb">
-            {name && card && expiry && security
-              ? <Button variant="contained" onClick={handleClickOpen}>
-              Finish
+            {name && card && expiry && security ? (
+              <Button variant="contained" onClick={handleClickOpen}>
+                Finish
               </Button>
-              :  <Button variant="contained" disabled={true}>
-              Finish
+            ) : (
+              <Button variant="contained" disabled={true}>
+                Finish
               </Button>
-            }
+            )}
             <Dialog
               open={open}
               onClose={handleClose}
@@ -204,12 +217,22 @@ const Payment = () => {
               <DialogActions>
                 <Button onClick={handleClose}>Cancel</Button>
                 <Link
-              to={"/OrderDetails"}
-              state={{ name:name, type: type, branch: branch, from: from, to: to, car:car, card:card }}
-              style={{ textDecoration: "none" }}
-            >
-              <Button variant="contained" autoFocus onClick={newRental}>Confirm</Button>
-            </Link>
+                  to={"/OrderDetails"}
+                  state={{
+                    name: name,
+                    type: type,
+                    branch: branch,
+                    from: from,
+                    to: to,
+                    car: car,
+                    card: card,
+                  }}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Button variant="contained" autoFocus onClick={newRental}>
+                    Confirm
+                  </Button>
+                </Link>
               </DialogActions>
             </Dialog>
           </div>
