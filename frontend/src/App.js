@@ -2,6 +2,19 @@ import NavBar from './components/layouts/NavBar.js'
 import './App.css';
 import React from "react";
 import { Routes, Route } from "react-router";
+import Rent from "./components/Rent/Rent.js";
+import AvailVehicles from "./components/Rent/AvailVehicles.js";
+import Payments from "./components/Rent/Payment.js";
+import OrderDetails from "./components/Rent/OrderDetails.js";
+import Home from "./components/Home.js";
+import Login from "./components/login/Login.js";
+import BranchSelect from "./components/EmployeeDashboard/BranchSelect.js";
+import BranchInfo from "./components/EmployeeDashboard/BranchInfo.js";
+import SignUp from "./components/signUp/signUp.js";
+import Account from "./components/Account/Account.js";
+import AddBranch from "./components/EmployeeDashboard/AddBranch.js";
+import EmployeeDashboard from "./components/EmployeeDashboard/EmployeeDashboard.js";
+import ReturnCar from "./components/EmployeeDashboard/ReturnCar.js";
 import Rent from './components/Rent/Rent.js'
 import AvailVehicles from './components/Rent/AvailVehicles.js'
 import Payments from './components/Rent/Payment.js'
@@ -11,7 +24,7 @@ import Login from './components/login/Login.js'
 import BranchSelect from './components/EmployeeDashboard/BranchSelect.js'
 import BranchInfo from './components/EmployeeDashboard/BranchInfo.js'
 import SignUp from "./components/signUp/signUp.js"
-import AddCar from "./components/EmployeeDashboard/AddCar.js"
+import CarView from "./components/EmployeeDashboard/CarView.js"
 import Account from "./components/Account/Account.js"
 import AddBranch from "./components/EmployeeDashboard/AddBranch.js"
 import { useEffect, useState } from "react";
@@ -47,7 +60,7 @@ function App() {
         <Route exact path="/BranchSelect" element={<BranchSelect />} />
         <Route exact path="/BranchInfo" element={<BranchInfo />} />
         <Route exact path="/SignUp" element={<SignUp />} />
-        <Route exact path="/AddCar" element={<AddCar />} />
+        <Route exact path="/CarView" element={<CarView />} />
         <Route exact path="/Account" element={<Account />} />
         <Route exact path="/AddBranch" element={<AddBranch />} />
       </Routes>

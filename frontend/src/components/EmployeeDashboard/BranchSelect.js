@@ -69,6 +69,7 @@ const BranchSelect = () => {
                     <div className="backb">
                         <Button
                             variant="contained"
+
                             component={Link}
                             to={{ pathname: '/AddBranch', }}
                             state={{
@@ -81,6 +82,7 @@ const BranchSelect = () => {
                     <div className="nextb">
                         <Button
                             variant="contained"
+                            disabled={branch.branchID === undefined}
                             component={Link}
                             to={{ pathname: '/BranchInfo', }}
                             state={{
