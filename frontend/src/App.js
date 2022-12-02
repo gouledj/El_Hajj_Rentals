@@ -1,5 +1,5 @@
-import NavBar from "./components/layouts/NavBar.js";
-import "./App.css";
+import NavBar from './components/layouts/NavBar.js'
+import './App.css';
 import React from "react";
 import { Routes, Route } from "react-router";
 import Rent from './components/Rent/Rent.js'
@@ -16,15 +16,18 @@ import Account from "./components/Account/Account.js"
 import AddBranch from "./components/EmployeeDashboard/AddBranch.js"
 import { useEffect, useState } from "react";
 
+
 function App() {
+
+
   //This part here is to force login so that other routes are not usable.  This will be done after milestone2
 
   const [isLoggedIn, setIsLoggedIn] = useState(
-    () => localStorage.getItem("logged_user") !== null
+    () => localStorage.getItem('logged_user') !== null
   );
 
   useEffect(() => {
-    localStorage.setItem("logged_user", JSON.stringify(isLoggedIn));
+    localStorage.setItem('logged_user', JSON.stringify(isLoggedIn));
   }, [isLoggedIn]);
 
   const logIn = () => setIsLoggedIn(true);
@@ -41,12 +44,6 @@ function App() {
         <Route exact path="/Payments" element={<Payments />} />
         <Route exact path="/Login" element={<Login />} />
         <Route exact path="/OrderDetails" element={<OrderDetails />} />
-        <Route
-          exact
-          path="/EmployeeDashboard"
-          element={<EmployeeDashboard />}
-        />
-        <Route exact path="/ReturnCar" element={<ReturnCar />} />
         <Route exact path="/BranchSelect" element={<BranchSelect />} />
         <Route exact path="/BranchInfo" element={<BranchInfo />} />
         <Route exact path="/SignUp" element={<SignUp />} />
