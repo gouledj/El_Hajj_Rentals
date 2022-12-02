@@ -61,55 +61,55 @@ function AddCar() {
                     </Button>
                 </div>
             </div>
-            <div className="add-car-box">
-                <Box >
+            <div className="emp-add-box">
+                <Box className="entry-box">
                     <div >
-                        <TextField className="add-car-text-input" required
+                        <TextField className="emp-add-text-input" required
                             id="manufacturer" label="Manufacturer"
                             variant="outlined" value={manufacturer}
-                            sx={{ m: 1 }}
+                            sx={{ m: 1, width: '47%' }}
                             onChange={e => setManufacturer(e.target.value)}
                         />
-                        <TextField className="add-car-text-input" required
+                        <TextField className="emp-add-text-input" required
                             id="model" label="Model"
                             variant="outlined" value={model}
-                            sx={{ m: 1 }}
+                            sx={{ m: 1, width: '47%' }}
                             onChange={e => setModel(e.target.value)}
                         />
                     </div>
                     <div>
-                        <TextField className="add-car-text-input" required
+                        <TextField className="emp-add-text-input" required
                             id="fuel-type" label="Fuel Type"
                             variant="outlined" value={fuelType}
-                            sx={{ m: 1 }}
+                            sx={{ m: 1, width: '47%' }}
                             onChange={e => setFuelType(e.target.value)}
                         />
-                        <TextField className="add-car-text-input" required
+                        <TextField className="emp-add-text-input" required
                             id="color" label="Color"
                             variant="outlined" value={color}
-                            sx={{ m: 1 }}
+                            sx={{ m: 1, width: '47%' }}
                             onChange={e => setColor(e.target.value)}
                         />
                     </div>
                     <div>
-                        <TextField className="add-car-text-input" required
+                        <TextField className="emp-add-text-input" required
                             id="license-plate-number" label="License Plate Number"
                             variant="outlined" value={licensePlate}
-                            sx={{ m: 1 }}
+                            sx={{ m: 1, width: '47%' }}
                             onChange={e => setLicensePlate(e.target.value)}
                         />
-                        <TextField className="add-car-text-input" required
+                        <TextField className="emp-add-text-input" required
                             id="mileage" label="Mileage"
                             variant="outlined" value={mileage}
-                            sx={{ m: 1 }}
+                            sx={{ m: 1, width: '47%' }}
                             onChange={e => setMileage(e.target.value)}
                         />
                     </div>
                     <div>
-                        <Select className="add-car-text-input" required
+                        <Select className="emp-add-text-input" required
                             id="car-type" label="Car Type"
                             variant="outlined" value={carType}
-                            sx={{ m: 1 }}
+                            sx={{ m: 1, width: '47%' }}
                             onChange={e => setCarType(e.target.value)}>
                             {carTypes.map((type) => (
                                 <MenuItem key={type.typeID} value={type.typeID}>
@@ -118,23 +118,25 @@ function AddCar() {
                             ))}
                         </Select>
                     </div>
-                    <div className='emp-dash-button'>
-                        <Button
-                            variant="contained"
-                            onClick={handleClick}
-                            component={Link}
-                            to={{ pathname: '/BranchInfo', }}
-                            state={{
-                                branchID: location.state.branchID,
-                                branch: location.state.branch
-                            }}
-                        >
-                            Add Car
-                        </Button>
-                    </div>
+
                 </Box >
 
             </div >
+            <div className='emp-dash-button'>
+                <Button
+                    sx={{ float: 'right' }}
+                    variant="contained"
+                    onClick={handleClick}
+                    component={Link}
+                    to={{ pathname: '/BranchInfo', }}
+                    state={{
+                        branchID: location.state.branchID,
+                        branch: location.state.branch
+                    }}
+                >
+                    Add Car
+                </Button>
+            </div>
         </div >
 
     )
