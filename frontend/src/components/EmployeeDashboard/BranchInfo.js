@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
 import Dialog from '@mui/material/Dialog';
@@ -110,18 +110,17 @@ const BranchInfo = () => {
 
     const handleEvent = (event) => {
         getSelectedCar(event.row.id);
-
     }
+
 
     return (
         <div>
-            {console.log(selectedCar.length === 0)}
             <div className="container-avail">
                 <h1>Employee Dashboard</h1>
                 <h3>Branch Information for {branch.unitNumber}-{branch.streetNumber} {branch.streetName}</h3>
                 <h3>{branch.city}, {branch.province}</h3>
             </div>
-            <div className="container-avail">
+            <div className="container-buttons">
                 <div className="backb">
                     <Button variant="contained" component={Link} to={'/BranchSelect'}>
                         Back
@@ -129,7 +128,7 @@ const BranchInfo = () => {
                 </div>
             </div>
             <div className="wrapper">
-                <div className="container-avail">
+                <div className="container-buttons">
                     <Typography>Current cars assigned to branch:</Typography>
                     <div style={{ height: 400, width: "auto" }}>
                         <DataGrid
@@ -140,24 +139,40 @@ const BranchInfo = () => {
                     </div>
                     <div className="emp-dash-button">
                         <Button
+                            sx={{ float: 'right' }}
+                            id="add"
                             variant="contained"
                             component={Link}
-                            to={{ pathname: '/AddCar' }}
+                            to={{ pathname: '/CarView' }}
                             state={{
-                                branchID: location.state.branchID,
-                                branch: location.state.branch
+                                branch: location.state.branch,
                             }}>
                             Add Car
                         </Button>
-                    </div>
-                    <div className="emp-dash-button">
                         <Button
+                            sx={{ float: 'right', mr: 1 }}
+                            disabled={selectedCar.length === 0}
+                            id="edit"
+                            variant="contained"
+                            component={Link}
+                            to={{ pathname: '/CarView' }}
+                            state={{
+                                branch: location.state.branch,
+                                car: selectedCar,
+                            }}>
+                            Edit Car Details
+                        </Button>
+                        <Button
+                            sx={{ float: 'right', mr: 1 }}
+                            disabled={selectedCar.length === 0}
+                            id="delete"
                             variant="contained"
                             onClick={handleClickOpen}
                         >
                             Delete Car
                         </Button>
                     </div>
+
                 </div>
                 <div className="container-avail">
                     <Typography>Recent transactions:</Typography>
@@ -178,7 +193,7 @@ const BranchInfo = () => {
                     {"Delete this car?"}
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="lert-delete-car-description">
+                    <DialogContentText id="alert-delete-car-description">
                         Are you sure you want to delete this {manufacturer} {model} from
                         the branch database?
                     </DialogContentText>

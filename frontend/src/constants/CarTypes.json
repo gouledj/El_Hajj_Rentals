@@ -1,0 +1,139 @@
+{
+    "carTypes":[
+        {
+            "typeID": 1,
+            "description": "Economy Car",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        },
+        {
+            "typeID": 2,
+            "description": "Compact Car",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        },
+        {
+            "typeID": 3,
+            "description": "Mid-Size Car",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        },
+        {
+            "typeID": 4,
+            "description": "Full-Size Car",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        },
+        {
+            "typeID": 5,
+            "description": "Luxury Car",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        },
+        {
+            "typeID": 6,
+            "description": "Convertible Car",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        },
+        {
+            "typeID": 7,
+            "description": "Compact SUV",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        },
+        {
+            "typeID": 8,
+            "description": "Mid-Size SUV",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        },
+        {
+            "typeID": 9,
+            "description": "Full-Size SUV",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        },
+        {
+            "typeID": 10,
+            "description": "Luxury SUV",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        },
+        {
+            "typeID": 11,
+            "description": "Minivan",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        },
+        {
+            "typeID": 12,
+            "description": "Passenger Van",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        },
+        {
+            "typeID": 13,
+            "description": "Pickup Truck",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        },
+        {
+            "typeID": 14,
+            "description": "Hybrid Car",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        },
+        {
+            "typeID": 15,
+            "description": "Electric Car",
+            "dailyCost": 100.0,
+            "weeklyCost": 500.0,
+            "monthlyCost": 3000.0,
+            "lateFee": 500.0,
+            "changeBranchFee": 500.0
+        }
+    ]
+}

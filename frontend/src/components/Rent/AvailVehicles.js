@@ -7,6 +7,7 @@ import "../../css/rent.css";
 import RentStepper from '../layouts/RentStepper.js'
 import axios from "axios";
 import moment from "moment";
+import { VehicleImages } from "./VehicleImages.js"
 
 import { CARS_API_URL, CARTYPE_API_URL, RENTALS_API_URL } from "../../constants";
 
@@ -85,16 +86,16 @@ const AvailVehicles = () => {
   }
 
   const available = []
-  var notAvailable = false;
   for(let item of cars){
     //From all the cars, filter out only the ones that match the carType and branchID
     if(item.typeID === type && item.branchID === branch.id){
       //Check existing rentals for conflicts
+      var notAvailable = false;
       for(let i=0; i < rentals.length; i++){
         //If a rental exists with the same car
         if(item.carID === rentals[i].carID){
           //Compare the days you want to rent with the current rental to check for conflicts
-          if(from <= flipDate(rentals[i].dateTo) || to <= flipDate(rentals[i].dateFrom)){
+          if(((flipDate(from) <= rentals[i].dateTo) && (flipDate(to) >= rentals[i].dateFrom))){
             //Car is already rented out during this period, not available
             console.log("Not available");
             notAvailable = true;
@@ -103,9 +104,7 @@ const AvailVehicles = () => {
       }
       //If we have looped through all rentals and determined its not available, break out and dont add. Otherwise,
       //the car is available and has no active rentals involving it, in this case show as available.
-      if(notAvailable === true){
-        break;
-      } else if(!available.includes(item)){
+      if(notAvailable === false && !available.includes(item)){
         available.push(item);
       }
     }
@@ -116,7 +115,7 @@ const AvailVehicles = () => {
     for(let i = 0; i < available.length; i++){
       const entry = {
         id: i+1,
-        image: "insert picture here",
+        image: VehicleImages(carType.typeID),
         manufacturer: available[i].manufacturer,
         model: available[i].model,
         fueltype: available[i].fuelType,
@@ -128,15 +127,18 @@ const AvailVehicles = () => {
   }
 
   const columns = [
-    { field: "image", headerName: "Image", width: 150 },
+    { field: "image",
+      headerName: "Image",
+      width: 300,
+      renderCell: (params) =>
+        <img src={params.value}
+        style={{"width":"200px", "marginLeft":"30px"}}/> },
     { field: "manufacturer", headerName: "Manufacturer", width: 150 },
     { field: "model", headerName: "Model", width: 150 },
     { field: "fueltype", headerName: "FuelType", width: 150 },
     { field: "colour", headerName: "Colour", width: 150 },
     { field: "cost", headerName: "Estimated Cost", width: 150 },
   ];
-
-  console.log(carSelect)
 
   return (
     <div>
@@ -147,7 +149,11 @@ const AvailVehicles = () => {
         <div className="container-avail">
           <Typography>These are our current available vehicles:</Typography>
           <div style={{ height: 400, width: "auto" }}>
-          <DataGrid rows={rows} columns={columns} onCellClick={cellClick}/>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            getRowHeight={() => 'auto'}
+            onCellClick={cellClick}/>
           </div>
         </div>
 
