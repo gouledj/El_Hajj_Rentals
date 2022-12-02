@@ -66,6 +66,18 @@ const BranchSelect = () => {
                 </section>
 
                 <div className="container-buttons">
+                    <div className="backb">
+                        <Button
+                            variant="contained"
+                            component={Link}
+                            to={{ pathname: '/AddBranch', }}
+                            state={{
+                                branch: branch
+                            }}>
+                            Add New Branch
+                        </Button>
+                    </div>
+
                     <div className="nextb">
                         <Button
                             variant="contained"

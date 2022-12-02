@@ -38,7 +38,7 @@
 .emp-dash-button {
     margin-top: 7px;
     margin-left: 4px;
-    float: right;
+    margin-right: 4px;
 }
 
 
@@ -47,11 +47,17 @@
     padding-bottom: 20px;
 }
 
-.add-car-box {
+.emp-add-box {
     display: flex;
     justify-content: center;
+    padding-top: 20px;
 }
 
-.add-car-text-input {
-    width: 40%;
+.entry-box {
+    width: 100%;
+    padding-right: 100px;
+}
+
+.emp-add-text-input {
+    width: 100%;
 }
