@@ -8,10 +8,14 @@ import Payments from './components/Rent/Payment.js'
 import OrderDetails from './components/Rent/OrderDetails.js'
 import Home from './components/Home.js'
 import Login from './components/login/Login.js'
+import EmployeeDashboard from './components/EmployeeDashboard/EmployeeDashboard.js'
+import ReturnCar from './components/EmployeeDashboard/ReturnCar.js'
+import CarView from './components/EmployeeDashboard/CarView.js'
+import AddBranch from './components/EmployeeDashboard/AddBranch.js'
 import BranchSelect from './components/EmployeeDashboard/BranchSelect.js'
 import BranchInfo from './components/EmployeeDashboard/BranchInfo.js'
 import SignUp from "./components/signUp/signUp.js"
-import AddCar from "./components/EmployeeDashboard/AddCar.js"
+// import AddCar from "./components/EmployeeDashboard/AddCar.js"
 import Account from "./components/Account/Account.js"
 import { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
@@ -168,7 +172,6 @@ function App() {
         <Route exact path="/BranchSelect" element={loginStatus ? <BranchSelect /> : LoginPage()} />
         <Route exact path="/BranchInfo" element={loginStatus ? <BranchInfo /> : LoginPage()} />
         <Route exact path="/SignUp" element={loginStatus ? <SignUp /> : LoginPage()} />
-        <Route exact path="/AddCar" element={loginStatus ? <AddCar /> : LoginPage()} />
         <Route exact path="/Account" element={loginStatus ? <Account /> : LoginPage()} />
         <Route exact path="/EmployeeDashBoard" element={loginStatus ? <EmployeeDashboard /> : LoginPage()} />
         <Route exact path="/ReturnCar" element={loginStatus ? <ReturnCar /> : LoginPage()} />
@@ -176,7 +179,7 @@ function App() {
         <Route exact path="/AddBranch" element={loginStatus ? <AddBranch /> : LoginPage()} />
       </Routes>
 
-   </div>
+    </div>
   );
 }
 
