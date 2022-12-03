@@ -1,21 +1,18 @@
-import NavBar from "./components/layouts/NavBar.js";
-import "./App.css";
+import NavBar from './components/layouts/NavBar.js'
+import './App.css';
 import React from "react";
 import { Routes, Route } from "react-router";
-import Rent from "./components/Rent/Rent.js";
-import AvailVehicles from "./components/Rent/AvailVehicles.js";
-import Payments from "./components/Rent/Payment.js";
-import OrderDetails from "./components/Rent/OrderDetails.js";
-import Home from "./components/Home.js";
-import Login from "./components/login/Login.js";
-import BranchSelect from "./components/EmployeeDashboard/BranchSelect.js";
-import BranchInfo from "./components/EmployeeDashboard/BranchInfo.js";
-import SignUp from "./components/signUp/signUp.js";
-import Account from "./components/Account/Account.js";
-import AddBranch from "./components/EmployeeDashboard/AddBranch.js";
-import EmployeeDashboard from "./components/EmployeeDashboard/EmployeeDashboard.js";
-import ReturnCar from "./components/EmployeeDashboard/ReturnCar.js";
-import CarView from "./components/EmployeeDashboard/CarView.js";
+import Rent from './components/Rent/Rent.js'
+import AvailVehicles from './components/Rent/AvailVehicles.js'
+import Payments from './components/Rent/Payment.js'
+import OrderDetails from './components/Rent/OrderDetails.js'
+import Home from './components/Home.js'
+import Login from './components/login/Login.js'
+import BranchSelect from './components/EmployeeDashboard/BranchSelect.js'
+import BranchInfo from './components/EmployeeDashboard/BranchInfo.js'
+import SignUp from "./components/signUp/signUp.js"
+import AddCar from "./components/EmployeeDashboard/AddCar.js"
+import Account from "./components/Account/Account.js"
 import { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -31,8 +28,8 @@ import axios from "axios";
 import Button from '@mui/material/Button';
 import { useNavigate, Navigate, BrowserRouter as Router, Redirect } from 'react-router-dom';
 
-function App() {
 
+function App() {
   const theme = createTheme();
 
   const [emails, setEmails] = useState([]);
@@ -43,10 +40,8 @@ function App() {
 
   const navigate = useNavigate()
 
-  useEffect(() => {
-    localStorage.setItem("logged_user", JSON.stringify(isLoggedIn));
-  }, [isLoggedIn]);
 
+  useEffect(() => {
 
     axios.get(CUSTOMER_API_URL) //need to create an api where i can grab by typeID and branchID
       .then((response) => {
@@ -56,7 +51,6 @@ function App() {
         //   setEmails(item.email)
         //   setPasswords(item.password)
         // })
-
       })
 
   }, []);
@@ -182,7 +176,7 @@ function App() {
         <Route exact path="/AddBranch" element={loginStatus ? <AddBranch /> : LoginPage()} />
       </Routes>
 
-    </div>
+   </div>
   );
 }
 
