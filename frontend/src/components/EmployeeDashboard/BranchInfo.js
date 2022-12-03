@@ -126,6 +126,18 @@ const BranchInfo = () => {
                         Back
                     </Button>
                 </div>
+                <div className="nextb">
+                    <Button
+                        variant="contained"
+                        disabled={branch.branchID === undefined}
+                        component={Link}
+                        to={{ pathname: '/BranchStats', }}
+                        state={{
+                            branch: branch
+                        }}>
+                        Branch Statistics
+                    </Button>
+                </div>
             </div>
             <div className="wrapper">
                 <div className="container-buttons">
