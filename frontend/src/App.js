@@ -15,6 +15,7 @@ import Account from "./components/Account/Account.js";
 import AddBranch from "./components/EmployeeDashboard/AddBranch.js";
 import EmployeeDashboard from "./components/EmployeeDashboard/EmployeeDashboard.js";
 import ReturnCar from "./components/EmployeeDashboard/ReturnCar.js";
+import ReturnDetails from "./components/EmployeeDashboard/ReturnDetails.js";
 import CarView from "./components/EmployeeDashboard/CarView.js";
 import { useEffect, useState } from "react";
 
@@ -48,6 +49,7 @@ function App() {
           path="/EmployeeDashBoard"
           element={<EmployeeDashboard />}
         />
+        <Route exact path="/ReturnDetails" element={<ReturnDetails />} />
         <Route exact path="/ReturnCar" element={<ReturnCar />} />
         <Route exact path="/BranchSelect" element={<BranchSelect />} />
         <Route exact path="/BranchInfo" element={<BranchInfo />} />
