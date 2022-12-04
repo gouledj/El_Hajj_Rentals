@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { TextField, Button, Box, Select, MenuItem } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import CarTypes from "../../constants/CarTypes";
 
 import "../../css/rent.css";
 
-import { CARTYPE_API_URL } from "../../constants";
-import { CARS_API_URL } from "../../constants";
+import { CARTYPE_API_URL, CARS_API_URL } from "../../constants";
 
 function CarView() {
     let location = useLocation();
@@ -23,9 +23,11 @@ function CarView() {
     const [state, setState] = React.useState('');
 
     useEffect(() => {
-        axios.get(CARTYPE_API_URL).then((response) => {
-            setCarTypes(response.data);
-        });
+        let allCarTypes = [];
+        for (let i = 0; i < CarTypes.carTypes.length; i++) {
+            allCarTypes.push(CarTypes.carTypes[i]);
+        }
+        setCarTypes(allCarTypes);
         setState('add');
         fillFields();
     }, [])
@@ -85,6 +87,7 @@ function CarView() {
 
     return (
         <div>
+
             <div className='container-avail'>
                 <div className="backb">
                     <Button variant="contained" component={Link}

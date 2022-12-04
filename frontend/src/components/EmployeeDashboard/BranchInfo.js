@@ -7,6 +7,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { DataGrid } from "@mui/x-data-grid";
+import { VehicleImages } from "../Rent/VehicleImages.js"
+import CarTypes from "../../constants/CarTypes";
 import axios from 'axios';
 
 import "../../css/rent.css";
@@ -23,6 +25,7 @@ const BranchInfo = () => {
     const [cars, setCars] = React.useState([]);
     const [selectedCar, setSelectedCar] = React.useState([]);
     const [manufacturer, setManufacturer] = React.useState('');
+    const [carType, setCarType] = React.useState(null);
     const [model, setModel] = React.useState('');
 
     const handleClickOpen = () => {
@@ -54,6 +57,7 @@ const BranchInfo = () => {
         });
     }
 
+
     const getSelectedCar = (id) => {
         let car = cars.find((car) => car.carID === id);
         setSelectedCar(car);
@@ -76,26 +80,38 @@ const BranchInfo = () => {
 
 
     const carColumns = [
-        { field: "image", headerName: "Image", width: 150 },
+        {
+            field: "image",
+            headerName: "Image",
+            width: 300,
+            renderCell: (params) =>
+                <img src={params.value}
+                    style={{ "width": "200px", "marginLeft": "30px" }} />
+        },
         { field: "manufacturer", headerName: "Manufacturer", width: 150 },
         { field: "model", headerName: "Model", width: 150 },
-        { field: "fuelType", headerName: "FuelType", width: 150 },
+        { field: "carType", headerName: "Car Type", width: 150 },
+        { field: "fuelType", headerName: "Fuel Type", width: 150 },
         { field: "colour", headerName: "Colour", width: 150 },
         { field: "available", headerName: "Available", width: 150 },
     ];
 
     const carRows = [];
+
     for (let i = 0; i < cars.length; i++) {
         const entry = {
+            image: VehicleImages(cars[i].typeID),
             id: cars[i].carID,
             manufacturer: cars[i].manufacturer,
             model: cars[i].model,
+            carType: CarTypes.carTypes[cars[i].typeID].description,
             fuelType: cars[i].fuelType,
             colour: cars[i].color,
             available: cars[i].status
         }
         carRows.push(entry);
     }
+
 
     const transColumns = [
         { field: "col1", headerName: "Customer", width: 150 },
@@ -146,6 +162,7 @@ const BranchInfo = () => {
                         <DataGrid
                             rows={carRows}
                             columns={carColumns}
+                            getRowHeight={() => 'auto'}
                             onRowClick={handleEvent}
                         />
                     </div>
