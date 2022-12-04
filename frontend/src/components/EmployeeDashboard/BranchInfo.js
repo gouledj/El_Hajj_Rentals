@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Button, Typography } from "@mui/material";
+import {
+    Button, Typography, Box, FormControl, InputLabel,
+    Select, MenuItem
+} from "@mui/material";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -13,35 +16,70 @@ import axios from 'axios';
 
 import "../../css/rent.css";
 
-import { CARS_API_URL } from "../../constants";
+import { CARS_API_URL, BRANCH_API_URL } from "../../constants";
 
 const BranchInfo = () => {
 
     let location = useLocation();
     const branch = location.state.branch;
 
-    const [open, setOpen] = React.useState(false);
+    const [deleteOpen, setDeleteOpen] = React.useState(false);
+    const [transferOpen, setTransferOpen] = React.useState(false);
 
     const [cars, setCars] = React.useState([]);
     const [selectedCar, setSelectedCar] = React.useState([]);
     const [manufacturer, setManufacturer] = React.useState('');
-    const [carType, setCarType] = React.useState(null);
     const [model, setModel] = React.useState('');
+    const [branches, setBranches] = React.useState([]);
+    const [selectedBranch, setSelectedBranch] = React.useState('');
 
-    const handleClickOpen = () => {
-        if (selectedCar.length !== 0) {
-            setManufacturer(selectedCar.manufacturer);
-            setModel(selectedCar.model);
-            setOpen(true);
-        }
+    const getBranches = () => {
+        axios.get(BRANCH_API_URL)
+
+            .then(function (response) {
+                setBranches(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+
+    const handleDeleteClickOpen = () => {
+        setManufacturer(selectedCar.manufacturer);
+        setModel(selectedCar.model);
+        setDeleteOpen(true);
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleTransferClickOpen = () => {
+        setManufacturer(selectedCar.manufacturer);
+        setModel(selectedCar.model);
+        setTransferOpen(true);
+    }
+
+    const handleDeleteClose = () => {
+        setDeleteOpen(false);
+    };
+
+    const handleTransferClose = () => {
+        setTransferOpen(false);
+    };
+
+    const getSelectedBranch = (branchID) => {
+        branches.forEach((item) => {
+            if (item.branchID === branchID) {
+                setSelectedBranch(item);
+            }
+        })
+    }
+
+    const handleChange = (event) => {
+        getSelectedBranch(event.target.value);
     };
 
     useEffect(() => {
         getCars();
+        getBranches();
     }, [branch.branchID])
 
 
@@ -61,21 +99,46 @@ const BranchInfo = () => {
     const getSelectedCar = (id) => {
         let car = cars.find((car) => car.carID === id);
         setSelectedCar(car);
+        console.log(car);
     }
 
     const deleteSelectedCar = () => {
-        if (selectedCar.length !== 0) {
-            axios.delete(CARS_API_URL + selectedCar.carID)
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            cars.splice(cars.indexOf(selectedCar), 1);
-        }
+        axios.delete(CARS_API_URL + selectedCar.carID)
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        cars.splice(cars.indexOf(selectedCar), 1);
+
         setSelectedCar([]);
-        handleClose();
+        handleDeleteClose();
+    }
+
+    const transferSelectedCar = () => {
+        axios.put(CARS_API_URL + selectedCar.carID + "\\", {
+            manufacturer: selectedCar.manufacturer,
+            model: selectedCar.model,
+            fuelType: selectedCar.fuelType,
+            color: selectedCar.color,
+            licensePlate: selectedCar.licensePlate,
+            status: selectedCar.status,
+            mileage: selectedCar.mileage,
+            typeID: selectedCar.typeID,
+            branchID: selectedBranch.branchID,
+        })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        cars.splice(cars.indexOf(selectedCar), 1);
+
+        setSelectedCar([]);
+        handleTransferClose();
     }
 
 
@@ -104,7 +167,7 @@ const BranchInfo = () => {
             id: cars[i].carID,
             manufacturer: cars[i].manufacturer,
             model: cars[i].model,
-            carType: CarTypes.carTypes[cars[i].typeID].description,
+            carType: CarTypes.carTypes[cars[i].typeID - 1].description,
             fuelType: cars[i].fuelType,
             colour: cars[i].color,
             available: cars[i].status
@@ -126,6 +189,13 @@ const BranchInfo = () => {
 
     const handleEvent = (event) => {
         getSelectedCar(event.row.id);
+    }
+
+    const canTransfer = () => {
+        if (selectedCar.status === "Available") {
+            return true;
+        }
+        return false;
     }
 
 
@@ -196,9 +266,18 @@ const BranchInfo = () => {
                             disabled={selectedCar.length === 0}
                             id="delete"
                             variant="contained"
-                            onClick={handleClickOpen}
+                            onClick={handleDeleteClickOpen}
                         >
                             Delete Car
+                        </Button>
+                        <Button
+                            sx={{ float: 'right', mr: 1 }}
+                            disabled={selectedCar.length === 0 || !canTransfer()}
+                            id="transfer"
+                            variant="contained"
+                            onClick={handleTransferClickOpen}
+                        >
+                            Transfer Car
                         </Button>
                     </div>
 
@@ -211,10 +290,10 @@ const BranchInfo = () => {
                 </div>
             </div>
 
-
+            {/* Delete Car Dialog */}
             <Dialog
-                open={open}
-                onClose={handleClose}
+                open={deleteOpen}
+                onClose={handleDeleteClose}
                 aria-labelledby="alert-delete-car"
                 aria-describedby="alert-delete-car-description"
             >
@@ -228,9 +307,53 @@ const BranchInfo = () => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} autoFocus>No</Button>
+                    <Button onClick={handleDeleteClose} autoFocus>No</Button>
                     <Button onClick={deleteSelectedCar} variant="contained">
                         Delete Car
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Transfer Car Dialog */}
+            <Dialog
+                open={transferOpen}
+                onClose={handleTransferClose}
+                aria-labelledby="alert-transfer-car"
+                aria-describedby="alert-transfer-car-description"
+            >
+                <DialogTitle id="alert-delete-car">
+                    {"Transfer this car?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-delete-car-description">
+                        Which branch do you want to transfer this {manufacturer} {model} to?
+                    </DialogContentText>
+                    <Box>
+                        <FormControl fullWidth>
+                            <InputLabel id="branch-select-label">
+                                Branch
+                            </InputLabel>
+                            <Select
+                                labelId="branch-select-label"
+                                id="branch-select"
+                                value={branch.branchID}
+                                label="Branch"
+                                onChange={handleChange}
+                            >
+                                {branches.map((branch) => (
+                                    <MenuItem key={branch.branchID} value={branch.branchID}>
+                                        {branch.unitNumber}-{branch.streetNumber} {branch.streetName}, {branch.city} {branch.province}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Box>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleTransferClose} autoFocus>No</Button>
+                    <Button disabled={selectedBranch.length === 0}
+                        onClick={transferSelectedCar} variant="contained">
+                        Transfer Car
                     </Button>
                 </DialogActions>
             </Dialog>

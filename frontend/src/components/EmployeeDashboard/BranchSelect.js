@@ -32,7 +32,6 @@ const BranchSelect = () => {
                 setBranch(item);
             }
         })
-
     }
 
     return (
