@@ -263,7 +263,7 @@ const BranchInfo = () => {
                         </Button>
                         <Button
                             sx={{ float: 'right', mr: 1 }}
-                            disabled={selectedCar.length === 0}
+                            disabled={selectedCar.length === 0 || !canTransfer()}
                             id="delete"
                             variant="contained"
                             onClick={handleDeleteClickOpen}
