@@ -19,8 +19,6 @@ import RentStepper from '../layouts/RentStepper.js'
 import axios from "axios";
 import moment from "moment";
 import { Dayjs } from 'dayjs'
-import { useLocation, location } from 'react-router-dom'
-
 
 import { BRANCH_API_URL, CARTYPE_API_URL } from "../../constants";
 
@@ -32,12 +30,6 @@ const Rent = () => {
   const [branches, setBranches] = useState([]);
   const [carType, setCarType] = useState([]);
 
-  const location = useLocation();
-
-  const { state } = location
-
-  console.log("RENTT", state.id)
-
   useEffect(() => {
     axios.get(BRANCH_API_URL)
       .then((response) => {
@@ -45,7 +37,7 @@ const Rent = () => {
       })
       .catch(console.log("error or loading"))
 
-    axios.get(CARTYPE_API_URL)
+      axios.get(CARTYPE_API_URL)
       .then((response) => {
         setCarType(response.data);
       })
@@ -53,7 +45,7 @@ const Rent = () => {
   }, []);
 
   const newRows = [];
-  for (let i = 0; i < branches.length; i++) {
+  for(let i = 0; i < branches.length; i++){
     const entry = {
       id: i + 1,
       branchName: branches[i].branchID,
@@ -83,10 +75,10 @@ const Rent = () => {
     setBranchSelect(event.row);
   }
 
-  function getDate(date) {
+  function getDate(date){
     moment(date).format('MM-DD-YYYY')
     var fdate = new Date(date)
-    var finaldate = fdate.getMonth() + 1 + '-' + (fdate.getDate()) + '-' + fdate.getFullYear()
+    var finaldate = fdate.getMonth() + 1 + '-' +  (fdate.getDate())  + '-' +  fdate.getFullYear()
     console.log(finaldate);
     return finaldate
   }
@@ -125,7 +117,7 @@ const Rent = () => {
         <section className="container-branch">
           <Typography>Select a branch:</Typography>
           <div style={{ height: 400, width: "100%" }}>
-            <DataGrid rows={newRows} columns={columns} onCellClick={cellClick} />
+            <DataGrid rows={newRows} columns={columns} onCellClick={cellClick}/>
           </div>
         </section>
 
@@ -155,16 +147,16 @@ const Rent = () => {
 
         <div className="container-buttons">
           <div className="nextb">
-            {vehicle && branchSelect && from && to
-              ? <Link to={"/AvailableVehicles"}
-                state={{ type: vehicle.typeID, branch: branchSelect, from: getDate(from), to: getDate(to) }}
-                style={{ 'textDecoration': 'none' }}>
+            {vehicle && branchSelect && from && to 
+            ? <Link to={"/AvailableVehicles"}
+                    state={{ type:vehicle.typeID, branch:branchSelect, from:getDate(from) , to:getDate(to) }}
+                    style={{'textDecoration':'none'}}>
                 <Button variant="contained" >
                   Next
                 </Button>
-              </Link>
-              : <Button variant="contained" disabled={true}>
-                Next
+            </Link>
+            : <Button variant="contained" disabled={true}>
+              Next
               </Button>}
           </div>
         </div>

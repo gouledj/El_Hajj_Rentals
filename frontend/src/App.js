@@ -42,7 +42,6 @@ function App() {
 
   const [loginStatus, setloginStatus] = useState(false)
 
-  const [customerID, setCustomerID] = useState(0);
   const navigate = useNavigate()
 
 
@@ -51,6 +50,11 @@ function App() {
     axios.get(CUSTOMER_API_URL) //need to create an api where i can grab by typeID and branchID
       .then((response) => {
         setCustomers(response.data)
+
+        // response.data.map((item, id) => {
+        //   setEmails(item.email)
+        //   setPasswords(item.password)
+        // })
       })
 
   }, []);
@@ -58,22 +62,27 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    console.log("submitting?")
 
+    // console.log(emails);
+    // console.log(passwords);
+    // console.log(customers)
     var emailString = data.get('email');
     var passwordString = data.get('password')
 
+    // setLoginEmail(emailString)
+    // setLoginPassword(passwordString)
 
+    // console.log(emailString)
+    // console.log(passwordString)
 
     customers.map((customer) => {
       console.log(customer.email)
       console.log(customer.password)
 
       if (customer.email == emailString && customer.password == passwordString) {
-        var inputID = customer.customerID
-        console.log(inputID)
         setloginStatus(true)
-
-        navigate('/Rent', { state: { id: inputID } })
+        navigate('/Home')
         console.log("SUCCESS")
       }
     })
