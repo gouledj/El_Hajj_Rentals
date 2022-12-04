@@ -15,7 +15,7 @@ import AddBranch from './components/EmployeeDashboard/AddBranch.js'
 import BranchSelect from './components/EmployeeDashboard/BranchSelect.js'
 import BranchInfo from './components/EmployeeDashboard/BranchInfo.js'
 import SignUp from "./components/signUp/signUp.js"
-// import AddCar from "./components/EmployeeDashboard/AddCar.js"
+import BranchStats from "./components/EmployeeDashboard/BranchStats.js"
 import Account from "./components/Account/Account.js"
 import { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
@@ -62,6 +62,7 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    console.log("submitting?")
 
     // console.log(emails);
     // console.log(passwords);
@@ -171,7 +172,8 @@ function App() {
         <Route exact path="/OrderDetails" element={loginStatus ? <OrderDetails /> : LoginPage()} />
         <Route exact path="/BranchSelect" element={loginStatus ? <BranchSelect /> : LoginPage()} />
         <Route exact path="/BranchInfo" element={loginStatus ? <BranchInfo /> : LoginPage()} />
-        <Route exact path="/SignUp" element={loginStatus ? <SignUp /> : LoginPage()} />
+        <Route exact path="/BranchStats" element={loginStatus ? <BranchStats /> : LoginPage()} />
+        <Route exact path="/SignUp" element={<SignUp />} />
         <Route exact path="/Account" element={loginStatus ? <Account /> : LoginPage()} />
         <Route exact path="/EmployeeDashBoard" element={loginStatus ? <EmployeeDashboard /> : LoginPage()} />
         <Route exact path="/ReturnCar" element={loginStatus ? <ReturnCar /> : LoginPage()} />
