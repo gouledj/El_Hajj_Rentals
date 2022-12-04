@@ -18,6 +18,7 @@ function CarView() {
     const [licensePlate, setLicensePlate] = React.useState('');
     const [mileage, setMileage] = React.useState('');
     const [carType, setCarType] = React.useState('');
+    const [status, setStatus] = React.useState('');
 
     const [carTypes, setCarTypes] = React.useState([]);
     const [state, setState] = React.useState('');
@@ -58,7 +59,7 @@ function CarView() {
                 fuelType: fuelType,
                 color: color,
                 licensePlate: licensePlate,
-                status: "Available",
+                status: status,
                 mileage: mileage,
                 typeID: carType,
                 branchID: location.state.branch.branchID
@@ -82,6 +83,7 @@ function CarView() {
             setLicensePlate(location.state.car.licensePlate);
             setMileage(location.state.car.mileage);
             setCarType(location.state.car.typeID);
+            setStatus(location.state.car.status);
         }
     };
 
