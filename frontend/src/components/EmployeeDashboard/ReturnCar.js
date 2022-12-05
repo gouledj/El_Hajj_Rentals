@@ -16,17 +16,6 @@ const ReturnCar = () => {
   const [person, setPerson] = React.useState([]);
   const [checker, setChecker] = React.useState(false);
 
-  // useEffect(() => {
-  //   setId(transaction.customerID);
-  //   axios.get(CUSTOMER_API_URL).then((response) => {
-  //     response.data.map((person) => {
-  //       if (person.customerID == id) {
-  //         setPerson(person);
-  //       }
-  //     });
-  //   });
-  // }, [transaction]);
-
   const handleChange = (event) => {
     setLicensePlate(event.target.value);
   };
@@ -42,13 +31,12 @@ const ReturnCar = () => {
           axios.get(CUSTOMER_API_URL).then((response) => {
             response.data.map((person) => {
               setPerson(person);
+              setChecker(true);
             });
           });
         }
       });
     });
-
-    setChecker(true);
   };
 
   return (
@@ -61,16 +49,7 @@ const ReturnCar = () => {
         defaultValue="License Plate"
         onChange={handleChange}
       />
-      <Button
-        variant="contained"
-        onClick={handleClick}
-        // component={Link}
-        // to={{ pathname: "/ReturnDetails" }}
-        // state={{
-        //   person: person,
-        //   transaction: transaction,
-        // }}
-      >
+      <Button variant="contained" onClick={handleClick}>
         Show
       </Button>
 

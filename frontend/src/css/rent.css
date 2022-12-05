@@ -1,63 +1,78 @@
 .wrapper {
-    padding: 10px;
+  padding: 10px;
 }
 
 .container-class {
-    padding: 20px;
+  padding: 20px;
 }
 
 .container-branch {
-    padding: 20px;
+  padding: 20px;
 }
 
 .container-date {
-    padding: 20px;
+  padding: 20px;
 }
 
 .container-avail {
-    padding: 20px;
+  padding: 20px;
 }
 
 .container-payment {
-    padding: 20px;
+  padding: 20px;
 }
 
 .container-buttons {
-    padding: 20px;
-    padding-bottom: 20px;
+  padding: 20px;
+  padding-bottom: 20px;
 }
 
 .nextb {
-    float: right;
+  float: right;
 }
 
 .backb {
-    float: left;
+  float: left;
 }
 
 .emp-dash-button {
-    margin-top: 7px;
-    margin-left: 4px;
-    margin-right: 4px;
+  margin-top: 7px;
+  margin-left: 4px;
+  margin-right: 4px;
 }
 
-
 .steps {
-    padding-top: 20px;
-    padding-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .emp-add-box {
-    display: flex;
-    justify-content: center;
-    padding-top: 20px;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
 }
 
 .entry-box {
-    width: 100%;
-    padding-right: 100px;
+  width: 100%;
+  padding-right: 100px;
 }
 
 .emp-add-text-input {
-    width: 100%;
+  width: 100%;
+}
+
+.license-search {
+  padding: 30px;
+}
+
+.search-button {
+  float: right;
+}
+
+.next-button {
+  float: right;
+}
+
+.detail-button {
+  padding: 10px;
 }

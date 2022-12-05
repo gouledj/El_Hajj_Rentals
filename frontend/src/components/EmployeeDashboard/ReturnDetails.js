@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Form, Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import {
   TextField,
@@ -7,6 +8,7 @@ import {
   Select,
   MenuItem,
   FormControl,
+  Typography,
 } from "@mui/material";
 import { InputLabel } from "@mui/material";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -14,20 +16,53 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import moment from "moment";
 
-import { BRANCH_API_URL, CARTYPE_API_URL, CARS_API_URL } from "../../constants";
+import {
+  BRANCH_API_URL,
+  CARTYPE_API_URL,
+  CARS_API_URL,
+  RENTALS_API_URL,
+} from "../../constants";
 
-const ReturnDetails = (props) => {
-  const [from, setFrom] = useState(Date);
-  const [to, setTo] = useState(Date);
+const ReturnDetails = () => {
+  let location = useLocation();
   const [ret, setReturnDate] = useState(Date);
   const [branches, setBranches] = React.useState([]);
   const [branch, setBranch] = React.useState([]);
   const [cars, setCars] = useState([]);
-  const [carType, setCarType] = useState(null);
+  const [carType, setCarType] = useState([]);
   const [carSelect, setCarSelect] = useState(null);
-  const [cost, setCost] = useState(0);
-  const [changeFee, setChangeFee] = useState(0);
+  const [rentCost, setRentalCost] = useState(0);
+  const [changeBranchFee, setBranchChangeFee] = useState(0);
+  const [lateFee, setLateFee] = useState(0);
+  const [total, setTotal] = useState(0);
   const [open, setOpen] = React.useState(false);
+  const handleReturnDate = (returnDate) => {
+    // need to figure out which transaction
+    setReturnDate(returnDate);
+
+    // calculate rental cost
+    setRentalCost(
+      calculateCost(
+        calculateDays(
+          getDate(location.state.transaction.dateFrom),
+          getDate(returnDate)
+        ),
+        carType
+      )
+    );
+
+    //late fee
+    if (
+      moment(location.state.transaction.dateTo).format("MM-DD-YYYY") !==
+      moment(getDate(returnDate)).format("MM-DD-YYYY")
+    ) {
+      setLateFee(carType.lateFee);
+    } else {
+      setLateFee(0);
+    }
+    console.log(rentCost);
+    console.log(lateFee);
+  };
 
   function getDate(date) {
     moment(date).format("MM-DD-YYYY");
@@ -36,23 +71,15 @@ const ReturnDetails = (props) => {
       fdate.getMonth() + 1 + "-" + fdate.getDate() + "-" + fdate.getFullYear();
     return finaldate;
   }
-
-  const handleReturnDate = (returnDate) => {
-    setReturnDate(returnDate);
-    console.log(from);
-    console.log(to);
-    //setCost(calculateCost(calculateDays(from, to), carType));
-  };
-
   function calculateDays(from, to) {
-    const difference = Math.abs(
-      new Date(to.replace("-", "/")) - new Date(from.replace("-", "/"))
-    );
+    const convertTo = new Date(to.replace("-", "/"));
+    const convertFrom = new Date(from.replace("-", "/"));
+    const difference = Math.abs(convertTo - convertFrom);
     const totalDays = Math.ceil(difference / (1000 * 60 * 60 * 24));
     return totalDays;
   }
-
   function calculateCost(days, carType) {
+    console.log(carType);
     let remaining = days;
     let cost = 0;
     while (remaining > 0) {
@@ -71,133 +98,177 @@ const ReturnDetails = (props) => {
   }
 
   useEffect(() => {
-    // setTo(props.transaction.dateFrom);
-    // setFrom(props.transaction.dateTo);
     axios.get(BRANCH_API_URL).then((response) => {
       setBranches(response.data);
     });
-
     axios
       .get(CARS_API_URL) //need to create an api where i can grab by typeID and branchID
       .then((response) => {
         setCars(response.data);
       })
       .catch(console.log("error or loading"));
-
     axios
       .get(CARTYPE_API_URL)
       .then((response) => {
-        setCarType(response.data);
+        response.data.map((type) => {
+          if (type.typeID === location.state.transaction.typeID) {
+            setCarType(type);
+          }
+        });
       })
       .catch(console.log("error or loading"));
   }, []);
 
-  //   const handleChange = (event) => {
-  //     if (event.target.value != props.transaction.branchID) {
-  //       carType.map((type) => {
-  //         if (type.typeID == props.transaction.typeID) {
-  //           setChangeFee(type.changeBranchFee);
-  //         }
-  //       });
-  //     }
-  //   };
-
+  const handleChange = (event) => {
+    if (event.target.value != location.state.transaction.branchID) {
+      setBranchChangeFee(carType.changeBranchFee);
+    }
+  };
   const handleClose = () => {
     setOpen(false);
   };
-
   const handleOpen = () => {
     setOpen(true);
   };
 
+  const finalize = () => {
+    // need to check if the customer is gold after
+    axios
+      .post(RENTALS_API_URL + location.state.transaction.rentalID + "/", {
+        dateFrom: location.state.transaction.dateFrom,
+        dateTo: location.state.transaction.datTo,
+        dateReturned: flipDate(ret),
+        totalCost: total,
+        licensePlate: location.state.transaction.licensePlate,
+        goldMember: location.state.transaction.goldMember,
+        customerID: location.state.transaction.customerID,
+        branchID: location.state.transaction.branchID,
+        carID: location.state.transaction.carID,
+        typeID: location.state.transaction.typeID,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  function flipDate(string) {
+    //Function used to convert Django dates (YYYY-MM-DD) to MM-DD-YYYY
+    const [month, day, year] = string.split("-");
+    const flipped = [year, month, day].join("-");
+
+    return flipped;
+  }
+
   return (
     <div>
-      <h1>Booking Details</h1>
-      <TextField
-        id="first-name"
-        label="First Name"
-        variant="outlined"
-        value={props.person.firstName}
-        InputProps={{
-          readOnly: true,
-        }}
-      />
-      <TextField
-        id="last-name"
-        label="Last Name"
-        variant="outlined"
-        value={props.person.lastName}
-        InputProps={{
-          readOnly: true,
-        }}
-      />
-      <TextField
-        id="date-from"
-        label="Date From"
-        variant="outlined"
-        value={props.transaction.dateFrom}
-        InputProps={{
-          readOnly: true,
-        }}
-      />
-      <TextField
-        id="date-to"
-        label="Date To"
-        variant="outlined"
-        value={props.transaction.dateTo}
-        InputProps={{
-          readOnly: true,
-        }}
-      />
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DesktopDatePicker
-          label="Return Date"
-          value={ret}
-          minDate={from}
-          onChange={(newValue) => handleReturnDate(getDate(newValue))}
-          inputFormat="MM-DD-YYYY"
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </LocalizationProvider>
-      <div>
-        {/* <Select
-          labelId="demo-controlled-open-select-label"
-          id="demo-controlled-open-select"
-          open={open}
-          onClose={handleClose}
-          onOpen={handleOpen}
-          value={branch.branchID}
-          label="id"
-          onChange={handleChange}
-        >
-          <MenuItem value=""></MenuItem>
-          {branches.map((branch) => {
-            return (
-              <MenuItem key={branch.branchID} value={branch.branchID}>
-                {branch.unitNumber}-{branch.streetNumber} {branch.streetName},{" "}
-                {branch.city} {branch.province}
-              </MenuItem>
-            );
-          })}
-        </Select> */}
+      <div className="container-avail">
+        <h1>Transaction Details</h1>
       </div>
 
-      {/* <Select
-        labelId="branch-select-label"
-        id="branch-select"
-        value={branch.branchID}
-        label="Branch"
-        onChange={handleChange}
+      <div className="wrapper">
+        <Button
+          className="backb"
+          sx={{ float: "left" }}
+          variant="contained"
+          component={Link}
+          to={{ pathname: "/BranchSelect" }}
+        >
+          Back
+        </Button>
+
+        <section className="detail-section">
+          <TextField
+            id="first-name"
+            label="First Name"
+            variant="outlined"
+            value={location.state.person.firstName}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <TextField
+            id="last-name"
+            lab
+            el="Last Name"
+            variant="outlined"
+            value={location.state.person.lastName}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <TextField
+            id="date-from"
+            label="Date From"
+            variant="outlined"
+            value={location.state.transaction.dateFrom}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <TextField
+            id="date-to"
+            label="Date To"
+            variant="outlined"
+            value={location.state.transaction.dateTo}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        </section>
+      </div>
+
+      <section>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DesktopDatePicker
+            label="Return Date"
+            value={ret}
+            minDate={new Date()}
+            onChange={(newValue) => handleReturnDate(getDate(newValue))}
+            inputFormat="MM-DD-YYYY"
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+        <Box sx={{ width: "20%" }}>
+          <FormControl fullWidth>
+            <InputLabel id="branch-select-label">Branch</InputLabel>
+            <Select
+              labelId="branch-select-label"
+              id="branch-select"
+              value={branch.branchID}
+              label="Branch"
+              onChange={handleChange}
+            >
+              {location.state.branches &&
+                location.state.branches.map((branch) => (
+                  <MenuItem key={branch.branchID} value={branch.branchID}>
+                    {branch.unitNumber}-{branch.streetNumber}{" "}
+                    {branch.streetName}, {branch.city} {branch.province}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+        </Box>
+      </section>
+
+      <section>
+        <Typography>Rental Cost: ${rentCost && rentCost}</Typography>
+        <Typography>Change Branch fee: ${changeBranchFee}</Typography>
+        <Typography>Late fees: ${lateFee}</Typography>
+        <Typography>
+          Total Cost: ${rentCost && rentCost + lateFee + changeBranchFee}
+        </Typography>
+      </section>
+
+      <Button
+        variant="contained"
+        disabled={rentCost + lateFee + changeBranchFee === 0}
+        onClick={finalize}
       >
-        {branches.map((branch) => (
-          <MenuItem key={branch.branchID} value={branch.branchID}>
-            {branch.unitNumber}-{branch.streetNumber} {branch.streetName},{" "}
-            {branch.city} {branch.province}
-          </MenuItem>
-        ))}
-      </Select> */}
-      <h1>{cost}</h1>
-      <h1>{changeFee}</h1>
+        Confirm
+      </Button>
     </div>
   );
 };
