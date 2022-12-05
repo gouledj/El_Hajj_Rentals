@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
 
-const pages = ['Rent', 'Vehicles', 'About'];
+const pages = ['Rent', 'Vehicles', 'About', 'BranchSelect'];
 const settings = ['Account', 'Orders', 'Logout'];
 
 function NavBar() {
@@ -45,7 +45,7 @@ function NavBar() {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            href="/Rent"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -100,7 +100,7 @@ function NavBar() {
             variant="h5"
             noWrap
             component="a"
-            href=""
+            href="/Rent"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },

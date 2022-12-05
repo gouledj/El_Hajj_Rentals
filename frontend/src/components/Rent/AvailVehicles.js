@@ -45,7 +45,8 @@ const AvailVehicles = () => {
   const [rentals, setRentals] = useState([]);
 
   const location = useLocation()
-  const { type, branch, from, to } = location.state;
+  const { type, branch, from, to, customerID } = location.state;
+  console.log("customer id: " + customerID)
 
   useEffect(() => {
 
@@ -159,7 +160,7 @@ const AvailVehicles = () => {
 
         <div className="container-buttons">
           <div className="backb">
-            <Button variant="contained" component={Link} to={"/Rent"}>
+            <Button variant="contained" component={Link} to={"/Rent"} state={{id:customerID}}>
               Back
             </Button>
           </div>
@@ -170,7 +171,8 @@ const AvailVehicles = () => {
                               branch:branch,
                               from: flipDate(from) ,
                               to:flipDate(to),
-                              car:carSelect}}
+                              car:carSelect,
+                              customerID:customerID }}
                     style={{'textDecoration':'none'}}>
                 <Button variant="contained" >
                   Next
