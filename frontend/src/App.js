@@ -17,6 +17,7 @@ import BranchInfo from './components/EmployeeDashboard/BranchInfo.js'
 import SignUp from "./components/signUp/signUp.js"
 import BranchStats from "./components/EmployeeDashboard/BranchStats.js"
 import Account from "./components/Account/Account.js"
+import Orders from "./components/Account/Orders.js"
 import { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -166,6 +167,7 @@ function App() {
         <Route exact path="/BranchStats" element={loginStatus ? <BranchStats /> : LoginPage()} />
         <Route exact path="/SignUp" element={<SignUp />} />
         <Route exact path="/Account" element={loginStatus ? <Account /> : LoginPage()} />
+        <Route exact path="/Orders" element={loginStatus ? <Orders /> : LoginPage()} />
         <Route exact path="/EmployeeDashBoard" element={loginStatus ? <EmployeeDashboard /> : LoginPage()} />
         <Route exact path="/ReturnCar" element={loginStatus ? <ReturnCar /> : LoginPage()} />
         <Route exact path="/CarView" element={loginStatus ? <CarView /> : LoginPage()} />
