@@ -2,6 +2,7 @@ import NavBar from './components/layouts/NavBar.js'
 import './App.css';
 import React from "react";
 import { Routes, Route } from "react-router";
+
 import Rent from './components/Rent/Rent.js'
 import AvailVehicles from './components/Rent/AvailVehicles.js'
 import Payments from './components/Rent/Payment.js'
@@ -9,7 +10,8 @@ import OrderDetails from './components/Rent/OrderDetails.js'
 import Home from './components/Home.js'
 import Login from './components/login/Login.js'
 import EmployeeDashboard from './components/EmployeeDashboard/EmployeeDashboard.js'
-import ReturnCar from './components/EmployeeDashboard/ReturnCar.js'
+import ReturnCar from "./components/EmployeeDashboard/ReturnCar.js";
+import ReturnDetails from "./components/EmployeeDashboard/ReturnDetails.js";
 import CarView from './components/EmployeeDashboard/CarView.js'
 import AddBranch from './components/EmployeeDashboard/AddBranch.js'
 import BranchSelect from './components/EmployeeDashboard/BranchSelect.js'
@@ -181,12 +183,20 @@ function App() {
     <div className="App">
       <NavBar />
       <Routes>
+
         <Route path="/" element={LoginPage()} />
         <Route exact path="/Rent" element={loginStatus ? <Rent /> : LoginPage()} />
         <Route exact path="/Payments" element={loginStatus ? <Payments /> : LoginPage()} />
         <Route exact path="/Login" element={loginStatus ? <Login /> : LoginPage()} />
         <Route exact path="/AvailableVehicles" element={loginStatus ? <AvailVehicles /> : LoginPage()} />
         <Route exact path="/OrderDetails" element={loginStatus ? <OrderDetails /> : LoginPage()} />
+         <Route
+          exact
+          path="/EmployeeDashBoard"
+          element={<EmployeeDashboard />}
+        />
+        <Route exact path="/ReturnDetails" element={<ReturnDetails />} />
+        <Route exact path="/ReturnCar" element={<ReturnCar />} />
         <Route exact path="/BranchSelect" element={loginStatus ? <BranchSelect /> : LoginPage()} />
         <Route exact path="/BranchInfo" element={loginStatus ? <BranchInfo /> : LoginPage()} />
         <Route exact path="/BranchStats" element={loginStatus ? <BranchStats /> : LoginPage()} />
