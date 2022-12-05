@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
     Button, Typography, Box, FormControl, InputLabel,
@@ -16,7 +16,7 @@ import axios from 'axios';
 
 import "../../css/rent.css";
 
-import { CARS_API_URL, BRANCH_API_URL } from "../../constants";
+import { CARS_API_URL, BRANCH_API_URL, RENTALS_API_URL, CUSTOMER_API_URL } from "../../constants";
 
 const BranchInfo = () => {
 
@@ -32,16 +32,51 @@ const BranchInfo = () => {
     const [model, setModel] = React.useState('');
     const [branches, setBranches] = React.useState([]);
     const [selectedBranch, setSelectedBranch] = React.useState('');
+    const [transactions, setTransactions] = React.useState([]);
+    const [customers, setCustomers] = React.useState([]);
+
+    const getCustomers = () => {
+        axios.get(CUSTOMER_API_URL)
+            .then(function (response) {
+                setCustomers(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    const getTransactions = () => {
+        let allTransactions = [];
+        axios.get(RENTALS_API_URL).then((response) => {
+            response.data.forEach((item) => {
+                if (item.branchID === branch.branchID) {
+                    allTransactions.push(item);
+                }
+            })
+            setTransactions(allTransactions);
+        });
+    }
 
     const getBranches = () => {
         axios.get(BRANCH_API_URL)
-
             .then(function (response) {
                 setBranches(response.data);
             })
             .catch(function (error) {
                 console.log(error);
             });
+    }
+
+    const getCars = () => {
+        let allCars = [];
+        axios.get(CARS_API_URL).then((response) => {
+            response.data.forEach((item) => {
+                if (item.branchID === branch.branchID) {
+                    allCars.push(item);
+                }
+            })
+            setCars(allCars);
+        });
     }
 
 
@@ -80,20 +115,12 @@ const BranchInfo = () => {
     useEffect(() => {
         getCars();
         getBranches();
+        getCustomers();
+        getTransactions();
     }, [branch.branchID])
 
 
-    const getCars = () => {
-        let allCars = [];
-        axios.get(CARS_API_URL).then((response) => {
-            response.data.forEach((item) => {
-                if (item.branchID === branch.branchID) {
-                    allCars.push(item);
-                }
-            })
-            setCars(allCars);
-        });
-    }
+
 
 
     const getSelectedCar = (id) => {
@@ -177,15 +204,34 @@ const BranchInfo = () => {
 
 
     const transColumns = [
-        { field: "col1", headerName: "Customer", width: 150 },
-        { field: "col2", headerName: "License Plate", width: 150 },
-        { field: "col3", headerName: "Start Date", width: 150 },
-        { field: "col4", headerName: "End Date", width: 150 },
-        { field: "col5", headerName: "Returned Date", width: 150 },
-        { field: "col6", headerName: "Total Cost", width: 150 },
+        { field: "customer", headerName: "Customer", width: 150 },
+        { field: "licensePlate", headerName: "License Plate", width: 150 },
+        { field: "startDate", headerName: "Start Date", width: 150 },
+        { field: "endDate", headerName: "End Date", width: 150 },
+        { field: "returnedDate", headerName: "Returned Date", width: 150 },
+        { field: "totalCost", headerName: "Total Cost", width: 150 },
     ];
 
     const transRows = [];
+
+    for (let i = 0; i < transactions.length; i++) {
+        let temp;
+        for (let j = 0; j < customers.length; j++) {
+            if (customers[j].customerID === transactions[i].customerID) {
+                temp = customers[j].firstName + " " + customers[j].lastName;
+            }
+        }
+        const entry = {
+            id: transactions[i].rentalID,
+            customer: temp,
+            licensePlate: transactions[i].licensePlate,
+            startDate: transactions[i].dateFrom,
+            endDate: transactions[i].dateTo,
+            returnedDate: transactions[i].dateReturned,
+            totalCost: transactions[i].totalCost
+        }
+        transRows.push(entry);
+    }
 
     const handleEvent = (event) => {
         getSelectedCar(event.row.id);
@@ -283,12 +329,14 @@ const BranchInfo = () => {
 
                 </div>
                 <div className="container-avail">
-                    <Typography>Recent transactions:</Typography>
+                    <Typography sx={{ mt: 4 }}>Recent transactions:</Typography>
                     <div style={{ height: 400, width: "auto" }}>
                         <DataGrid rows={transRows} columns={transColumns} />
                     </div>
                 </div>
             </div>
+
+
 
             {/* Delete Car Dialog */}
             <Dialog
