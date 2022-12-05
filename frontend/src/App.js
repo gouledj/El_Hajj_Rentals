@@ -18,6 +18,7 @@ import SignUp from "./components/signUp/signUp.js"
 import BranchStats from "./components/EmployeeDashboard/BranchStats.js"
 import Account from "./components/Account/Account.js"
 import { useEffect, useState, useMemo } from "react";
+import Orders from "./components/Account/Orders.js"
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -191,6 +192,7 @@ function App() {
         <Route exact path="/BranchStats" element={loginStatus ? <BranchStats /> : LoginPage()} />
         <Route exact path="/SignUp" element={<SignUp />} />
         <Route exact path="/Account" element={loginStatus ? <Account /> : LoginPage()} />
+        <Route exact path="/Orders" element={loginStatus ? <Orders /> : LoginPage()} />
         <Route exact path="/EmployeeDashBoard" element={loginStatus ? <EmployeeDashboard /> : LoginPage()} />
         <Route exact path="/ReturnCar" element={loginStatus ? <ReturnCar /> : LoginPage()} />
         <Route exact path="/CarView" element={loginStatus ? <CarView /> : LoginPage()} />
