@@ -28,7 +28,9 @@ const Payment = () => {
   const [carInfo, setCarInfo] = useState(null)
 
   const location = useLocation();
-  const { type, branch, from, to, car } = location.state;
+  const { type, branch, from, to, car, customerID } = location.state;
+
+  console.log("customer id: " + customerID)
 
   useEffect(() => {
     axios.get(CARS_API_URL + "" + car.id + "/").then((response) => {
@@ -45,7 +47,7 @@ const Payment = () => {
       totalCost: car.cost,
       licensePlate: carInfo.licensePlate,
       goldMember: false,
-      customerID: 123,
+      customerID: customerID,
       branchID: branch.id,
       carID: car.id,
       typeID: type
@@ -205,7 +207,14 @@ const Payment = () => {
                 <Button onClick={handleClose}>Cancel</Button>
                 <Link
               to={"/OrderDetails"}
-              state={{ name:name, type: type, branch: branch, from: from, to: to, car:car, card:card }}
+              state={{ name:name,
+                        type: type,
+                        branch: branch,
+                        from: from,
+                        to: to,
+                        car:car,
+                        card:card,
+                        customerID:customerID}}
               style={{ textDecoration: "none" }}
             >
               <Button variant="contained" autoFocus onClick={newRental}>Confirm</Button>

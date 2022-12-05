@@ -157,7 +157,11 @@ const Rent = () => {
           <div className="nextb">
             {vehicle && branchSelect && from && to
               ? <Link to={"/AvailableVehicles"}
-                state={{ type: vehicle.typeID, branch: branchSelect, from: getDate(from), to: getDate(to) }}
+                state={{ type: vehicle.typeID,
+                          branch: branchSelect,
+                          from: getDate(from),
+                          to: getDate(to),
+                          customerID: state.id }}
                 style={{ 'textDecoration': 'none' }}>
                 <Button variant="contained" >
                   Next
