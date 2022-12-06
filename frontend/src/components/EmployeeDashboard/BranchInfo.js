@@ -33,6 +33,7 @@ const BranchInfo = () => {
     const [branches, setBranches] = React.useState([]);
     const [selectedBranch, setSelectedBranch] = React.useState('');
     const [transactions, setTransactions] = React.useState([]);
+    const [selectedTransaction, setSelectedTransaction] = React.useState([]);
     const [customers, setCustomers] = React.useState([]);
 
     const getCustomers = () => {
@@ -126,20 +127,24 @@ const BranchInfo = () => {
     const getSelectedCar = (id) => {
         let car = cars.find((car) => car.carID === id);
         setSelectedCar(car);
-        console.log(car);
+    }
+
+    const getSelectedTransaction = (id) => {
+        let transaction = transactions.find((transaction) => transaction.rentalID === id);
+        setSelectedTransaction(transaction);
     }
 
     const deleteSelectedCar = () => {
         axios.delete(CARS_API_URL + selectedCar.carID)
             .then(function (response) {
-                console.log(response);
+                setSelectedCar([]);
             })
             .catch(function (error) {
                 console.log(error);
             });
         cars.splice(cars.indexOf(selectedCar), 1);
 
-        setSelectedCar([]);
+
         handleDeleteClose();
     }
 
@@ -233,8 +238,12 @@ const BranchInfo = () => {
         transRows.push(entry);
     }
 
-    const handleEvent = (event) => {
+    const handleCarEvent = (event) => {
         getSelectedCar(event.row.id);
+    }
+
+    const handleTransactionEvent = (event) => {
+        getSelectedTransaction(event.row.id);
     }
 
     const canTransfer = () => {
@@ -271,7 +280,10 @@ const BranchInfo = () => {
                     </Button>
                 </div>
             </div>
+
+
             <div className="wrapper">
+                {/* Car Inventory portion of the dashboard */}
                 <div className="container-buttons">
                     <Typography>Current cars assigned to branch:</Typography>
                     <div style={{ height: 400, width: "auto" }}>
@@ -279,7 +291,7 @@ const BranchInfo = () => {
                             rows={carRows}
                             columns={carColumns}
                             getRowHeight={() => 'auto'}
-                            onRowClick={handleEvent}
+                            onRowClick={handleCarEvent}
                         />
                     </div>
                     <div className="emp-dash-button">
@@ -326,12 +338,31 @@ const BranchInfo = () => {
                             Transfer Car
                         </Button>
                     </div>
-
                 </div>
+
+
+                {/* Transactions portion of the dashboard */}
                 <div className="container-avail">
                     <Typography sx={{ mt: 4 }}>Recent transactions:</Typography>
                     <div style={{ height: 400, width: "auto" }}>
-                        <DataGrid rows={transRows} columns={transColumns} />
+                        <DataGrid rows={transRows}
+                            columns={transColumns}
+                            getRowHeight={() => 'auto'}
+                            onRowClick={handleTransactionEvent} />
+                    </div>
+                    <div className="emp-dash-button">
+                        <Button
+                            sx={{ float: 'right', mb: 6 }}
+                            id="add"
+                            variant="contained"
+                            component={Link}
+                            to={{ pathname: '/TransactionView' }}
+                            state={{
+                                branch: location.state.branch,
+                                transaction: selectedTransaction,
+                            }}>
+                            View Transaction Details
+                        </Button>
                     </div>
                 </div>
             </div>
