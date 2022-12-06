@@ -359,7 +359,7 @@ const BranchInfo = () => {
                             to={{ pathname: '/TransactionView' }}
                             state={{
                                 branch: location.state.branch,
-                                transaction: selectedTransaction,
+                                transactiongit: selectedTransaction,
                             }}>
                             View Transaction Details
                         </Button>
