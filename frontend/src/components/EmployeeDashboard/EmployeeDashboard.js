@@ -1,10 +1,16 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { RENTALS_API_URL } from "../../constants";
+import NavBar from '../layouts/NavBar.js';
 
 const EmployeeDashboard = () => {
+
+  let location = useLocation();
+  const { branch, id } = location.state;
+  console.log("customer id: " + id)
+
   // useEffect(() => {
   //   axios.get(RENTALS_API_URL).then((response) => {
   //     response.data.map((transaction) => {
@@ -27,12 +33,16 @@ const EmployeeDashboard = () => {
   // }, []);
 
   return (
-    <div>
+    <>
+      <NavBar state={{ id: id }}/>
+      <div>
       <h1>Employee Dashboard</h1>
-      <Button variant="contained" component={Link} to={"/ReturnCar"}>
+      <Button variant="contained" component={Link} to={"/ReturnCar"} state={{id:id}}>
         Return Car
       </Button>
     </div>
+    </>
+    
   );
 };
 export default EmployeeDashboard;

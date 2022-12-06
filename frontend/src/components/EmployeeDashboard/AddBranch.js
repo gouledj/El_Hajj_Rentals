@@ -1,11 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Box, Button, TextField } from '@mui/material';
 import axios from 'axios';
+import NavBar from '../layouts/NavBar.js';
 
 import { BRANCH_API_URL } from '../../constants';
 
 const AddBranch = () => {
+
+    let location = useLocation();
+    const { branch, id } = location.state;
+    console.log("customer id: " + id)
 
     const [streetNumber, setStreetNumber] = React.useState('');
     const [streetName, setStreetName] = React.useState('');
@@ -35,13 +40,16 @@ const AddBranch = () => {
     }
 
     return (
+        <>
+        <NavBar state={{ id: id }}/>
         <div>
             <div className='container-buttons'>
                 <div className="emp-dash-button">
                     <Button variant="contained"
                         sx={{ float: 'left' }}
                         component={Link}
-                        to={'/BranchSelect'}>
+                        to={'/BranchSelect'}
+                        state={{id:id}}>
                         Back
                     </Button>
                 </div>
@@ -107,12 +115,15 @@ const AddBranch = () => {
                         onClick={handleClick}
                         component={Link}
                         to={{ pathname: '/BranchSelect', }}
+                        state={{id:id}}
                     >
                         Add Branch
                     </Button>
                 </div>
             </div>
         </div >
+        </>
+        
     )
 }
 

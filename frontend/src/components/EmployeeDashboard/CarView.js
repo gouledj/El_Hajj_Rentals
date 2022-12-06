@@ -3,6 +3,7 @@ import { TextField, Button, Box, Select, MenuItem } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import CarTypes from "../../constants/CarTypes";
+import NavBar from '../layouts/NavBar.js';
 
 import "../../css/rent.css";
 
@@ -10,6 +11,8 @@ import { CARTYPE_API_URL, CARS_API_URL } from "../../constants";
 
 function CarView() {
     let location = useLocation();
+    const { id } = location.state;
+    console.log("customer id: " + id)
 
     const [manufacturer, setManufacturer] = React.useState('');
     const [model, setModel] = React.useState('');
@@ -88,14 +91,16 @@ function CarView() {
     };
 
     return (
-        <div>
+        <>
+            <NavBar state={{ id: id }}/>
+            <div>
 
             <div className='container-avail'>
                 <div className="backb">
                     <Button variant="contained" component={Link}
                         to={{ pathname: '/BranchInfo' }}
                         state={{
-
+                            id:id,
                             branch: location.state.branch
                         }}>
                         Back
@@ -171,7 +176,7 @@ function CarView() {
                     component={Link}
                     to={{ pathname: '/BranchInfo', }}
                     state={{
-
+                        id:id,
                         branch: location.state.branch
                     }}
                 >
@@ -179,6 +184,8 @@ function CarView() {
                 </Button>
             </div>
         </div >
+        </>
+        
 
     )
 }

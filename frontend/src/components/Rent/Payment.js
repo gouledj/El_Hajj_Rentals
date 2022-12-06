@@ -31,7 +31,6 @@ const Payment = () => {
 
   const location = useLocation();
   const { type, branch, from, to, car, id } = location.state;
-
   console.log("customer id: " + id)
 
   useEffect(() => {
