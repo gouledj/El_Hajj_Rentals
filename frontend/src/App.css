@@ -5,5 +5,5 @@
 .login {
   background-image: url("../src/images/login.jpg");
   background-size: cover;
-  background-position: left 50% bottom 10%;
+  background-position: left 50% bottom 0%;
 }

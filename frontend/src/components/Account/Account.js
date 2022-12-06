@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import NavBar from '../layouts/NavBar.js'
 import { useLocation } from 'react-router-dom'
+import { Card } from "@mui/material";
 
 import { CUSTOMER_API_URL } from "../../constants";
 
@@ -145,12 +146,22 @@ const About = () => {
     return (
       <>
         <NavBar state={{ id: id }}/>
-        <ThemeProvider theme={theme}>
+        <div
+      className='background'
+      style={{
+          display: "flex",
+          width: "100%",
+          height: "100vh",
+          alignItems: "center",
+          flexDirection: "column",
+        }}>
+      <Card sx={{width:"30%", p: 5, mt: 5}}>
+          <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 1,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -325,8 +336,9 @@ const About = () => {
         </Box>
       </Container>
     </ThemeProvider>
+          </Card>
+        </div>
       </>
-        
     );
 }
 

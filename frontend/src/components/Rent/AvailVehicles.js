@@ -9,6 +9,7 @@ import axios from "axios";
 import moment from "moment";
 import { VehicleImages } from "./VehicleImages.js"
 import NavBar from '../layouts/NavBar.js'
+import { Card } from "@mui/material";
 
 import { CARS_API_URL, CARTYPE_API_URL, RENTALS_API_URL } from "../../constants";
 
@@ -145,7 +146,16 @@ const AvailVehicles = () => {
   return (
     <>
     <NavBar state={{ id: id }}/>
-    <div>
+    <div
+      className='background'
+      style={{
+          display: "flex",
+          width: "100%",
+          height: "100vh",
+          alignItems: "center",
+          flexDirection: "column",
+        }}>
+      <Card sx={{width:"80%", p: 5, mt: 5}}>
       <div className="wrapper">
       <div className="steps">
         <RentStepper currentStep={{step:1}} id="steps"/>
@@ -187,6 +197,7 @@ const AvailVehicles = () => {
           </div>
         </div>
       </div>
+      </Card>
     </div>
     </>
     

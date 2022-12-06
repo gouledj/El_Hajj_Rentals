@@ -13,6 +13,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from 'axios';
 import NavBar from '../layouts/NavBar.js'
+import { Card } from "@mui/material";
 
 import { RENTALS_API_URL, CARS_API_URL } from "../../constants";
 
@@ -112,7 +113,16 @@ const Payment = () => {
   return (
     <>
     <NavBar state={{ id: id }}/>
-    <div>
+    <div
+      className='background'
+      style={{
+          display: "flex",
+          width: "100%",
+          height: "100vh",
+          alignItems: "center",
+          flexDirection: "column",
+        }}>
+      <Card sx={{width:"80%", p: 5, mt: 5}}>
       <div className="wrapper">
         <div className="steps">
           <RentStepper currentStep={{ step: 2 }} id="steps" />
@@ -227,6 +237,7 @@ const Payment = () => {
           </div>
         </div>
       </div>
+      </Card>
     </div>
     </>
     
