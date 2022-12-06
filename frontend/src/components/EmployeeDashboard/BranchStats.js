@@ -7,10 +7,13 @@ import Plot from "react-plotly.js";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import { FormText } from "react-bootstrap";
+import NavBar from '../layouts/NavBar.js';
 
 const BranchStats = () => {
   const location = useLocation();
-  const { branch } = location.state;
+  const { branch, id } = location.state;
+  console.log("customer id: " + id)
+
   const [names, setNames] = useState([]);
   const [isLoad, setIsLoad] = useState(true);
   const [rentals, setRentals] = useState([]);
@@ -75,7 +78,9 @@ const BranchStats = () => {
   };
 
   return (
-    <div>
+    <>
+      <NavBar state={{ id: id }}/>
+      <div>
       <div className="backb">
         <Button
           variant="contained"
@@ -83,6 +88,7 @@ const BranchStats = () => {
           to={"/BranchInfo"}
           state={{
             branch: branch,
+            id:id,
           }}
           style={{ margin: "20px" }}
         >
@@ -132,6 +138,8 @@ const BranchStats = () => {
         </div>}
       </Box>
     </div>
+    </>
+    
   );
 };
 

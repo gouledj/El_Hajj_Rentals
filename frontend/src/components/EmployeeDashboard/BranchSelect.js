@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import { FormControl } from "@mui/material";
@@ -9,6 +9,7 @@ import { Select } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
+import NavBar from '../layouts/NavBar.js';
 
 import {
   BRANCH_API_URL,
@@ -29,6 +30,10 @@ const BranchSelect = () => {
   const [transactionRow, setTransactionRow] = React.useState([]);
   const [nextCheck, setNextChecker] = React.useState(false);
   const [searchCheck, setSearchCheck] = React.useState(true);
+
+  const location = useLocation();
+  const { id } = location.state;
+  console.log("customer id: " + id)
 
   useEffect(() => {
     axios.get(BRANCH_API_URL).then((response) => {
@@ -108,7 +113,9 @@ const BranchSelect = () => {
   };
 
   return (
-    <div>
+    <>
+      <NavBar state={{ id: id }}/>
+      <div>
       <div className="container-avail">
         <h1>Employee Dashboard</h1>
       </div>
@@ -144,6 +151,7 @@ const BranchSelect = () => {
               to={{ pathname: "/AddBranch" }}
               state={{
                 branch: branch,
+                id:id
               }}
             >
               Add New Branch
@@ -158,6 +166,7 @@ const BranchSelect = () => {
               to={{ pathname: "/BranchInfo" }}
               state={{
                 branch: branch,
+                id:id
               }}
             >
               Next
@@ -197,12 +206,15 @@ const BranchSelect = () => {
             transaction: transaction,
             person: person,
             branches: branches,
+            id:id
           }}
         >
           Next
         </Button>
       </div>
     </div>
+    </>
+    
   );
 };
 export default BranchSelect;

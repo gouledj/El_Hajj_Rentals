@@ -15,7 +15,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-const pages = ["Rent", "Vehicles", "About", "BranchSelect"];
+const pages = ["Rent", "About", "BranchSelect"];
 const settings = ["Account", "Orders", "Logout"];
 
 function NavBar() {
@@ -121,7 +121,7 @@ function NavBar() {
                 fontFamily: "monospace",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
-                color: "inherit",
+                color: "#FFF",
                 textDecoration: "none",
               }}
             >
