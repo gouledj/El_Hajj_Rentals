@@ -12,6 +12,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from 'axios';
+import NavBar from '../layouts/NavBar.js'
 
 import { RENTALS_API_URL, CARS_API_URL } from "../../constants";
 
@@ -28,9 +29,9 @@ const Payment = () => {
   const [carInfo, setCarInfo] = useState(null)
 
   const location = useLocation();
-  const { type, branch, from, to, car, customerID } = location.state;
+  const { type, branch, from, to, car, id } = location.state;
 
-  console.log("customer id: " + customerID)
+  console.log("customer id: " + id)
 
   useEffect(() => {
     axios.get(CARS_API_URL + "" + car.id + "/").then((response) => {
@@ -47,7 +48,7 @@ const Payment = () => {
       totalCost: car.cost,
       licensePlate: carInfo.licensePlate,
       goldMember: false,
-      customerID: customerID,
+      customerID: id,
       branchID: branch.id,
       carID: car.id,
       typeID: type
@@ -109,6 +110,8 @@ const Payment = () => {
 }
 
   return (
+    <>
+    <NavBar state={{ id: id }}/>
     <div>
       <div className="wrapper">
         <div className="steps">
@@ -174,7 +177,7 @@ const Payment = () => {
           <div className="backb">
             <Link
               to={"/AvailableVehicles"}
-              state={{ type: type, branch: branch, from: from, to: to }}
+              state={{ type: type, branch: branch, from: from, to: to, id:id}}
               style={{ textDecoration: "none" }}
             >
               <Button variant="contained">Back</Button>
@@ -214,7 +217,7 @@ const Payment = () => {
                         to: to,
                         car:car,
                         card:card,
-                        customerID:customerID}}
+                        id:id}}
               style={{ textDecoration: "none" }}
             >
               <Button variant="contained" autoFocus onClick={newRental}>Confirm</Button>
@@ -225,6 +228,8 @@ const Payment = () => {
         </div>
       </div>
     </div>
+    </>
+    
   );
 };
 
