@@ -25,8 +25,16 @@ const OrderDetails = () => {
   return (
     <>
     <NavBar state={{ id: id }}/>
-    <div style={{padding:"20px", display:"inline-block"}}>
-    <Card sx={{justifyContent:"center", width:"100%", p:4}}>
+    <div
+      className='background'
+      style={{
+          display: "flex",
+          width: "100%",
+          height: "100vh",
+          alignItems: "center",
+          flexDirection: "column",
+        }}>
+    <Card sx={{width:"50%", p: 5, mt: 5}}>
       <Typography variant="h4">
         Order Details
       </Typography>
@@ -38,8 +46,7 @@ const OrderDetails = () => {
         <Typography sx={{mt:4}}>Total Estimated Cost: ${car.cost}</Typography>
         <Typography sx={{mt:1}}>Credit card receipt will be emailed to the customer.</Typography>
       </div>}
-    </Card>
-    <div  style={{paddingTop:"20px"}}>
+      <div  style={{paddingTop:"70px"}}>
     <Link to={"/Rent"}
                     state={{ id:id }}
                     style={{'textDecoration':'none'}}>
@@ -48,6 +55,8 @@ const OrderDetails = () => {
                 </Button>
             </Link>
     </div>
+    </Card>
+    
     </div>
     </>
   );

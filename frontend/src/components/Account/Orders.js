@@ -5,7 +5,7 @@ import "../../css/rent.css";
 import axios from "axios";
 import { useLocation } from 'react-router-dom'
 import NavBar from '../layouts/NavBar.js'
-
+import { Card } from "@mui/material";
 
 import { RENTALS_API_URL, CARTYPE_API_URL, CARS_API_URL, BRANCH_API_URL } from "../../constants";
 
@@ -117,8 +117,17 @@ const Orders = () => {
   return (
     <>
       <NavBar state={{ id: id }}/>
-      <div>
-      <div className="wrapper">
+      <div
+      className='background'
+      style={{
+          display: "flex",
+          width: "100%",
+          height: "100vh",
+          alignItems: "center",
+          flexDirection: "column",
+        }}>
+      <Card sx={{width:"85%", p: 5, mt: 5}}>
+        <div className="wrapper">
         <section className="container-branch">
             <Typography variant="h3" sx={{pb:5}}>Account Orders</Typography>
           <Typography>Past Transactions:</Typography>
@@ -127,12 +136,10 @@ const Orders = () => {
                 <DataGrid rows={newRows} columns={columns} onCellClick={cellClick} />}
           </div>
         </section>
-
-       
       </div>
+        </Card>
     </div>
     </>
-    
   );
 };
 
