@@ -114,7 +114,7 @@ function App() {
         style={{
           display: "flex",
           width: "100%",
-          height: "250vh",
+          height: "210vh",
           alignItems: "center",
           flexDirection: "column",
         }}
@@ -199,7 +199,7 @@ function App() {
             It's not the destination, it's the journey.
           </Typography>
         </div>
-        <Card sx={{width:'50%', height:'80vh', mb:10}}>
+        <Card sx={{width:'50%', height:'750px', mb:10}}>
           <DemoCarousel />
         </Card>
       </div>

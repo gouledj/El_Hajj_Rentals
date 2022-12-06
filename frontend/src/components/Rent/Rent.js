@@ -19,6 +19,7 @@ import axios from "axios";
 import moment from "moment";
 import { useLocation, location } from 'react-router-dom'
 import NavBar from '../layouts/NavBar.js'
+import { Card } from "@mui/material";
 
 
 import { BRANCH_API_URL, CARTYPE_API_URL } from "../../constants";
@@ -91,7 +92,16 @@ const Rent = () => {
   return (
     <>
     <NavBar state={{ id: id }}/>
-    <div>
+    <div
+      className='background'
+      style={{
+          display: "flex",
+          width: "100%",
+          height: "120vh",
+          alignItems: "center",
+          flexDirection: "column",
+        }}>
+      <Card sx={{width:"80%", p: 5, mt: 5}}>
       <div className="steps">
         <RentStepper currentStep={{ step: 0 }} id="steps" />
       </div>
@@ -172,6 +182,8 @@ const Rent = () => {
           </div>
         </div>
       </div>
+      </Card>
+      
     </div>
     </>
     
