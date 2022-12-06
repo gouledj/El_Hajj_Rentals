@@ -14,11 +14,11 @@ import CarView from './components/EmployeeDashboard/CarView.js'
 import AddBranch from './components/EmployeeDashboard/AddBranch.js'
 import BranchSelect from './components/EmployeeDashboard/BranchSelect.js'
 import BranchInfo from './components/EmployeeDashboard/BranchInfo.js'
+import TransactionView from './components/EmployeeDashboard/TransactionView.js'
 import SignUp from "./components/signUp/signUp.js"
 import BranchStats from "./components/EmployeeDashboard/BranchStats.js"
 import Account from "./components/Account/Account.js"
-import { useEffect, useState, useMemo } from "react";
-import Orders from "./components/Account/Orders.js"
+import { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -41,14 +41,7 @@ function App() {
   const [passwords, setPasswords] = useState([]);
   const [customers, setCustomers] = useState([]);
 
-
-  const token = useMemo(() => {
-    return localStorage.getItem('Login Status')
-  }, [])
-
-  const [loginStatus, setloginStatus] = useState(new Boolean(token))
-
-
+  const [loginStatus, setloginStatus] = useState(false)
 
   const [customerID, setCustomerID] = useState(0);
   const navigate = useNavigate()
@@ -62,27 +55,6 @@ function App() {
       })
 
   }, []);
-
-
-  useEffect(() => {
-
-    const data = window.localStorage.getItem("Login Status")
-    if (data !== null) setloginStatus(JSON.parse(data))
-
-    console.log("STATUS", loginStatus)
-
-    // if (loginStatus === true) {
-    //   navigate('/Rent')
-
-
-    // }
-
-  }, [])
-
-  useEffect(() => {
-    window.localStorage.setItem("Login Status", JSON.stringify(loginStatus))
-
-  }, [loginStatus])
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -177,11 +149,14 @@ function App() {
       </ThemeProvider>
     )
   }
+
+
   return (
     <div className="App">
       <NavBar />
       <Routes>
         <Route path="/" element={LoginPage()} />
+        <Route exact path="/Home" element={loginStatus ? <Home /> : LoginPage()} />
         <Route exact path="/Rent" element={loginStatus ? <Rent /> : LoginPage()} />
         <Route exact path="/Payments" element={loginStatus ? <Payments /> : LoginPage()} />
         <Route exact path="/Login" element={loginStatus ? <Login /> : LoginPage()} />
@@ -192,11 +167,11 @@ function App() {
         <Route exact path="/BranchStats" element={loginStatus ? <BranchStats /> : LoginPage()} />
         <Route exact path="/SignUp" element={<SignUp />} />
         <Route exact path="/Account" element={loginStatus ? <Account /> : LoginPage()} />
-        <Route exact path="/Orders" element={loginStatus ? <Orders /> : LoginPage()} />
         <Route exact path="/EmployeeDashBoard" element={loginStatus ? <EmployeeDashboard /> : LoginPage()} />
         <Route exact path="/ReturnCar" element={loginStatus ? <ReturnCar /> : LoginPage()} />
         <Route exact path="/CarView" element={loginStatus ? <CarView /> : LoginPage()} />
         <Route exact path="/AddBranch" element={loginStatus ? <AddBranch /> : LoginPage()} />
+        <Route exact path="/TransactionView" element={loginStatus ? <TransactionView /> : LoginPage()} />
       </Routes>
 
     </div>
