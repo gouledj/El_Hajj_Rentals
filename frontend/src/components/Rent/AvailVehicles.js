@@ -8,6 +8,7 @@ import RentStepper from '../layouts/RentStepper.js'
 import axios from "axios";
 import moment from "moment";
 import { VehicleImages } from "./VehicleImages.js"
+import NavBar from '../layouts/NavBar.js'
 
 import { CARS_API_URL, CARTYPE_API_URL, RENTALS_API_URL } from "../../constants";
 
@@ -45,8 +46,8 @@ const AvailVehicles = () => {
   const [rentals, setRentals] = useState([]);
 
   const location = useLocation()
-  const { type, branch, from, to, customerID } = location.state;
-  console.log("customer id: " + customerID)
+  const { type, branch, from, to, id } = location.state;
+  console.log("customer id: " + id)
 
   useEffect(() => {
 
@@ -54,7 +55,7 @@ const AvailVehicles = () => {
       .then((response) => {
         setCars(response.data);
       })
-      .catch(console.log("error or loading"))
+      //.catch(console.log("error or loading"))
 
       axios.get(CARTYPE_API_URL)
       .then((response) => {
@@ -64,13 +65,13 @@ const AvailVehicles = () => {
           }
         }
       })
-      .catch(console.log("error or loading"))
+      //.catch(console.log("error or loading"))
 
     axios.get(RENTALS_API_URL)
     .then((response) => {
       setRentals(response.data);
     })
-    .catch(console.log("error or loading"))
+    //.catch(console.log("error or loading"))
 
   }, []);
 
@@ -142,6 +143,8 @@ const AvailVehicles = () => {
   ];
 
   return (
+    <>
+    <NavBar state={{ id: id }}/>
     <div>
       <div className="wrapper">
       <div className="steps">
@@ -160,7 +163,7 @@ const AvailVehicles = () => {
 
         <div className="container-buttons">
           <div className="backb">
-            <Button variant="contained" component={Link} to={"/Rent"} state={{id:customerID}}>
+            <Button variant="contained" component={Link} to={"/Rent"} state={{id:id}}>
               Back
             </Button>
           </div>
@@ -172,7 +175,7 @@ const AvailVehicles = () => {
                               from: flipDate(from) ,
                               to:flipDate(to),
                               car:carSelect,
-                              customerID:customerID }}
+                              id:id }}
                     style={{'textDecoration':'none'}}>
                 <Button variant="contained" >
                   Next
@@ -185,6 +188,8 @@ const AvailVehicles = () => {
         </div>
       </div>
     </div>
+    </>
+    
   );
 };
 

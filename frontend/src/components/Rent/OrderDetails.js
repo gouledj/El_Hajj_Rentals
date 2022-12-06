@@ -4,24 +4,27 @@ import { Link, useLocation } from "react-router-dom";
 import { Card, Typography } from "@mui/material";
 import axios from "axios";
 import { CUSTOMER_API_URL } from "../../constants";
+import NavBar from '../layouts/NavBar.js'
 
 const OrderDetails = () => {
 
   const location = useLocation();
-  const { name, branch, from, to, car, card, customerID } = location.state;
+  const { name, branch, from, to, car, card, id} = location.state;
   const [customer, setCustomer] = useState(null);
 
-  console.log("customer id: " + customerID)
+  console.log("customer id: " + id)
   console.log(car)
 
   useEffect(() => {
-    console.log(customerID)
-    axios.get(CUSTOMER_API_URL + customerID + "/")
+    console.log(id)
+    axios.get(CUSTOMER_API_URL + id + "/")
     .then((response) => {
        setCustomer(response.data)})
 }, []);
 
   return (
+    <>
+    <NavBar state={{ id: id }}/>
     <div style={{padding:"20px", display:"inline-block"}}>
     <Card sx={{justifyContent:"center", width:"100%", p:4}}>
       <Typography variant="h4">
@@ -37,11 +40,16 @@ const OrderDetails = () => {
       </div>}
     </Card>
     <div  style={{paddingTop:"20px"}}>
-      <Button variant="contained" component={Link} to={"/Rent"}>
-        Done
-      </Button>
+    <Link to={"/Rent"}
+                    state={{ id:id }}
+                    style={{'textDecoration':'none'}}>
+                <Button variant="contained" >
+                  Done
+                </Button>
+            </Link>
     </div>
     </div>
+    </>
   );
 };
 
