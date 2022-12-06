@@ -15,6 +15,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import moment from "moment";
+import NavBar from '../layouts/NavBar.js';
 
 import {
   BRANCH_API_URL,
@@ -36,6 +37,10 @@ const ReturnDetails = () => {
   const [lateFee, setLateFee] = useState(0);
   const [total, setTotal] = useState(0);
   const [open, setOpen] = React.useState(false);
+
+  const { id } = location.state;
+  console.log("customer id: " + id)
+
   const handleReturnDate = (returnDate) => {
     // need to figure out which transaction
     setReturnDate(returnDate);
@@ -163,7 +168,9 @@ const ReturnDetails = () => {
   }
 
   return (
-    <div>
+    <>
+      <NavBar state={{ id: id }}/>
+      <div>
       <div className="container-avail">
         <h1>Transaction Details</h1>
       </div>
@@ -175,6 +182,7 @@ const ReturnDetails = () => {
           variant="contained"
           component={Link}
           to={{ pathname: "/BranchSelect" }}
+          state={{id:id}}
         >
           Back
         </Button>
@@ -270,6 +278,8 @@ const ReturnDetails = () => {
         Confirm
       </Button>
     </div>
+    </>
+    
   );
 };
 export default ReturnDetails;

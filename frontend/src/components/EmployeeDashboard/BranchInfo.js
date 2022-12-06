@@ -13,6 +13,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { VehicleImages } from "../Rent/VehicleImages.js"
 import CarTypes from "../../constants/CarTypes";
 import axios from 'axios';
+import NavBar from '../layouts/NavBar.js';
 
 import "../../css/rent.css";
 
@@ -21,7 +22,8 @@ import { CARS_API_URL, BRANCH_API_URL, RENTALS_API_URL, CUSTOMER_API_URL } from 
 const BranchInfo = () => {
 
     let location = useLocation();
-    const branch = location.state.branch;
+    const { branch, id } = location.state;
+    console.log("customer id: " + id)
 
     const [deleteOpen, setDeleteOpen] = React.useState(false);
     const [transferOpen, setTransferOpen] = React.useState(false);
@@ -246,7 +248,9 @@ const BranchInfo = () => {
 
 
     return (
-        <div>
+        <>
+            <NavBar state={{ id: id }}/>
+            <div>
             <div className="container-avail">
                 <h1>Employee Dashboard</h1>
                 <h3>Branch Information for {branch.unitNumber}-{branch.streetNumber} {branch.streetName}</h3>
@@ -254,7 +258,7 @@ const BranchInfo = () => {
             </div>
             <div className="container-buttons">
                 <div className="backb">
-                    <Button variant="contained" component={Link} to={'/BranchSelect'}>
+                    <Button variant="contained" component={Link} to={'/BranchSelect'} state={{id:id}}>
                         Back
                     </Button>
                 </div>
@@ -265,7 +269,8 @@ const BranchInfo = () => {
                         component={Link}
                         to={{ pathname: '/BranchStats', }}
                         state={{
-                            branch: branch
+                            branch: branch,
+                            id: id,
                         }}>
                         Branch Statistics
                     </Button>
@@ -291,6 +296,7 @@ const BranchInfo = () => {
                             to={{ pathname: '/CarView' }}
                             state={{
                                 branch: location.state.branch,
+                                id: id,
                             }}>
                             Add Car
                         </Button>
@@ -304,6 +310,7 @@ const BranchInfo = () => {
                             state={{
                                 branch: location.state.branch,
                                 car: selectedCar,
+                                id: id,
                             }}>
                             Edit Car Details
                         </Button>
@@ -406,6 +413,8 @@ const BranchInfo = () => {
                 </DialogActions>
             </Dialog>
         </div>
+        </>
+        
     )
 }
 
