@@ -20,6 +20,7 @@ import SignUp from "./components/signUp/signUp.js";
 import BranchStats from "./components/EmployeeDashboard/BranchStats.js";
 import TransactionView from "./components/EmployeeDashboard/TransactionView.js";
 import Account from "./components/Account/Account.js";
+import Logout from "./components/Account/Logout.js";
 import { useEffect, useState, useMemo } from "react";
 import Orders from "./components/Account/Orders.js";
 import TextField from "@mui/material/TextField";
@@ -262,6 +263,11 @@ function App() {
           exact
           path="/Account"
           element={loginStatus ? <Account /> : LoginPage()}
+        />
+        <Route
+          exact
+          path="/Logout"
+          element={loginStatus ? <Logout /> : LoginPage()}
         />
         <Route
           exact
