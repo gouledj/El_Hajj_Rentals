@@ -8,7 +8,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { DataGrid } from "@mui/x-data-grid";
-import dayjs from "dayjs";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -18,8 +17,9 @@ import "../../css/rent.css";
 import RentStepper from '../layouts/RentStepper.js'
 import axios from "axios";
 import moment from "moment";
-import { Dayjs } from 'dayjs'
 import { useLocation, location } from 'react-router-dom'
+import NavBar from '../layouts/NavBar.js'
+import { Card } from "@mui/material";
 
 
 import { BRANCH_API_URL, CARTYPE_API_URL } from "../../constants";
@@ -33,23 +33,21 @@ const Rent = () => {
   const [carType, setCarType] = useState([]);
 
   const location = useLocation();
-
-  const { state } = location
-
-  console.log("RENTT", state.id)
+  const { id } = location.state;
+  console.log("CURRENT ID: ", location.state)
 
   useEffect(() => {
     axios.get(BRANCH_API_URL)
       .then((response) => {
         setBranches(response.data);
       })
-      .catch(console.log("error or loading"))
+      //.catch(console.log("error or loading"))
 
     axios.get(CARTYPE_API_URL)
       .then((response) => {
         setCarType(response.data);
       })
-      .catch(console.log("error or loading"))
+      //.catch(console.log("error or loading"))
   }, []);
 
   const newRows = [];
@@ -92,7 +90,18 @@ const Rent = () => {
   }
 
   return (
-    <div>
+    <>
+    <NavBar state={{ id: id }}/>
+    <div
+      className='background'
+      style={{
+          display: "flex",
+          width: "100%",
+          height: "120vh",
+          alignItems: "center",
+          flexDirection: "column",
+        }}>
+      <Card sx={{width:"80%", p: 5, mt: 5}}>
       <div className="steps">
         <RentStepper currentStep={{ step: 0 }} id="steps" />
       </div>
@@ -161,7 +170,7 @@ const Rent = () => {
                           branch: branchSelect,
                           from: getDate(from),
                           to: getDate(to),
-                          customerID: state.id }}
+                          id: id }}
                 style={{ 'textDecoration': 'none' }}>
                 <Button variant="contained" >
                   Next
@@ -173,7 +182,11 @@ const Rent = () => {
           </div>
         </div>
       </div>
+      </Card>
+      
     </div>
+    </>
+    
   );
 };
 

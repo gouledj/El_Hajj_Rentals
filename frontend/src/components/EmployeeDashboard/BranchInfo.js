@@ -13,6 +13,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { VehicleImages } from "../Rent/VehicleImages.js"
 import CarTypes from "../../constants/CarTypes";
 import axios from 'axios';
+import NavBar from '../layouts/NavBar.js';
 
 import "../../css/rent.css";
 
@@ -21,7 +22,8 @@ import { CARS_API_URL, BRANCH_API_URL, RENTALS_API_URL, CUSTOMER_API_URL } from 
 const BranchInfo = () => {
 
     let location = useLocation();
-    const branch = location.state.branch;
+    const { branch, id } = location.state;
+    console.log("customer id: " + id)
 
     const [deleteOpen, setDeleteOpen] = React.useState(false);
     const [transferOpen, setTransferOpen] = React.useState(false);
@@ -33,6 +35,7 @@ const BranchInfo = () => {
     const [branches, setBranches] = React.useState([]);
     const [selectedBranch, setSelectedBranch] = React.useState('');
     const [transactions, setTransactions] = React.useState([]);
+    const [selectedTransaction, setSelectedTransaction] = React.useState([]);
     const [customers, setCustomers] = React.useState([]);
 
     const getCustomers = () => {
@@ -126,20 +129,24 @@ const BranchInfo = () => {
     const getSelectedCar = (id) => {
         let car = cars.find((car) => car.carID === id);
         setSelectedCar(car);
-        console.log(car);
+    }
+
+    const getSelectedTransaction = (id) => {
+        let transaction = transactions.find((transaction) => transaction.rentalID === id);
+        setSelectedTransaction(transaction);
     }
 
     const deleteSelectedCar = () => {
         axios.delete(CARS_API_URL + selectedCar.carID)
             .then(function (response) {
-                console.log(response);
+                setSelectedCar([]);
             })
             .catch(function (error) {
                 console.log(error);
             });
         cars.splice(cars.indexOf(selectedCar), 1);
 
-        setSelectedCar([]);
+
         handleDeleteClose();
     }
 
@@ -233,8 +240,12 @@ const BranchInfo = () => {
         transRows.push(entry);
     }
 
-    const handleEvent = (event) => {
+    const handleCarEvent = (event) => {
         getSelectedCar(event.row.id);
+    }
+
+    const handleTransactionEvent = (event) => {
+        getSelectedTransaction(event.row.id);
     }
 
     const canTransfer = () => {
@@ -246,166 +257,197 @@ const BranchInfo = () => {
 
 
     return (
-        <div>
-            <div className="container-avail">
-                <h1>Employee Dashboard</h1>
-                <h3>Branch Information for {branch.unitNumber}-{branch.streetNumber} {branch.streetName}</h3>
-                <h3>{branch.city}, {branch.province}</h3>
-            </div>
-            <div className="container-buttons">
-                <div className="backb">
-                    <Button variant="contained" component={Link} to={'/BranchSelect'}>
-                        Back
-                    </Button>
+        <>
+            <NavBar state={{ id: id }} />
+            <div>
+                <div className="container-avail">
+                    <h1>Employee Dashboard</h1>
+                    <h3>Branch Information for {branch.unitNumber}-{branch.streetNumber} {branch.streetName}</h3>
+                    <h3>{branch.city}, {branch.province}</h3>
                 </div>
-                <div className="nextb">
-                    <Button
-                        variant="contained"
-                        disabled={branch.branchID === undefined}
-                        component={Link}
-                        to={{ pathname: '/BranchStats', }}
-                        state={{
-                            branch: branch
-                        }}>
-                        Branch Statistics
-                    </Button>
-                </div>
-            </div>
-            <div className="wrapper">
                 <div className="container-buttons">
-                    <Typography>Current cars assigned to branch:</Typography>
-                    <div style={{ height: 400, width: "auto" }}>
-                        <DataGrid
-                            rows={carRows}
-                            columns={carColumns}
-                            getRowHeight={() => 'auto'}
-                            onRowClick={handleEvent}
-                        />
+                    <div className="backb">
+                        <Button variant="contained" component={Link} to={'/BranchSelect'} state={{ id: id }}>
+                            Back
+                        </Button>
                     </div>
-                    <div className="emp-dash-button">
+                    <div className="nextb">
                         <Button
-                            sx={{ float: 'right' }}
-                            id="add"
                             variant="contained"
+                            disabled={branch.branchID === undefined}
                             component={Link}
-                            to={{ pathname: '/CarView' }}
+                            to={{ pathname: '/BranchStats', }}
                             state={{
-                                branch: location.state.branch,
+                                branch: branch,
+                                id: id,
                             }}>
-                            Add Car
+                            Branch Statistics
                         </Button>
-                        <Button
-                            sx={{ float: 'right', mr: 1 }}
-                            disabled={selectedCar.length === 0}
-                            id="edit"
-                            variant="contained"
-                            component={Link}
-                            to={{ pathname: '/CarView' }}
-                            state={{
-                                branch: location.state.branch,
-                                car: selectedCar,
-                            }}>
-                            Edit Car Details
-                        </Button>
-                        <Button
-                            sx={{ float: 'right', mr: 1 }}
-                            disabled={selectedCar.length === 0 || !canTransfer()}
-                            id="delete"
-                            variant="contained"
-                            onClick={handleDeleteClickOpen}
-                        >
+                    </div>
+                </div>
+
+
+                <div className="wrapper">
+                    {/* Car Inventory portion of the dashboard */}
+                    <div className="container-buttons">
+                        <Typography>Current cars assigned to branch:</Typography>
+                        <div style={{ height: 400, width: "auto" }}>
+                            <DataGrid
+                                rows={carRows}
+                                columns={carColumns}
+                                getRowHeight={() => 'auto'}
+                                onRowClick={handleCarEvent}
+                            />
+                        </div>
+                        <div className="emp-dash-button">
+                            <Button
+                                sx={{ float: 'right' }}
+                                id="add"
+                                variant="contained"
+                                component={Link}
+                                to={{ pathname: '/CarView' }}
+                                state={{
+                                    branch: location.state.branch,
+                                    id: id,
+                                }}>
+                                Add Car
+                            </Button>
+                            <Button
+                                sx={{ float: 'right', mr: 1 }}
+                                disabled={selectedCar.length === 0}
+                                id="edit"
+                                variant="contained"
+                                component={Link}
+                                to={{ pathname: '/CarView' }}
+                                state={{
+                                    branch: location.state.branch,
+                                    car: selectedCar,
+                                    id: id,
+                                }}>
+                                Edit Car Details
+                            </Button>
+                            <Button
+                                sx={{ float: 'right', mr: 1 }}
+                                disabled={selectedCar.length === 0 || !canTransfer()}
+                                id="delete"
+                                variant="contained"
+                                onClick={handleDeleteClickOpen}
+                            >
+                                Delete Car
+                            </Button>
+                            <Button
+                                sx={{ float: 'right', mr: 1 }}
+                                disabled={selectedCar.length === 0 || !canTransfer()}
+                                id="transfer"
+                                variant="contained"
+                                onClick={handleTransferClickOpen}
+                            >
+                                Transfer Car
+                            </Button>
+                        </div>
+                    </div>
+
+
+                    {/* Transactions portion of the dashboard */}
+                    <div className="container-avail">
+                        <Typography sx={{ mt: 4 }}>Recent transactions:</Typography>
+                        <div style={{ height: 400, width: "auto" }}>
+                            <DataGrid rows={transRows}
+                                columns={transColumns}
+                                getRowHeight={() => 'auto'}
+                                onRowClick={handleTransactionEvent} />
+                        </div>
+                        <div className="emp-dash-button">
+                            <Button
+                                sx={{ float: 'right', mb: 6 }}
+                                id="add"
+                                variant="contained"
+                                disabled={selectedTransaction.length === 0}
+                                component={Link}
+                                to={{ pathname: '/TransactionView' }}
+                                state={{
+                                    branch: location.state.branch,
+                                    transaction: selectedTransaction,
+                                    id: id,
+                                }}>
+                                View Transaction Details
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                {/* Delete Car Dialog */}
+                <Dialog
+                    open={deleteOpen}
+                    onClose={handleDeleteClose}
+                    aria-labelledby="alert-delete-car"
+                    aria-describedby="alert-delete-car-description"
+                >
+                    <DialogTitle id="alert-delete-car">
+                        {"Delete this car?"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-delete-car-description">
+                            Are you sure you want to delete this {manufacturer} {model} from
+                            the branch database?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleDeleteClose} autoFocus>No</Button>
+                        <Button onClick={deleteSelectedCar} variant="contained">
                             Delete Car
                         </Button>
-                        <Button
-                            sx={{ float: 'right', mr: 1 }}
-                            disabled={selectedCar.length === 0 || !canTransfer()}
-                            id="transfer"
-                            variant="contained"
-                            onClick={handleTransferClickOpen}
-                        >
+                    </DialogActions>
+                </Dialog>
+
+                {/* Transfer Car Dialog */}
+                <Dialog
+                    open={transferOpen}
+                    onClose={handleTransferClose}
+                    aria-labelledby="alert-transfer-car"
+                    aria-describedby="alert-transfer-car-description"
+                >
+                    <DialogTitle id="alert-delete-car">
+                        {"Transfer this car?"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-delete-car-description">
+                            Which branch do you want to transfer this {manufacturer} {model} to?
+                        </DialogContentText>
+                        <Box>
+                            <FormControl fullWidth>
+                                <InputLabel id="branch-select-label">
+                                    Branch
+                                </InputLabel>
+                                <Select
+                                    labelId="branch-select-label"
+                                    id="branch-select"
+                                    value={selectedBranch.branchID}
+                                    label="Branch"
+                                    onChange={handleChange}
+                                >
+                                    {branches.map((branch) => (
+                                        <MenuItem key={branch.branchID} value={branch.branchID}>
+                                            {branch.unitNumber}-{branch.streetNumber} {branch.streetName}, {branch.city} {branch.province}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleTransferClose} autoFocus>No</Button>
+                        <Button disabled={selectedBranch.length === 0}
+                            onClick={transferSelectedCar} variant="contained">
                             Transfer Car
                         </Button>
-                    </div>
-
-                </div>
-                <div className="container-avail">
-                    <Typography sx={{ mt: 4 }}>Recent transactions:</Typography>
-                    <div style={{ height: 400, width: "auto" }}>
-                        <DataGrid rows={transRows} columns={transColumns} />
-                    </div>
-                </div>
+                    </DialogActions>
+                </Dialog>
             </div>
+        </>
 
-
-
-            {/* Delete Car Dialog */}
-            <Dialog
-                open={deleteOpen}
-                onClose={handleDeleteClose}
-                aria-labelledby="alert-delete-car"
-                aria-describedby="alert-delete-car-description"
-            >
-                <DialogTitle id="alert-delete-car">
-                    {"Delete this car?"}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-delete-car-description">
-                        Are you sure you want to delete this {manufacturer} {model} from
-                        the branch database?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleDeleteClose} autoFocus>No</Button>
-                    <Button onClick={deleteSelectedCar} variant="contained">
-                        Delete Car
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-            {/* Transfer Car Dialog */}
-            <Dialog
-                open={transferOpen}
-                onClose={handleTransferClose}
-                aria-labelledby="alert-transfer-car"
-                aria-describedby="alert-transfer-car-description"
-            >
-                <DialogTitle id="alert-delete-car">
-                    {"Transfer this car?"}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-delete-car-description">
-                        Which branch do you want to transfer this {manufacturer} {model} to?
-                    </DialogContentText>
-                    <Box>
-                        <FormControl fullWidth>
-                            <InputLabel id="branch-select-label">
-                                Branch
-                            </InputLabel>
-                            <Select
-                                labelId="branch-select-label"
-                                id="branch-select"
-                                value={branch.branchID}
-                                label="Branch"
-                                onChange={handleChange}
-                            >
-                                {branches.map((branch) => (
-                                    <MenuItem key={branch.branchID} value={branch.branchID}>
-                                        {branch.unitNumber}-{branch.streetNumber} {branch.streetName}, {branch.city} {branch.province}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Box>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleTransferClose} autoFocus>No</Button>
-                    <Button disabled={selectedBranch.length === 0}
-                        onClick={transferSelectedCar} variant="contained">
-                        Transfer Car
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </div>
     )
 }
 

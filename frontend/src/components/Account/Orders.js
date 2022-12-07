@@ -3,8 +3,9 @@ import { Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import "../../css/rent.css";
 import axios from "axios";
-import { useLocation, location } from 'react-router-dom'
-
+import { useLocation } from 'react-router-dom'
+import NavBar from '../layouts/NavBar.js'
+import { Card } from "@mui/material";
 
 import { RENTALS_API_URL, CARTYPE_API_URL, CARS_API_URL, BRANCH_API_URL } from "../../constants";
 
@@ -16,7 +17,8 @@ const Orders = () => {
   const [rentalSelect, setRentalSelect] = useState(null);
 
   const location = useLocation();
-  const { state } = location
+  const { id } = location.state;
+  console.log("CURRENT ID: ", location.state)
 
   //console.log("Past Orders", state.id) //not getting id rn 
 
@@ -77,7 +79,7 @@ const Orders = () => {
   const newRows = [];
   if(rentals && cars && carTypes && branches){
     for (let i = 0; i < rentals.length; i++) {
-        if(rentals[i].customerID === 123){ //will change when we can pass the id
+        if(rentals[i].customerID === id){ //will change when we can pass the id
             const entry = {
                 id: i + 1,
                 rentalID: rentals[i].rentalID,
@@ -113,8 +115,19 @@ const Orders = () => {
 
 
   return (
-    <div>
-      <div className="wrapper">
+    <>
+      <NavBar state={{ id: id }}/>
+      <div
+      className='background'
+      style={{
+          display: "flex",
+          width: "100%",
+          height: "100vh",
+          alignItems: "center",
+          flexDirection: "column",
+        }}>
+      <Card sx={{width:"85%", p: 5, mt: 5}}>
+        <div className="wrapper">
         <section className="container-branch">
             <Typography variant="h3" sx={{pb:5}}>Account Orders</Typography>
           <Typography>Past Transactions:</Typography>
@@ -123,10 +136,10 @@ const Orders = () => {
                 <DataGrid rows={newRows} columns={columns} onCellClick={cellClick} />}
           </div>
         </section>
-
-       
       </div>
+        </Card>
     </div>
+    </>
   );
 };
 

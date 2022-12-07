@@ -1,78 +1,97 @@
+.background {
+    background-image: url("../images/login.jpg");
+    background-size: cover;
+    background-position: left 50% bottom 50%;
+}
+
 .wrapper {
-  padding: 10px;
+    padding: 10px;
+}
+
+.wrapper.header {
+    padding-top: 0px;
 }
 
 .container-class {
-  padding: 20px;
+    padding: 20px;
 }
 
 .container-branch {
-  padding: 20px;
+    padding: 20px;
 }
 
 .container-date {
-  padding: 20px;
+    padding: 20px;
 }
 
 .container-avail {
-  padding: 20px;
+    padding: 20px;
+}
+
+.container-avail.header {
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 .container-payment {
-  padding: 20px;
+    padding: 20px;
 }
 
 .container-buttons {
-  padding: 20px;
-  padding-bottom: 20px;
+    padding: 20px;
+    padding-bottom: 20px;
 }
 
 .nextb {
-  float: right;
+    float: right;
 }
 
 .backb {
-  float: left;
+    float: left;
 }
 
 .emp-dash-button {
-  margin-top: 7px;
-  margin-left: 4px;
-  margin-right: 4px;
+    margin-top: 7px;
+    margin-left: 4px;
+    margin-right: 4px;
 }
 
 .steps {
-  padding-top: 20px;
-  padding-bottom: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .emp-add-box {
-  display: flex;
-  justify-content: center;
-  padding-top: 20px;
+    margin: auto;
+    padding-top: 20px;
+    width: 75%;
 }
 
-.entry-box {
-  width: 100%;
-  padding-right: 100px;
-}
+
 
 .emp-add-text-input {
-  width: 100%;
+    width: 100%;
 }
 
 .license-search {
-  padding: 30px;
+    padding: 30px;
+    padding-top: 20px;
 }
 
-.search-button {
-  float: right;
+.search {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.search.button {
+    margin-left: 10px;
 }
 
 .next-button {
-  float: right;
+    float: right;
 }
 
 .detail-button {
-  padding: 10px;
+    padding: 10px;
 }

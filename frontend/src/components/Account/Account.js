@@ -1,24 +1,18 @@
 import * as React from 'react';
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import Stack from "@mui/material/Stack";
-import dayjs from "dayjs";
+import NavBar from '../layouts/NavBar.js'
+import { useLocation } from 'react-router-dom'
+import { Card } from "@mui/material";
 
 import { CUSTOMER_API_URL } from "../../constants";
 
@@ -37,24 +31,29 @@ const About = () => {
     const [unitNumber, setUnitNumber] = useState('unit number');
     const [load, setLoad] = useState(false);
 
+    const location = useLocation();
+    const { id } = location.state;
+    console.log("CURRENT ID: ", location.state)
+
     useEffect(() => {
         axios.get(CUSTOMER_API_URL)
         .then((response) => {
            setCustomers(response.data);
            setLoad(true);
-           response.data.map((item,id) => {
-            setFirstName(item.firstName)
-            setLastName(item.lastName)
-            setEmail(item.email)
-            setPhoneNumber(item.customerPhone)
-            setDriversLicense(item.driversLicense)
-            setProvince(item.province)
-            setCity(item.city)
-            setPostalCode(item.postalCode)
-            setStreetNumber(item.streetNumber)
-            setStreetName(item.streetName)
-            setUnitNumber(item.unitNumber)
-           })
+          response.data.map((item, id) => {
+              setFirstName(item.firstName)
+              setLastName(item.lastName)
+              setEmail(item.email)
+              setPhoneNumber(item.customerPhone)
+              setDriversLicense(item.driversLicense)
+              setProvince(item.province)
+              setCity(item.city)
+              setPostalCode(item.postalCode)
+              setStreetNumber(item.streetNumber)
+              setStreetName(item.streetName)
+              setUnitNumber(item.unitNumber)
+             })
+           
         })
         .catch()
 
@@ -105,7 +104,7 @@ const About = () => {
     };
 
     const delete2 = () => {
-        axios.delete(CUSTOMER_API_URL + '2/');
+        axios.delete(CUSTOMER_API_URL + id + '/');
         console.log("delete successful");
     }
 
@@ -123,7 +122,7 @@ const About = () => {
         postalCode: data.get('postalCode'),
         streetNumber: data.get('streetNumber')
       })
-      const res = axios.put(CUSTOMER_API_URL + '1/', {
+      const res = axios.put(CUSTOMER_API_URL + id + '/', {
         firstName: data.get('firstName'),
         lastName: data.get('lastName'),
         driversLicense: data.get('driversLicense'),
@@ -145,12 +144,24 @@ const About = () => {
 
 
     return (
-        <ThemeProvider theme={theme}>
+      <>
+        <NavBar state={{ id: id }}/>
+        <div
+      className='background'
+      style={{
+          display: "flex",
+          width: "100%",
+          height: "100vh",
+          alignItems: "center",
+          flexDirection: "column",
+        }}>
+      <Card sx={{width:"30%", p: 5, mt: 5}}>
+          <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 1,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -325,6 +336,9 @@ const About = () => {
         </Box>
       </Container>
     </ThemeProvider>
+          </Card>
+        </div>
+      </>
     );
 }
 
