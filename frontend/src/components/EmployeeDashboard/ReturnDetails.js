@@ -29,13 +29,13 @@ const ReturnDetails = () => {
   const [ret, setReturnDate] = useState(Date);
   const [branches, setBranches] = React.useState([]);
   const [branch, setBranch] = React.useState([]);
-  const [cars, setCars] = useState([]);
+  const [car, setCar] = useState([]);
   const [carType, setCarType] = useState([]);
-  const [carSelect, setCarSelect] = useState(null);
   const [rentCost, setRentalCost] = useState(0);
   const [changeBranchFee, setBranchChangeFee] = useState(0);
   const [lateFee, setLateFee] = useState(0);
   const [total, setTotal] = useState(0);
+  const [mileage, setMileage] = useState(0);
   const [open, setOpen] = React.useState(false);
 
   const { id } = location.state;
@@ -107,7 +107,8 @@ const ReturnDetails = () => {
     axios
       .get(CARS_API_URL) //need to create an api where i can grab by typeID and branchID
       .then((response) => {
-        setCars(response.data);
+        setCar(response.data);
+        setMileage(response.data[0].mileage);
       })
       .catch(console.log("error or loading"));
     axios
@@ -156,6 +157,27 @@ const ReturnDetails = () => {
       .catch(function (error) {
         console.log(error);
       });
+
+    console.log(car.carID);
+    axios
+      .put(CARS_API_URL + car[0].carID + "/", {
+        carID: car[0].carID,
+        manufacturer: car[0].manufacturer,
+        model: car[0].model,
+        fuelType: car[0].fuelType,
+        color: car[0].color,
+        licensePlate: car[0].licensePlate,
+        status: car[0].status,
+        mileage: mileage,
+        typeID: car[0].typeID,
+        branchID: car[0].branchID,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   function flipDate(string) {
@@ -165,6 +187,10 @@ const ReturnDetails = () => {
 
     return flipped;
   }
+
+  const handleMileage = (event) => {
+    setMileage(event.target.value);
+  };
 
   return (
     <>
@@ -253,6 +279,13 @@ const ReturnDetails = () => {
                   ))}
               </Select>
             </FormControl>
+            <TextField
+              id="mileage"
+              label="Mileage"
+              variant="outlined"
+              value={mileage}
+              onChange={handleMileage}
+            />
           </div>
         </div>
         <div style={{ padding: "10px" }}>
@@ -281,6 +314,9 @@ const ReturnDetails = () => {
             variant="contained"
             disabled={rentCost + lateFee + changeBranchFee === 0}
             onClick={finalize}
+            component={Link}
+            to={{ pathname: "/BranchSelect" }}
+            state={{ id: id }}
           >
             Confirm
           </Button>
