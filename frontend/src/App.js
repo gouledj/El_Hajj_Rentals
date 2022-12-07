@@ -18,6 +18,7 @@ import BranchSelect from "./components/EmployeeDashboard/BranchSelect.js";
 import BranchInfo from "./components/EmployeeDashboard/BranchInfo.js";
 import SignUp from "./components/signUp/signUp.js";
 import BranchStats from "./components/EmployeeDashboard/BranchStats.js";
+import TransactionView from "./components/EmployeeDashboard/TransactionView.js";
 import Account from "./components/Account/Account.js";
 import { useEffect, useState, useMemo } from "react";
 import Orders from "./components/Account/Orders.js";
@@ -119,7 +120,7 @@ function App() {
           flexDirection: "column",
         }}
       >
-        <Card sx={{ width: "35%", height:'500px', pb: 10, pr: 2, pl: 2, mt: 15 }}>
+        <Card sx={{ width: "35%", height: '500px', pb: 10, pr: 2, pl: 2, mt: 15 }}>
           <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
               <Box
@@ -194,12 +195,12 @@ function App() {
             </Container>
           </ThemeProvider>
         </Card>
-        <div style={{padding:"200px"}}>
-          <Typography variant='h4' sx={{textAlign:"center", color:"#FFF"}}>
+        <div style={{ padding: "200px" }}>
+          <Typography variant='h4' sx={{ textAlign: "center", color: "#FFF" }}>
             It's not the destination, it's the journey.
           </Typography>
         </div>
-        <Card sx={{width:'50%', height:'750px', mb:10}}>
+        <Card sx={{ width: '50%', height: '750px', mb: 10 }}>
           <DemoCarousel />
         </Card>
       </div>
@@ -286,6 +287,11 @@ function App() {
           exact
           path="/AddBranch"
           element={loginStatus ? <AddBranch /> : LoginPage()}
+        />
+        <Route
+          exact
+          path="/TransactionView"
+          element={loginStatus ? <TransactionView /> : LoginPage()}
         />
       </Routes>
     </div>
