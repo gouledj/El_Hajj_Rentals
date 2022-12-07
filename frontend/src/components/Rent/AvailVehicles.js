@@ -13,22 +13,22 @@ import { Card } from "@mui/material";
 
 import { CARS_API_URL, CARTYPE_API_URL, RENTALS_API_URL } from "../../constants";
 
-function calculateDays(from, to){
-  
-  const difference = Math.abs(new Date(to.replace('-','/')) - new Date(from.replace('-','/')));
+function calculateDays(from, to) {
+
+  const difference = Math.abs(new Date(to.replace('-', '/')) - new Date(from.replace('-', '/')));
   const totalDays = Math.ceil(difference / (1000 * 60 * 60 * 24));
   return totalDays;
 };
 
-function calculateCost(days, carType){
+function calculateCost(days, carType) {
   let remaining = days;
   let cost = 0;
-  while( remaining > 0){
-    if(remaining >= 30){
+  while (remaining > 0) {
+    if (remaining >= 30) {
       cost += carType.monthlyCost;
       remaining -= 30;
     }
-    else if (remaining >= 7){
+    else if (remaining >= 7) {
       cost += carType.weeklyCost;
       remaining -= 7;
     }
@@ -56,31 +56,32 @@ const AvailVehicles = () => {
       .then((response) => {
         setCars(response.data);
       })
-      //.catch(console.log("error or loading"))
+    //.catch(console.log("error or loading"))
 
-      axios.get(CARTYPE_API_URL)
+    axios.get(CARTYPE_API_URL)
       .then((response) => {
-        for (let i=0; i <response.data.length; i++){
-          if (response.data[i].typeID === type){
+        for (let i = 0; i < response.data.length; i++) {
+          if (response.data[i].typeID === type) {
             setCarType(response.data[i]);
           }
         }
       })
-      //.catch(console.log("error or loading"))
+    //.catch(console.log("error or loading"))
 
     axios.get(RENTALS_API_URL)
-    .then((response) => {
-      setRentals(response.data);
-    })
+      .then((response) => {
+        setRentals(response.data);
+      })
     //.catch(console.log("error or loading"))
 
   }, []);
 
   const cellClick = (event) => {
+    console.log(event.row);
     setCarSelect(event.row);
   }
 
-  function flipDate(string){
+  function flipDate(string) {
     //Function used to convert Django dates (YYYY-MM-DD) to MM-DD-YYYY
     const [month, day, year] = string.split('-');
     const flipped = [year, month, day].join('-');
@@ -89,16 +90,16 @@ const AvailVehicles = () => {
   }
 
   const available = []
-  for(let item of cars){
+  for (let item of cars) {
     //From all the cars, filter out only the ones that match the carType and branchID
-    if(item.typeID === type && item.branchID === branch.id){
+    if (item.typeID === type && item.branchID === branch.id) {
       //Check existing rentals for conflicts
       var notAvailable = false;
-      for(let i=0; i < rentals.length; i++){
+      for (let i = 0; i < rentals.length; i++) {
         //If a rental exists with the same car
-        if(item.carID === rentals[i].carID){
+        if (item.carID === rentals[i].carID) {
           //Compare the days you want to rent with the current rental to check for conflicts
-          if(((flipDate(from) <= rentals[i].dateTo) && (flipDate(to) >= rentals[i].dateFrom))){
+          if (((flipDate(from) <= rentals[i].dateTo) && (flipDate(to) >= rentals[i].dateFrom))) {
             //Car is already rented out during this period, not available
             console.log("Not available");
             notAvailable = true;
@@ -107,17 +108,17 @@ const AvailVehicles = () => {
       }
       //If we have looped through all rentals and determined its not available, break out and dont add. Otherwise,
       //the car is available and has no active rentals involving it, in this case show as available.
-      if(notAvailable === false && !available.includes(item)){
+      if (notAvailable === false && !available.includes(item)) {
         available.push(item);
       }
     }
   }
-  
+
   const rows = [];
-  if (carType){
-    for(let i = 0; i < available.length; i++){
+  if (carType) {
+    for (let i = 0; i < available.length; i++) {
       const entry = {
-        id: i+1,
+        id: available[i].carID,
         image: VehicleImages(carType.typeID),
         manufacturer: available[i].manufacturer,
         model: available[i].model,
@@ -131,15 +132,17 @@ const AvailVehicles = () => {
   }
 
   const columns = [
-    { field: "image",
+    {
+      field: "image",
       headerName: "Image",
       width: 300,
       renderCell: (params) =>
         <img src={params.value}
-        style={{"width":"200px", "marginLeft":"30px"}}/> },
+          style={{ "width": "200px", "marginLeft": "30px" }} />
+    },
     { field: "manufacturer", headerName: "Manufacturer", width: 150 },
     { field: "model", headerName: "Model", width: 150 },
-    { field: "mileage", headerName: "Mileage", width: 150},
+    { field: "mileage", headerName: "Mileage", width: 150 },
     { field: "fueltype", headerName: "FuelType", width: 150 },
     { field: "colour", headerName: "Colour", width: 150 },
     { field: "cost", headerName: "Estimated Cost", width: 150 },
@@ -147,62 +150,64 @@ const AvailVehicles = () => {
 
   return (
     <>
-    <NavBar state={{ id: id }}/>
-    <div
-      className='background'
-      style={{
+      <NavBar state={{ id: id }} />
+      <div
+        className='background'
+        style={{
           display: "flex",
           width: "100%",
           height: "100vh",
           alignItems: "center",
           flexDirection: "column",
         }}>
-      <Card sx={{width:"80%", p: 5, mt: 5}}>
-      <div className="wrapper">
-      <div className="steps">
-        <RentStepper currentStep={{step:1}} id="steps"/>
-      </div>
-        <div className="container-avail">
-          <Typography>These are our current available vehicles:</Typography>
-          <div style={{ height: 400, width: "auto" }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            getRowHeight={() => 'auto'}
-            onCellClick={cellClick}/>
-          </div>
-        </div>
+        <Card sx={{ width: "80%", p: 5, mt: 5 }}>
+          <div className="wrapper">
+            <div className="steps">
+              <RentStepper currentStep={{ step: 1 }} id="steps" />
+            </div>
+            <div className="container-avail">
+              <Typography>These are our current available vehicles:</Typography>
+              <div style={{ height: 400, width: "auto" }}>
+                <DataGrid
+                  rows={rows}
+                  columns={columns}
+                  getRowHeight={() => 'auto'}
+                  onCellClick={cellClick} />
+              </div>
+            </div>
 
-        <div className="container-buttons">
-          <div className="backb">
-            <Button variant="contained" component={Link} to={"/Rent"} state={{id:id}}>
-              Back
-            </Button>
-          </div>
-          <div className="nextb">
-          {carSelect 
-            ? <Link to={"/Payments"}
-                    state={{ type:type,
-                              branch:branch,
-                              from: flipDate(from) ,
-                              to:flipDate(to),
-                              car:carSelect,
-                              id:id }}
-                    style={{'textDecoration':'none'}}>
-                <Button variant="contained" >
-                  Next
+            <div className="container-buttons">
+              <div className="backb">
+                <Button variant="contained" component={Link} to={"/Rent"} state={{ id: id }}>
+                  Back
                 </Button>
-            </Link>
-            : <Button variant="contained" disabled={true}>
-              Next
-              </Button>}
+              </div>
+              <div className="nextb">
+                {carSelect
+                  ? <Link to={"/Payments"}
+                    state={{
+                      type: type,
+                      branch: branch,
+                      from: flipDate(from),
+                      to: flipDate(to),
+                      car: carSelect,
+                      id: id
+                    }}
+                    style={{ 'textDecoration': 'none' }}>
+                    <Button variant="contained" >
+                      Next
+                    </Button>
+                  </Link>
+                  : <Button variant="contained" disabled={true}>
+                    Next
+                  </Button>}
+              </div>
+            </div>
           </div>
-        </div>
+        </Card>
       </div>
-      </Card>
-    </div>
     </>
-    
+
   );
 };
 
