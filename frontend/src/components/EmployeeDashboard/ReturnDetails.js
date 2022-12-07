@@ -127,6 +127,8 @@ const ReturnDetails = () => {
   const handleChange = (event) => {
     if (event.target.value != location.state.transaction.branchID) {
       setBranchChangeFee(carType.changeBranchFee);
+    } else {
+      setBranchChangeFee(0);
     }
   };
   const handleClose = () => {
@@ -267,25 +269,25 @@ const ReturnDetails = () => {
             </Typography>
           </section>
         </div>
-        <div style={{padding:'10px', paddingTop:"20px"}}>
-        <Button
-          className="backb"
-          sx={{ float: "left" }}
-          variant="contained"
-          component={Link}
-          to={{ pathname: "/BranchSelect" }}
-          state={{ id: id }}
-        >
-          Back
-        </Button>
-        <Button
-          className="nextb"
-          variant="contained"
-          disabled={rentCost + lateFee + changeBranchFee === 0}
-          onClick={finalize}
-        >
-          Confirm
-        </Button>
+        <div style={{ padding: "10px", paddingTop: "20px" }}>
+          <Button
+            className="backb"
+            sx={{ float: "left" }}
+            variant="contained"
+            component={Link}
+            to={{ pathname: "/BranchSelect" }}
+            state={{ id: id }}
+          >
+            Back
+          </Button>
+          <Button
+            className="nextb"
+            variant="contained"
+            disabled={rentCost + lateFee + changeBranchFee === 0}
+            onClick={finalize}
+          >
+            Confirm
+          </Button>
         </div>
       </div>
     </>
