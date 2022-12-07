@@ -9,7 +9,7 @@ import { Select } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
-import NavBar from '../layouts/NavBar.js';
+import NavBar from "../layouts/NavBar.js";
 
 import {
     BRANCH_API_URL,
