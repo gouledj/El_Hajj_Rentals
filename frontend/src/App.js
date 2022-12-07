@@ -18,6 +18,7 @@ import BranchSelect from "./components/EmployeeDashboard/BranchSelect.js";
 import BranchInfo from "./components/EmployeeDashboard/BranchInfo.js";
 import SignUp from "./components/signUp/signUp.js";
 import BranchStats from "./components/EmployeeDashboard/BranchStats.js";
+import TransactionView from "./components/EmployeeDashboard/TransactionView.js";
 import Account from "./components/Account/Account.js";
 import { useEffect, useState, useMemo } from "react";
 import Orders from "./components/Account/Orders.js";
@@ -286,6 +287,11 @@ function App() {
           exact
           path="/AddBranch"
           element={loginStatus ? <AddBranch /> : LoginPage()}
+        />
+        <Route
+          exact
+          path="/TransactionView"
+          element={loginStatus ? <TransactionView /> : LoginPage()}
         />
       </Routes>
     </div>
