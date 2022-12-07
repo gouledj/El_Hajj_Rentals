@@ -15,7 +15,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-const pages = ["Rent", "About", "BranchSelect"];
+const pages = ["Rent", "BranchSelect"];
 const settings = ["Account", "Orders", "Logout"];
 
 function NavBar() {
