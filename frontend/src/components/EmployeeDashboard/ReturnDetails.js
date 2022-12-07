@@ -65,8 +65,6 @@ const ReturnDetails = () => {
     } else {
       setLateFee(0);
     }
-    console.log(rentCost);
-    console.log(lateFee);
   };
 
   function getDate(date) {
@@ -139,13 +137,12 @@ const ReturnDetails = () => {
   };
 
   const finalize = () => {
-    // need to check if the customer is gold after
     axios
-      .post(RENTALS_API_URL + location.state.transaction.rentalID + "/", {
+      .put(RENTALS_API_URL + location.state.transaction.rentalID + "/", {
         dateFrom: location.state.transaction.dateFrom,
-        dateTo: location.state.transaction.datTo,
-        dateReturned: flipDate(ret),
-        totalCost: total,
+        dateTo: location.state.transaction.dateTo,
+        dateReturned: flipDate(moment(ret).format("MM-DD-YYYY")),
+        totalCost: rentCost + lateFee + changeBranchFee,
         licensePlate: location.state.transaction.licensePlate,
         goldMember: location.state.transaction.goldMember,
         customerID: location.state.transaction.customerID,
@@ -230,7 +227,6 @@ const ReturnDetails = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DesktopDatePicker
                 label="Return Date"
-                value={ret}
                 minDate={new Date()}
                 onChange={(newValue) => handleReturnDate(getDate(newValue))}
                 inputFormat="MM-DD-YYYY"
