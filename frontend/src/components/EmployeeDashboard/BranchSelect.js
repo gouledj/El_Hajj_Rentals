@@ -9,7 +9,7 @@ import { Select } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
-import NavBar from '../layouts/NavBar.js';
+import NavBar from "../layouts/NavBar.js";
 
 import {
   BRANCH_API_URL,
@@ -33,7 +33,7 @@ const BranchSelect = () => {
 
   const location = useLocation();
   const { id } = location.state;
-  console.log("customer id: " + id)
+  console.log("customer id: " + id);
 
   useEffect(() => {
     axios.get(BRANCH_API_URL).then((response) => {
@@ -42,6 +42,10 @@ const BranchSelect = () => {
 
     axios.get(CUSTOMER_API_URL).then((response) => {
       setCustomers(response.data);
+    });
+
+    axios.get(RENTALS_API_URL).then((response) => {
+      setTransactions(response.data);
     });
   }, []);
 
@@ -72,9 +76,6 @@ const BranchSelect = () => {
 
   const handleTable = () => {
     const testRow = [];
-    axios.get(RENTALS_API_URL).then((response) => {
-      setTransactions(response.data);
-    });
 
     transactions.map((transaction) => {
       if (transaction.licensePlate == licensePlate) {
@@ -114,107 +115,106 @@ const BranchSelect = () => {
 
   return (
     <>
-      <NavBar state={{ id: id }}/>
+      <NavBar state={{ id: id }} />
       <div>
-      <div className="container-avail">
-        <h1>Employee Dashboard</h1>
-      </div>
-      <div className="wrapper">
-        <section className="container-class">
-          <Typography>Select your branch:</Typography>
-          <Box sx={{ width: "25%" }}>
-            <FormControl fullWidth>
-              <InputLabel id="branch-select-label">Branch</InputLabel>
-              <Select
-                labelId="branch-select-label"
-                id="branch-select"
-                value={branch.branchID}
-                label="Branch"
-                onChange={handleChange}
+        <div className="container-avail">
+          <h1>Employee Dashboard</h1>
+        </div>
+        <div className="wrapper">
+          <section className="container-class">
+            <Typography>Select your branch:</Typography>
+            <Box sx={{ width: "25%" }}>
+              <FormControl fullWidth>
+                <InputLabel id="branch-select-label">Branch</InputLabel>
+                <Select
+                  labelId="branch-select-label"
+                  id="branch-select"
+                  value={branch.branchID}
+                  label="Branch"
+                  onChange={handleChange}
+                >
+                  {branches.map((branch) => (
+                    <MenuItem key={branch.branchID} value={branch.branchID}>
+                      {branch.unitNumber}-{branch.streetNumber}{" "}
+                      {branch.streetName}, {branch.city} {branch.province}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </section>
+
+          <div className="container-buttons">
+            <div className="backb">
+              <Button
+                variant="contained"
+                component={Link}
+                to={{ pathname: "/AddBranch" }}
+                state={{
+                  branch: branch,
+                  id: id,
+                }}
               >
-                {branches.map((branch) => (
-                  <MenuItem key={branch.branchID} value={branch.branchID}>
-                    {branch.unitNumber}-{branch.streetNumber}{" "}
-                    {branch.streetName}, {branch.city} {branch.province}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-        </section>
+                Add New Branch
+              </Button>
+            </div>
 
-        <div className="container-buttons">
-          <div className="backb">
-            <Button
-              variant="contained"
-              component={Link}
-              to={{ pathname: "/AddBranch" }}
-              state={{
-                branch: branch,
-                id:id
-              }}
-            >
-              Add New Branch
-            </Button>
+            <div className="nextb">
+              <Button
+                variant="contained"
+                disabled={branch.branchID === undefined}
+                component={Link}
+                to={{ pathname: "/BranchInfo" }}
+                state={{
+                  branch: branch,
+                  id: id,
+                }}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
+        </div>
+        <div className="license-search">
+          <Typography>License plate number:</Typography>
+          <div>
+            <TextField id="outlined-required" onChange={handleEntry} />
+            <div className="search-button">
+              <Button
+                variant="contained"
+                disabled={searchCheck === false}
+                onClick={handleTable}
+              >
+                search
+              </Button>
+            </div>
           </div>
 
-          <div className="nextb">
-            <Button
-              variant="contained"
-              disabled={branch.branchID === undefined}
-              component={Link}
-              to={{ pathname: "/BranchInfo" }}
-              state={{
-                branch: branch,
-                id:id
-              }}
-            >
-              Next
-            </Button>
+          <div style={{ height: 400, width: "auto" }}>
+            <DataGrid
+              rows={transactionRow}
+              columns={transactionCol}
+              onRowClick={rowClick}
+            />
           </div>
+          <Button
+            className="next-button"
+            variant="contained"
+            disabled={nextCheck === false}
+            component={Link}
+            to={{ pathname: "/ReturnDetails" }}
+            state={{
+              transaction: transaction,
+              person: person,
+              branches: branches,
+              id: id,
+            }}
+          >
+            Next
+          </Button>
         </div>
       </div>
-      <div className="license-search">
-        <Typography>License plate number:</Typography>
-        <div>
-          <TextField id="outlined-required" onChange={handleEntry} />
-          <div className="search-button">
-            <Button
-              variant="contained"
-              disabled={searchCheck === false}
-              onClick={handleTable}
-            >
-              search
-            </Button>
-          </div>
-        </div>
-
-        <div style={{ height: 400, width: "auto" }}>
-          <DataGrid
-            rows={transactionRow}
-            columns={transactionCol}
-            onRowClick={rowClick}
-          />
-        </div>
-        <Button
-          className="next-button"
-          variant="contained"
-          disabled={nextCheck === false}
-          component={Link}
-          to={{ pathname: "/ReturnDetails" }}
-          state={{
-            transaction: transaction,
-            person: person,
-            branches: branches,
-            id:id
-          }}
-        >
-          Next
-        </Button>
-      </div>
-    </div>
     </>
-    
   );
 };
 export default BranchSelect;
