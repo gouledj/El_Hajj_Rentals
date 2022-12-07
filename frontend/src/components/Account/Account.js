@@ -155,7 +155,7 @@ const About = () => {
           alignItems: "center",
           flexDirection: "column",
         }}>
-      <Card sx={{width:"30%", p: 5, mt: 5}}>
+      <Card sx={{width:"30%", p: 5, mt: 5, minWidth:'500px'}}>
           <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
