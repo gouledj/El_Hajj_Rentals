@@ -121,6 +121,7 @@ const AvailVehicles = () => {
         image: VehicleImages(carType.typeID),
         manufacturer: available[i].manufacturer,
         model: available[i].model,
+        mileage: available[i].mileage,
         fueltype: available[i].fuelType,
         colour: available[i].color,
         cost: calculateCost(calculateDays(from, to), carType)
@@ -138,6 +139,7 @@ const AvailVehicles = () => {
         style={{"width":"200px", "marginLeft":"30px"}}/> },
     { field: "manufacturer", headerName: "Manufacturer", width: 150 },
     { field: "model", headerName: "Model", width: 150 },
+    { field: "mileage", headerName: "Mileage", width: 150},
     { field: "fueltype", headerName: "FuelType", width: 150 },
     { field: "colour", headerName: "Colour", width: 150 },
     { field: "cost", headerName: "Estimated Cost", width: 150 },

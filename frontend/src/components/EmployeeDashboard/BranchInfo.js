@@ -188,6 +188,7 @@ const BranchInfo = () => {
         { field: "manufacturer", headerName: "Manufacturer", width: 150 },
         { field: "model", headerName: "Model", width: 150 },
         { field: "carType", headerName: "Car Type", width: 150 },
+        { field: "mileage", headerName: "Mileage", width: 150 },
         { field: "fuelType", headerName: "Fuel Type", width: 150 },
         { field: "colour", headerName: "Colour", width: 150 },
         { field: "available", headerName: "Available", width: 150 },
@@ -202,6 +203,7 @@ const BranchInfo = () => {
             manufacturer: cars[i].manufacturer,
             model: cars[i].model,
             carType: CarTypes.carTypes[cars[i].typeID - 1].description,
+            mileage: cars[i].mileage,
             fuelType: cars[i].fuelType,
             colour: cars[i].color,
             available: cars[i].status
