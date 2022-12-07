@@ -70,7 +70,7 @@ const BranchSelect = () => {
     { field: "customer", headerName: "Customer", width: 150 },
     { field: "startDate", headerName: "Start Date", width: 150 },
     { field: "endDate", headerName: "End Date", width: 150 },
-    { field: "returnDate", headerName: "returned Date", width: 150 },
+    { field: "returnDate", headerName: "Returned Date", width: 150 },
     { field: "cost", headerName: "Total Cost", width: 150 },
   ];
 
@@ -207,6 +207,7 @@ const BranchSelect = () => {
               onRowClick={rowClick}
             />
           </div>
+          <div style={{padding:'10px'}}>
           <Button
             className="next-button"
             variant="contained"
@@ -222,6 +223,8 @@ const BranchSelect = () => {
           >
             Next
           </Button>
+          </div>
+          
         </div>
       </div>
     </>

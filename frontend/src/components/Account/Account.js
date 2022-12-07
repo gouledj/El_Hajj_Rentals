@@ -17,7 +17,7 @@ import { Card } from "@mui/material";
 import { CUSTOMER_API_URL } from "../../constants";
 
 const About = () => {
-    const [customers, setCustomers] = useState([]);
+    const [customers, setCustomers] = useState(null);
     const [firstName, setFirstName] = useState('First Name');
     const [lastName, setLastName] = useState('Last Name');
     const [email, setEmail] = useState('email@email.com');
@@ -29,18 +29,16 @@ const About = () => {
     const [streetNumber, setStreetNumber] = useState('street number');
     const [streetName, setStreetName] = useState('street name');
     const [unitNumber, setUnitNumber] = useState('unit number');
-    const [load, setLoad] = useState(false);
 
     const location = useLocation();
     const { id } = location.state;
     console.log("CURRENT ID: ", location.state)
 
     useEffect(() => {
-        axios.get(CUSTOMER_API_URL)
+        axios.get(CUSTOMER_API_URL + id + '/')
         .then((response) => {
-           setCustomers(response.data);
-           setLoad(true);
-          response.data.map((item, id) => {
+          setCustomers(response.data)
+           const item = response.data;
               setFirstName(item.firstName)
               setLastName(item.lastName)
               setEmail(item.email)
@@ -52,7 +50,6 @@ const About = () => {
               setStreetNumber(item.streetNumber)
               setStreetName(item.streetName)
               setUnitNumber(item.unitNumber)
-             })
            
         })
         .catch()
@@ -127,10 +124,10 @@ const About = () => {
         lastName: data.get('lastName'),
         driversLicense: data.get('driversLicense'),
         email: data.get('email'),
-        salt: customers[0].salt,
+        salt: customers.salt,
         customerPhone: data.get('phoneNumber'),
-        dob: customers[0].dob,
-        goldMember: customers[0].goldMember,
+        dob: customers.dob,
+        goldMember: customers.goldMember,
         province: data.get('province'),
         city: data.get('city'),
         postalCode: data.get('postalCode'),
@@ -171,7 +168,7 @@ const About = () => {
           <Typography component="h1" variant="h5">
             User details
           </Typography>
-          { customers?.length > 0
+          { customers
             ? (
                 <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>

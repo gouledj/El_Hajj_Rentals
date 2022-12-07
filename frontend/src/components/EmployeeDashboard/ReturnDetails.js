@@ -279,7 +279,10 @@ const ReturnDetails = () => {
                   ))}
               </Select>
             </FormControl>
-            <TextField
+          </div>
+        </div>
+          <div style={{paddingLeft:"10px"}}>
+          <TextField
               id="mileage"
               label="Mileage"
               variant="outlined"
@@ -287,7 +290,6 @@ const ReturnDetails = () => {
               onChange={handleMileage}
             />
           </div>
-        </div>
         <div style={{ padding: "10px" }}>
           <section>
             <Typography>Rental Cost: ${rentCost && rentCost}</Typography>

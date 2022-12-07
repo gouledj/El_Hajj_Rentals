@@ -191,7 +191,7 @@ const BranchInfo = () => {
         { field: "mileage", headerName: "Mileage", width: 150 },
         { field: "fuelType", headerName: "Fuel Type", width: 150 },
         { field: "colour", headerName: "Colour", width: 150 },
-        { field: "available", headerName: "Available", width: 150 },
+        { field: "available", headerName: "Status", width: 150 },
     ];
 
     const carRows = [];
