@@ -120,7 +120,7 @@ function App() {
           flexDirection: "column",
         }}
       >
-        <Card sx={{ width: "30%", pb: 10, pr: 2, pl: 2, mt: 15 }}>
+        <Card sx={{ width: "30%", pb: 10, pr: 2, pl: 2, mt: 15, minWidth:'400px'}}>
           <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
               <Box
@@ -195,12 +195,12 @@ function App() {
             </Container>
           </ThemeProvider>
         </Card>
-        <div style={{ padding: "200px" }}>
-          <Typography variant='h4' sx={{ textAlign: "center", color: "#FFF" }}>
+        <div style={{ paddingTop: "150px", paddingBottom: "150px", width:'95vw'}}>
+          <Typography variant='h4' sx={{ textAlign: "center", color: "#FFF", backgroundColor:'rgba(0, 0, 0, 0.4)', pt:5, pb:5 }}>
             It's not the destination, it's the journey.
           </Typography>
         </div>
-        <Card sx={{ width: '50%',  mb: 10 }}>
+        <Card sx={{ width: '50%',  mb: 10, minWidth:'550px', pl:4, pr:4}}>
           <DemoCarousel />
         </Card>
       </div>
