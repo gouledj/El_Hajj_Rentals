@@ -65,8 +65,6 @@ const ReturnDetails = () => {
     } else {
       setLateFee(0);
     }
-    console.log(rentCost);
-    console.log(lateFee);
   };
 
   function getDate(date) {
@@ -127,6 +125,8 @@ const ReturnDetails = () => {
   const handleChange = (event) => {
     if (event.target.value != location.state.transaction.branchID) {
       setBranchChangeFee(carType.changeBranchFee);
+    } else {
+      setBranchChangeFee(0);
     }
   };
   const handleClose = () => {
@@ -137,13 +137,12 @@ const ReturnDetails = () => {
   };
 
   const finalize = () => {
-    // need to check if the customer is gold after
     axios
-      .post(RENTALS_API_URL + location.state.transaction.rentalID + "/", {
+      .put(RENTALS_API_URL + location.state.transaction.rentalID + "/", {
         dateFrom: location.state.transaction.dateFrom,
-        dateTo: location.state.transaction.datTo,
-        dateReturned: flipDate(ret),
-        totalCost: total,
+        dateTo: location.state.transaction.dateTo,
+        dateReturned: flipDate(moment(ret).format("MM-DD-YYYY")),
+        totalCost: rentCost + lateFee + changeBranchFee,
         licensePlate: location.state.transaction.licensePlate,
         goldMember: location.state.transaction.goldMember,
         customerID: location.state.transaction.customerID,
@@ -228,7 +227,6 @@ const ReturnDetails = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DesktopDatePicker
                 label="Return Date"
-                value={ret}
                 minDate={new Date()}
                 onChange={(newValue) => handleReturnDate(getDate(newValue))}
                 inputFormat="MM-DD-YYYY"
@@ -267,25 +265,25 @@ const ReturnDetails = () => {
             </Typography>
           </section>
         </div>
-        <div style={{padding:'10px', paddingTop:"20px"}}>
-        <Button
-          className="backb"
-          sx={{ float: "left" }}
-          variant="contained"
-          component={Link}
-          to={{ pathname: "/BranchSelect" }}
-          state={{ id: id }}
-        >
-          Back
-        </Button>
-        <Button
-          className="nextb"
-          variant="contained"
-          disabled={rentCost + lateFee + changeBranchFee === 0}
-          onClick={finalize}
-        >
-          Confirm
-        </Button>
+        <div style={{ padding: "10px", paddingTop: "20px" }}>
+          <Button
+            className="backb"
+            sx={{ float: "left" }}
+            variant="contained"
+            component={Link}
+            to={{ pathname: "/BranchSelect" }}
+            state={{ id: id }}
+          >
+            Back
+          </Button>
+          <Button
+            className="nextb"
+            variant="contained"
+            disabled={rentCost + lateFee + changeBranchFee === 0}
+            onClick={finalize}
+          >
+            Confirm
+          </Button>
         </div>
       </div>
     </>
