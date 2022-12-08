@@ -61,7 +61,7 @@ export default function SignUp() {
 
     })
 
-    navigate('/Login');
+    navigate('/');
 
   };
   function getDate(date) {
@@ -230,13 +230,14 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
+
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/login" variant="body2">
+                <Link href="/" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

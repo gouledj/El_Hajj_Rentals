@@ -37,6 +37,7 @@ const ReturnDetails = () => {
   const [total, setTotal] = useState(0);
   const [mileage, setMileage] = useState(0);
   const [open, setOpen] = React.useState(false);
+  const [newBranch, setNewBranch] = React.useState([]);
 
   const { id } = location.state;
   console.log("customer id: " + id);
@@ -107,8 +108,16 @@ const ReturnDetails = () => {
     axios
       .get(CARS_API_URL) //need to create an api where i can grab by typeID and branchID
       .then((response) => {
-        setCar(response.data);
-        setMileage(response.data[0].mileage);
+        console.log(response.data);
+        response.data.map((car) => {
+          console.log(car.licensePlate + " " + location.state.transaction.licensePlate)
+          if (car.licensePlate === location.state.transaction.licensePlate) {
+            setMileage(car.mileage);
+            setCar(car);
+            console.log("test");
+          }
+        }
+        )
       })
       .catch(console.log("error or loading"));
     axios
@@ -121,13 +130,17 @@ const ReturnDetails = () => {
         });
       })
       .catch(console.log("error or loading"));
+
+    console.log(car);
   }, []);
 
   const handleChange = (event) => {
     if (event.target.value != location.state.transaction.branchID) {
       setBranchChangeFee(carType.changeBranchFee);
+      setNewBranch(event.target.value);
     } else {
       setBranchChangeFee(0);
+      setNewBranch(event.target.value);
     }
   };
   const handleClose = () => {
@@ -160,17 +173,17 @@ const ReturnDetails = () => {
 
     console.log(car.carID);
     axios
-      .put(CARS_API_URL + car[0].carID + "/", {
-        carID: car[0].carID,
-        manufacturer: car[0].manufacturer,
-        model: car[0].model,
-        fuelType: car[0].fuelType,
-        color: car[0].color,
-        licensePlate: car[0].licensePlate,
-        status: car[0].status,
+      .put(CARS_API_URL + car.carID + "/", {
+        carID: car.carID,
+        manufacturer: car.manufacturer,
+        model: car.model,
+        fuelType: car.fuelType,
+        color: car.color,
+        licensePlate: car.licensePlate,
+        status: car.status,
         mileage: mileage,
-        typeID: car[0].typeID,
-        branchID: car[0].branchID,
+        typeID: car.typeID,
+        branchID: newBranch,
       })
       .then(function (response) {
         console.log(response);
@@ -281,15 +294,15 @@ const ReturnDetails = () => {
             </FormControl>
           </div>
         </div>
-          <div style={{paddingLeft:"10px"}}>
+        <div style={{ paddingLeft: "10px" }}>
           <TextField
-              id="mileage"
-              label="Mileage"
-              variant="outlined"
-              value={mileage}
-              onChange={handleMileage}
-            />
-          </div>
+            id="mileage"
+            label="Mileage"
+            variant="outlined"
+            value={mileage}
+            onChange={handleMileage}
+          />
+        </div>
         <div style={{ padding: "10px" }}>
           <section>
             <Typography>Rental Cost: ${rentCost && rentCost}</Typography>
