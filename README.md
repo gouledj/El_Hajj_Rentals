@@ -1,22 +1,19 @@
 <h1>CMPT 315 Project</h1>
 
-Requirements:
+Web stack:
 
-- Django (El_Hajj_Rentals)
+- Django + Python (backend)
 - React (frontend)
-- MySQL (api)
+- MySQL (Database)
 
-Python packages:
-
-- <h1>Django</h1>
-
+<h1>Django</h1>
+Notes: Depending on OS command might be different
 To run server: <b>python ./manage.py runserver </b><br>
 To check migration: <b>python ./manage.py makemigrations</b><br>
 To update changes: <b>python ./manage.py migrate</b><br>
 
 <h1>MySQL</h1>
 Notes:
-
 - (MAC) If path not found: <b>alias mysql=/usr/local/mysql/bin/mysql</b>
 - MySQL name: DB
 - MySQL password: MacEwan-315
@@ -38,25 +35,24 @@ Steps:
   - show tables;<br/><br/>
   the tables should now be non-empty and populated with ~10 rows
   
-  
-  
- <h1>Installing Material UI</h1>
- - Material should be installed in the package.json and should be working out the box, if it isn't,run these two commands.
- - npm install @mui/material @emotion/react @emotion/styled --legacy-peer-deps
- - npm install @mui/icons-material --legacy-peer-deps
+<h1>Install Packages</h1>
 
-<h1>Other things used that should already be installed, but if not, you should or else stuff wont run</h1>
-- For React Router:
-  -- npm install react-router-dom
-- For Datagrid:
-  -- npm install npm install @mui/x-data-grid
-- For Date/Time picker:
-  -- npm install @mui/x-date-pickers
-  -- npm install dayjs
-  
+- npm install @mui/icons-material --legacy-peer-deps
+- npm install @mui/material @emotion/react @emotion/styled
+- npm install @mui/icons-material --legacy-peer-deps
+- npm install react-router-dom
+- npm install npm install @mui/x-data-grid
+- npm install @mui/x-date-pickers
+- npm install dayjs
+- npm i react-responsive-carousel
+- npm install react-plotly.js plotly.js
+- npm install react-bootstrap bootstrap
+
+- npm install @mui/material @emotion/react @emotion styled --legacy-peer-deps
+
 <h1>Setting up CORS headers</h1>
 Some API calls will get blocked by CORS policy, to fix this CORS headers is required. 
 In your virtual environment or on your local machine, install django cors headers by
 entering the following line:
 
-pip install django-cors-headers
+- pip install django-cors-headers
